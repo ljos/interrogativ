@@ -1,4 +1,4 @@
-(ns interrogativ.views.forskningsdagene
+(ns interrogativ.views.main
   (:require [interrogativ.views.common :as common]
             [interrogativ.models.data :as data]
             [noir.cookies :as cookies])
@@ -175,15 +175,15 @@
               (common/radio-table
                {:name "informasjon"
                 :label "Hvilken type informasjon er viktigst?"
-                :section ["Nyheter"
-                          "Musikk"
-                          "Dokumentar"
-                          "Fiksjon"
-                          "Fotografier"
-                          "Underholdning"
-                          "Reality-TV"
-                          "Facebook"
-                          "Nakenbilder"]
+                :sections ["Nyheter"
+                           "Musikk"
+                           "Dokumentar"
+                           "Fiksjon"
+                           "Fotografier"
+                           "Underholdning"
+                           "Reality-TV"
+                           "Facebook"
+                           "Nakenbilder"]
                 :values ["Viktig"
                          "Nøytral"
                          "Dårlig"]})
