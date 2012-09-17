@@ -150,15 +150,19 @@
   [:div {:data-role "fieldcontain" :data-mini "true"}
    (for [section sections]
      [:div {:class "ui-grid-a"}
-      [:div {:class "ui-block-a" :style "width:33%"}
+      [:div {:class "ui-block-a" :style "width:35%"}
        [:b {:style "position:relative;top:6px"} section]]
-      [:div {:class "ui-block-b" :style "width:66%"}
+      [:div {:class "ui-block-b" :style "width:64%"}
        [:fieldset {:data-role "controlgroup" :data-type "horizontal" :data-mini "true"}
         (map (fn [value]
                (let [section (string/replace (string/lower-case section) #"\s+" "-")
                      id (format "%s-v%s" section value)]
                  (html [:input {:type "radio"
-                                :name section
+                                :name (string/replace
+                                           (string/lower-case
+                                            (format "%s-%s" name section))
+                                           #"\s+"
+                                           "-")
                                 :id id
                                 :value value}]
                        [:label {:for id} value])))

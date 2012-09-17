@@ -115,7 +115,7 @@
                             "etc?")
                 :values ["Svært ofte"
                          "Ofte"
-                         "Av og til"
+                         "Noe"
                          "Sjelden"
                          "Svært sjelden"]})
               (common/checkbox-list
@@ -134,7 +134,7 @@
                             "for eksempel at du både ser på TV og leser på mobilen?")
                 :values ["Svært vanlig"
                          "Vanlig"
-                         "Av og til"
+                         "Noe"
                          "Uvanlig"
                          "Svært uvanlig"]}))
     :footer (common/footer
@@ -184,9 +184,9 @@
                            "Reality-TV"
                            "Facebook"
                            "Nakenbilder"]
-                :values ["Viktig"
-                         "Nøytral"
-                         "Dårlig"]})
+                :values ["Svært"
+                         "Noe"
+                         "Ikke"]})
               (common/radio-list
                {:name "område"
                 :label (str "Hvilket område er du mest opptatt av når det gjelder nyheter "
@@ -304,7 +304,7 @@
                            "Alder"
                            "Bosted"]
                 :values ["Ofte"
-                         "Av og til"
+                         "Noe"
                          "Sjelden"]})
               (common/radio-table
                {:name "delemedvirksomhet"

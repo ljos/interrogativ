@@ -1,4 +1,5 @@
 (ns interrogativ.server
+  (:gen-class)
   (:require [noir.server :as server]))
 
 (server/load-views-ns 'interrogativ.views)
