@@ -27,7 +27,7 @@
 (defn store-answer [answer]
   (when-not (contains? submitters (:submitter answer))
     (swap! submitters conj (:submitter answer))
-    (async-append store (str answer))))
+    (async-append store (str answer "\n"))))
 
 (defn- random-string [length]
   (let [ascii-codes (concat (range 48 58)
