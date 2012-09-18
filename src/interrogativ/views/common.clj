@@ -93,12 +93,13 @@
                      [:input {:type "radio"
                               :name name
                               :id id
-                              :value group}]
+                              :value idx}]
                      [:label {:for id} group])))
                 groups)])
 
 
-(defpartial slider [{:keys [name label id value min max]}]
+(defpartial slider [{:keys [name label id value min max]
+                     :or {id name}}]
   [:label {:for id} label]
   [:input {:type "range"
            :name name
@@ -110,8 +111,9 @@
 (defpartial select [{:keys [id name label values] :or {id name}}]
   [:label {:for name :class "select"} label]
   [:select {:name name :id id}
-   (for [value values]
-     [:option {:value value} value])])
+   (map-indexed (fn [idx value]
+                  [:option {:value idx} value])
+                values)])
 
 (defpartial textarea [{:keys [id name label value] :or {id name value ""}}]
   [:label {:for name} label]
@@ -125,7 +127,7 @@
                     (html [:input {:type "radio"
                                    :name name
                                     :id id
-                                   :value value}]
+                                   :value idx}]
                           [:label {:for id} value])))
                 values)])
 
@@ -137,11 +139,11 @@
                     (html [:input {:type "checkbox"
                                     :name (string/replace
                                            (string/lower-case
-                                            (format "%s-%s" name value))
+                                            (format "%s-v%s" name value))
                                            #"\s+"
                                            "-")
                                     :id id
-                                    :value value}]
+                                    :value idx}]
                            [:label {:for id} value])))
                 values)])
 
@@ -156,16 +158,22 @@
        [:fieldset {:data-role "controlgroup"
                    :data-type "horizontal"}
         [:div {:style "text-align:right"}
-         (map (fn [value]
-                        (let [section (string/replace (string/lower-case section) #"\s+" "-")
-                              id (format "%s-v%s" section value)]
-                          (html [:input {:type "radio"
-                                         :name (string/replace
-                                                (string/lower-case
-                                                 (format "%s-%s" name section))
-                                                #"\s+"
-                                                "-")
-                                         :id id
-                                         :value value}]
-                                [:label {:for id} value])))
-                      values)]]]])])
+         (map-indexed
+          (fn [value label]
+            (let [section (string/replace (string/lower-case section)
+                                          #"\s+"
+                                          "-")
+                  id (format "%s-v%s" section value)]
+              (html [:input {:type "radio"
+                             :name (string/replace
+                                    (string/replace
+                                                 (string/lower-case
+                                                  (format "%s-valg_%s" name section))
+                                                 #"[øåæé,/]"
+                                                 "")
+                                    #"\s+"
+                                    "-")
+                             :id id
+                             :value value}]
+                                [:label {:for id} label])))
+          values)]]]])])

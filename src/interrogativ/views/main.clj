@@ -39,19 +39,18 @@
              {:content [:h1 "Deg selv"]})
     :content (common/content
               (common/radio-group
-               {:name "kjønn"
+               {:name "spm-01degselv-01"
                 :label "Er du gutt eller jente?"
                 :groups ["Gutt" "Jente"]
                 :type "horizontal"})
               (common/slider
                {:label "Hvor gammel er du?"
-                :name "alder"
-                :id "alder"
+                :name "spm-01degselv-02"
                 :value "16"
                 :min "10"
                 :max "25"})
               (common/select
-               {:name "bosted"
+               {:name "spm-01degselv-03"
                 :label "Hvor går du på skole?"
                 :values ["Sentrum"
                          "Årstad"
@@ -63,7 +62,7 @@
                          "Arna"
                          "Annet sted"]})
               (common/select
-               {:name "studieretning"
+               {:name "spm-01degselv-03"
                 :label "Hvilken studieretning tar du?"
                 :values ["Realfag"
                          "Samfunnsfag"
@@ -100,7 +99,7 @@
              {:content [:h1 "Teknologi"]})
     :content (common/content
               (common/radio-table
-               {:name "medier-rom"
+               {:name "spm-02teknologi-01"
                 :label "Hvilke medieplatformer liker du best?"
                 :sections ["Mobil"
                            "Bærbar datamaskin"
@@ -112,7 +111,7 @@
                            "Papir"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/select
-               {:name "mobiltelefon"
+               {:name "spm-02teknologi-02"
                 :label "Hva slags mobiltelefon har du?"
                 :values ["iPhone"
                          "Samsung"
@@ -120,14 +119,14 @@
                          "Nokia"
                          "Andre"]})
               (common/radio-table
-               {:name "skrive"
+               {:name "spm-02teknologi-03"
                 :label "Hvordan vil du helst skrive?"
                 :sections ["Tastatur"
                            "Touchskjerm"
                            "Håndskrift"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "levende-bilder"
+               {:name "spm-02teknologi-04"
                 :label "Hvordan vil du helst se levende bilder?"
                 :sections ["Kino"
                            "Hjemmekino"
@@ -137,21 +136,21 @@
                            "Mobilskjerm"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "skjermer"
+               {:name "spm-02teknologi-05"
                 :label (str "Liker du å forholde deg til flere skjermer samtidig,"
                             "for eksempel at du både ser på TV og leser på mobil?")
                 :values ["Liker det"
                          "Nøytral"
                          "Liker det ikke"]})
               (common/radio-table
-               {:name "høre-lyd"
+               {:name "spm-02teknologi-06"
                 :label "Hvordan vil du helst høre lyd?"
                 :sections ["Høretelefoner"
                            "Høytalere"
                            "Ingen preferanse"]
                :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "snakke"
+               {:name "spm-02teknologi-07"
                 :label "Hvordan vil du helst snakke?"
                 :sections ["Stor mikrofon"
                            "Mygg-mikrofon"
@@ -159,7 +158,7 @@
                            "Mobiltelefon"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "posisjon"
+               {:name "spm-02teknologi-08"
                 :label (str "Hvor ofte tenker du på at din posisjon faktisk blir registrert "
                             "hele tiden, og kan brukes av ulike firma som Facebook, Google, "
                             "etc?")
@@ -169,7 +168,7 @@
                          "Sjelden"
                          "Svært sjelden"]})
               (common/radio-list
-               {:name "posisjon"
+               {:name "02spm-teknologi-09"
                 :label (str "Hvor ofte tenker du på at din posisjon faktisk blir registrert "
                             "hele tiden, og kan brukes av ulike firma som Facebook, Google, "
                             "etc?")
@@ -196,7 +195,7 @@
              {:content [:h1 "Innhold"]})
     :content (common/content
               (common/radio-table
-               {:name "geoomrmedie"
+               {:name "spm-03innhold-01"
                 :label (str "Hvilket geografisk område er du mest interessert i at "
                             "skal bli dekket av mediene?")
                 :sections ["Skolen"
@@ -207,7 +206,7 @@
                            "Verden"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "informasjon"
+               {:name "spm-03innhold-02"
                 :label "Hvilken type informasjon er viktigst?"
                 :sections ["Nyheter"
                            "Musikk"
@@ -220,7 +219,7 @@
                            "Nakenbilder"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "mediekanal"
+               {:name "spm-03innhold-03"
                 :label (str "Hvilken mediekanal vil du foretrekke til saker om offentlige "
                             "forhold?")
                 :sections ["Papiravis"
@@ -233,7 +232,7 @@
                            "Ukeblader"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "oppholde"
+               {:name "spm-03innhold-04"
                 :label (str "Hvor vil du helst være mens du bruker nyheter og "
                             "annen journalistikk?")
                 :sections ["Hjemme"
@@ -243,7 +242,8 @@
                            "Trening, tur"]
                :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:label  "Hvilke kilder synes du bør være fremtredende i offentligheten?"
+               {:name "spm-03innhold-05"
+                :label  "Hvilke kilder synes du bør være fremtredende i offentligheten?"
                 :sections ["Forskere"
                            "Kjendiser"
                            "Journalister"
@@ -273,7 +273,7 @@
              {:content [:h1 "Deltakelse"]})
     :content (common/content
                (common/radio-table
-               {:name "kommuniserer"
+               {:name "spm-04deltagelse-01"
                 :label "Hvem ønsker du mest å kommuniserer med på telefonen?"
                 :sections ["Venner"
                            "Søsken"
@@ -285,7 +285,7 @@
                            "Medelever"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "medieaktiv"
+               {:name "spm-04deltagelse-02"
                 :label "Hvilken medieproduksjon ønsker du mest å bruke tid på?"
                 :sections ["Snakke"
                            "Skrive"
@@ -295,14 +295,14 @@
                            "Programmere"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
                (common/radio-list
-               {:name "imedia"
+               {:name "spm-04deltagelse-03"
                 :label (str "Har du vært i avisen, på tv, radio, nettavis eller"
                             "andre journalistiske medier?")
                 :values ["To eller flere"
                          "En gang"
                          "Aldri"]})
               (common/radio-table
-               {:name "mediekanal"
+               {:name "spm-04deltagelse-04"
                 :label (str "Hvilken mediekanal vil du sannsynligvis bruke hvis "
                             "du skal bidra med et innspill til offentligheten?")
                 :sections ["Papirbrev"
@@ -315,7 +315,7 @@
                            "Sosialt medium"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "persinfodele"
+               {:name "spm-04deltagelse-05"
                 :label (str "Hvilke typer personlig informasjon er du villig til å dele "
                             "med journalistiske offentligheten gjennom mobilen?")
                 :sections ["Egne bilder"
@@ -332,15 +332,15 @@
                            "Bosted"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "delemedvirksomhet"
+               {:name "spm-04deltagelse-06"
                 :label (str "Er det greit at mediefirma bruker din personlige"
                             "informasjon til journalistiske formål, for eksempel"
                             "lege en raportasje med tekst og bilder?")
-                :sections ["Helt greit"
-                           "Greit"
-                           "Nøytral"
-                           "Ugreit"
-                           "Svært ugreit"]}))
+                :values ["Helt greit"
+                         "Greit"
+                         "Nøytral"
+                         "Ugreit"
+                         "Svært ugreit"]}))
     :footer (common/footer
              {:content (common/grid-b 
                         {:block-a (common/left-button
@@ -394,7 +394,7 @@
 (defpage [:post "/takk"] data
   (let [submitter-id (data/generate-submitter-id)]
     (cookies/put! :tracker {:value submitter-id :path "/" :expires 1 :max-age 86400})
-    (data/store-answer (assoc data :submitter submitter-id))
+    (data/store-answer (assoc data :informant submitter-id))
     (redirect "/takk")))
 
 (defpage "/takk" []

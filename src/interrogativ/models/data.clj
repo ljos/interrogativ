@@ -8,11 +8,12 @@
 
 (def ^:private submitters (atom #{}))
 
-(def file-name (let [name (format "db/%s-interrogativ.db" today)]
-                 (spit name "" :append true)
-                 (doseq [submission (read-string (str "[" (slurp name) "]"))]
-                   (swap! submitters conj (:submitter submission)))
-                 name))
+(def ^:private file-name
+  (let [name (format "db/%s-interrogativ.db" today)]
+    (spit name "" :append true)
+    (doseq [submission (read-string (str "[" (slurp name) "]"))]
+      (swap! submitters conj (:informant submission)))
+    name))
 
 (defn- file-agent [file-name]
   (add-watch (agent nil) :file-writer
