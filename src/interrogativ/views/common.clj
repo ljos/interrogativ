@@ -135,13 +135,14 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%s-v%s" name idx)]
+                  (let [id (format "%s-v%s" name idx)
+                        name (string/replace
+                              (string/lower-case
+                               (format "%s-V%s" name value))
+                              #"\s+"
+                              "-")]
                     (html [:input {:type "checkbox"
-                                    :name (string/replace
-                                           (string/lower-case
-                                            (format "%s-v%s" name value))
-                                           #"\s+"
-                                           "-")
+                                    :name name
                                     :id id
                                     :value idx}]
                            [:label {:for id} value])))
@@ -158,22 +159,21 @@
        [:fieldset {:data-role "controlgroup"
                    :data-type "horizontal"}
         [:div {:style "text-align:right"}
-         (map-indexed
-          (fn [value label]
-            (let [section (string/replace (string/lower-case section)
-                                          #"\s+"
-                                          "-")
-                  id (format "%s-v%s" section value)]
-              (html [:input {:type "radio"
-                             :name (string/replace
-                                    (string/replace
-                                                 (string/lower-case
-                                                  (format "%s-valg_%s" name section))
-                                                 #"[øåæé,/]"
-                                                 "")
-                                    #"\s+"
-                                    "-")
-                             :id id
-                             :value value}]
-                                [:label {:for id} label])))
-          values)]]]])])
+         (let [section (string/replace (string/lower-case section) #"\s+" "-")]
+           (map-indexed
+            (fn [value label]
+              (let [id (format "%s-v%s" section value)
+                    name (string/replace
+                          (string/replace
+                           (string/lower-case
+                            (format "%s-V%s" name section))
+                           #"[øåæé,/]"
+                           "")
+                          #"\s+"
+                          "-")]
+                (html [:input {:type "radio"
+                               :name name
+                               :id id
+                               :value value}]
+                      [:label {:for id} label])))
+                  values))]]]])])
