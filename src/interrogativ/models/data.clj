@@ -1,15 +1,16 @@
 (ns interrogativ.models.data
-  (:require [clojure.java.jdbc :as sql])
+  (require [clojure.java.io :as io]
+           [clojure.string :as string])
   (import [java util.Calendar
                 text.SimpleDateFormat]))
 
 (def today (.format (SimpleDateFormat. "yyyy-MM-dd")
                     (.getTime (Calendar/getInstance))))
 
-(def ^:private submitters (atom #{}))
+(def ^:private submitters (atom (sorted-set)))
 
 (def ^:private file-name
-  (let [name (format "db/%s-interrogativ.db" today)]
+  (let [name (format "db/%s-interrogativ.dat" today)]
     (spit name "" :append true)
     (doseq [submission (read-string (str "[" (slurp name) "]"))]
       (swap! submitters conj (:informant submission)))
@@ -17,8 +18,8 @@
 
 (defn- file-agent [file-name]
   (add-watch (agent nil) :file-writer
-    (fn [key agent old new]
-      (spit file-name new :append true))))
+             (fn [key agent old new]
+               (spit file-name new :append true))))
 
 (defn- async-append  [file-agent content]
   (send file-agent (constantly content)))
@@ -40,5 +41,15 @@
     (if (contains? submitters submitter-id)
       (recur (random-string 16))
       submitter-id)))
+
+(defn create-csv-from-file [file-name]
+  (let [submissions (read-string (str "[" (slurp file-name) "]"))
+        keys (into (sorted-set) (mapcat keys submissions))]
+    (with-out-str 
+      (println (string/join "," (map name keys)))
+      (doseq [submission submissions]
+        (println (string/join ","
+                              (for [key keys]
+                                (get submission key -1))))))))
 
 
