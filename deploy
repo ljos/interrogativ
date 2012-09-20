@@ -1,0 +1,19 @@
+#! /usr/bin/expect
+# grab the password
+stty -echo
+send_user -- "Password: "
+expect_user -re "(.*)\n"
+send_user "\n"
+stty echo
+set password $expect_out(1,string)
+spawn lein do clean, uberjar
+expect "Created*"
+spawn scp target/interrogativ-0.1.0-standalone.jar bjo013@hostel.uib.no:/www/fdu/.
+expect "*password*"
+send "$password\r"
+
+spawn ssh bjo013@hostel.uib.no "killall java;
+                                cd www/fdu/;
+                                screen -d -m java -jar interrogativ-0.1.0-standalone.jar"
+expect "*password*"
+send "$password\r"
