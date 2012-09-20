@@ -13,9 +13,14 @@
    (include-js "http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js")
    [:style {:type "text/css"}
     ".ui-header .ui-title, .ui-footer .ui-title {
-          margin-left:  0;
-          margin-right: 0;
-      }"]]
+         margin-left:  0;
+         margin-right: 0;
+     }
+     .ui-footer {
+         position: absolute;
+         bottom: 0px;
+         width: 100%;
+     }"]]
   [:body
    content])
 
@@ -49,7 +54,7 @@
          [:div {:class "ui-block-a"} block-a]
          [:div {:class "ui-block-b"} block-b])])))
 
-(defn grid-b 
+(defn grid-b
   ([{:keys [block-a block-b block-c]
      :or {block-a "" block-b "" block-c ""}}]
      (grid-b block-a block-b block-c))
@@ -69,9 +74,9 @@
   [:div {:data-role "header" :data-position data-position}
    content])
 
-(defpartial footer [{:keys [data-position content]
-                     :or {data-position ""}}]
-  [:div {:data-role "footer" :data-position data-position}
+(defpartial footer [{:keys [data-position content id]
+                     :or {data-position "" id ""}}]
+  [:div {:id id :data-role "footer" :data-position data-position}
    content])
 
 (defpartial page [{:keys [id header content footer data-title data-theme]
@@ -82,7 +87,8 @@
    footer])
 
 (defpartial content [& content]
-  [:div {:data-role "content"} content])
+  [:div {:data-role "content"} content
+   [:br] [:br]])
 
 (defpartial radio-group [{:keys [name label groups type] :or {type ""}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
@@ -126,7 +132,7 @@
                   (let [id (format "%s-v%s" name idx)]
                     (html [:input {:type "radio"
                                    :name name
-                                    :id id
+                                   :id id
                                    :value idx}]
                           [:label {:for id} value])))
                 values)])
@@ -142,10 +148,10 @@
                               #"\s+"
                               "-")]
                     (html [:input {:type "checkbox"
-                                    :name name
-                                    :id id
-                                    :value idx}]
-                           [:label {:for id} value])))
+                                   :name name
+                                   :id id
+                                   :value idx}]
+                          [:label {:for id} value])))
                 values)])
 
 (defpartial radio-table [{:keys [name label sections values]}]
@@ -176,4 +182,4 @@
                                :id id
                                :value value}]
                       [:label {:for id} label])))
-                  values))]]]])])
+            values))]]]])])
