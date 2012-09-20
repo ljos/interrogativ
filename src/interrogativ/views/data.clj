@@ -14,18 +14,18 @@
     [:title "Login"]]
    [:body
     [:form {:action "/login" :method "post"}
-        [:div
-         [:label {:for "uname"} "Username:"]
-         [:input {:type "text" :name "uname" :id "uname" :value "" :data-role "none"}]]
-        [:div
-         [:label {:for "pword"} "Password:"]
-         [:input {:type "password" :name "pword" :id "pword" :value "" :data-role "none"}]]
-        [:div
-         [:input {:type "submit"
-                  :name "submit"
-                  :id "submit"
-                  :value "login"
-                  :data-role "none"}]]]]))
+     [:div
+      [:label {:for "uname"} "Username:"]
+      [:input {:type "text" :name "uname" :id "uname" :value "" :data-role "none"}]]
+     [:div
+      [:label {:for "pword"} "Password:"]
+      [:input {:type "password" :name "pword" :id "pword" :value "" :data-role "none"}]]
+     [:div
+      [:input {:type "submit"
+               :name "submit"
+               :id "submit"
+               :value "login"
+               :data-role "none"}]]]]))
 
 (defn passwd-for [user]
   (with-open [rdr (io/reader "passwd")]
@@ -47,12 +47,12 @@
           (redirect "/data")))))
 
 (pre-route "/data" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (pre-route "/data/*" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))
@@ -64,7 +64,7 @@
 
 (defpage "/data/:file" {:keys [file]}
   (content-type "text/csv"
-    (data/create-csv-from-file
-     (format "db/%s"
-             (str/replace
-              file #"\.csv$" ".dat")))))
+                (data/create-csv-from-file
+                 (format "db/%s"
+                         (str/replace
+                          file #"\.csv$" ".dat")))))
