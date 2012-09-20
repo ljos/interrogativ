@@ -1,6 +1,5 @@
 (ns interrogativ.views.main
   (:require [interrogativ.views.common :as common]
-            [interrogativ.models.data :as data]
             [noir.cookies :as cookies])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
@@ -25,8 +24,7 @@
                        "sensitiv informasjon blir ikke lagret.")]
               [:p "Start undersøkelsen ved å trykke videre."])
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b
+             {:content (common/grid-b
                         {:block-c (common/right-button
                                    {:link "#deg-selv"
                                     :label "Neste"
@@ -82,8 +80,7 @@
                          "Service og samferdsel"
                          "eknikk og industriell produksjon"]}))
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b
+             {:content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#forside"
                                     :label "ilbake"
@@ -149,7 +146,7 @@
                 :sections ["Høretelefoner"
                            "Høytalere"
                            "Ingen preferanse"]
-               :values ["&#x2b;" "&bull;" "&minus;"]})
+                :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
                {:name "P02-teknologi-Q07"
                 :label "Hvordan vil du helst snakke?"
@@ -179,8 +176,7 @@
                          "Sjelden"
                          "Svært sjelden"]}))
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b
+             {:content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#deg-selv"
                                     :inline "false"
@@ -242,7 +238,7 @@
                            "Skolen"
                            "Café/Klubb"
                            "Trening, tur"]
-               :values ["&#x2b;" "&bull;" "&minus;"]})
+                :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
                {:name "P03-innhold-Q05"
                 :label  "Hvilke kilder synes du bør være fremtredende i offentligheten?"
@@ -258,8 +254,7 @@
                            "Barn"]
                 :values ["&#x2b;" "&bull;" "&minus;"]}))
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b
+             {:content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#teknologi"
                                     :inline "false"
@@ -275,7 +270,7 @@
     :header (common/header
              {:content [:h1 "Deltakelse"]})
     :content (common/content
-               (common/radio-table
+              (common/radio-table
                {:name "P04-deltagelse-Q01"
                 :label "Hvem ønsker du mest å kommuniserer med på telefonen?"
                 :sections ["Venner"
@@ -297,7 +292,7 @@
                            "Lage musikk"
                            "Programmere"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
-               (common/radio-list
+              (common/radio-list
                {:name "P04-deltagelse-Q03"
                 :label (str "Har du vært i avisen, på tv, radio, nettavis eller"
                             "andre journalistiske medier?")
@@ -345,8 +340,7 @@
                          "Ugreit"
                          "Svært ugreit"]}))
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b 
+             {:content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#innhold"
                                     :inline "false"
@@ -359,7 +353,7 @@
 (def ferdig
   (common/page
    {:id "ferdig"
-    :header (common/header 
+    :header (common/header
              {:content [:h1 "Spørreundersøkelse"]})
     :content (common/content
               [:h3 "Ferdig"]
@@ -369,8 +363,8 @@
                        "tildelt mobilen din en unik id, men nummeret ditt eller annen "
                        "personlig informasjon blir ikke lagret.")])
     :footer (common/footer
-             {:id "footer"
-              :content (common/grid-b 
+             {
+              :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#deltagelse"
                                     :inline "false"
@@ -384,8 +378,8 @@
                                            :value "Levér"}]})})}))
 
 (defpage "/" []
-  ;if (cookies/get :tracker)
-  ;(redirect "/takk")
+ ;if (cookies/get :tracker)
+ ;(redirect "/takk")
   (common/layout
    [:form {:action "/takk" :method "post"}
     forside
@@ -405,7 +399,7 @@
   (common/layout
    (common/page
     {:id "takk"
-     :header (common/header 
+     :header (common/header
               {:content [:h1 " "]})
      :content (common/content
                [:h3 "Takk!"]
@@ -416,6 +410,5 @@
                         "formidle resultatene i Bergens Tidende og/eller andre lokale "
                         "medier.")]
                [:p "Følg med!"])
-     :footer (common/footer 
-              {:id "footer"
-               :content [:h1 " "]})})))
+     :footer (common/footer
+              {:content [:h1 " "]})})))
