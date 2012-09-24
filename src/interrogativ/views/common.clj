@@ -2,7 +2,8 @@
   (:require [clojure.string :only [replace lower-case] :as string])
   (:use [noir.core :only [defpartial]]
         [hiccup.page :only [include-js include-css]]
-        [hiccup.core :only [html]]))
+        [hiccup.core :only [html]])
+  (:refer-clojure :exclude [name id]))
 
 (defpartial layout [& content]
   [:head
@@ -11,6 +12,7 @@
    (include-css "http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css")
    (include-js "http://code.jquery.com/jquery-1.7.1.min.js")
    (include-js "http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js")
+   (include-js "/js/interrogativ.js")
    [:style {:type "text/css"}
     ".ui-header .ui-title, .ui-footer .ui-title {
          margin-left:  0;
@@ -24,8 +26,8 @@
   [:body
    content])
 
-(defpartial left-button [{:keys [link label inline]
-                          :or [inline "true"]}]
+(defpartial left-button [{:keys [name link label inline]
+                          :or [inline "true" name ""]}]
   [:a {:href link
        :data-role "button"
        :data-icon "arrow-l"
@@ -90,52 +92,66 @@
   [:div {:data-role "content"} content
    [:br] [:br]])
 
-(defpartial radio-group [{:keys [name label groups type] :or {type ""}}]
+(defpartial radio-group [{:keys [name label groups type]
+                          :or {type "" id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
-   [:legend label]
-   (map-indexed (fn [idx group]
-                  (let [id (format "%s-v%s" name idx)]
-                    (html
-                     [:input {:type "radio"
-                              :name name
-                              :id id
-                              :value idx}]
-                     [:label {:for id} group])))
-                groups)])
+   [:div {:id name
+          :title label
+          :class "name-holder"}
+    [:legend label]
+    (map-indexed (fn [idx group]
+                   (let [id (format "%s-v%s" name idx)]
+                     (html
+                      [:input {:type "radio"
+                               :name name
+                               :id id
+                               :value idx}]
+                      [:label {:for id} group])))
+                 groups)]])
 
-
+;; For some reason it wants to evaluate name in this instance if
+;; put in the :or part of the input.
 (defpartial slider [{:keys [name label id value min max]
-                     :or {id name}}]
-  [:label {:for id} label]
+                     :or {min 0 max 100}}]
+  [:label {:for (if id id name)} label]
   [:input {:type "range"
            :name name
-           :id id
+           :id (if id id name)
            :value value
            :min min
            :max max}])
 
 (defpartial select [{:keys [id name label values] :or {id name}}]
-  [:label {:for name :class "select"} label]
-  [:select {:name name :id id}
-   (map-indexed (fn [idx value]
-                  [:option {:value idx} value])
-                values)])
+  [:div {:id name
+         :title label
+         :class "name-holder"}
+   [:label {:for name :class "select"} label]
+   [:select {:name name :id id}
+    (map-indexed (fn [idx value]
+                   [:option {:value idx} value])
+                 values)]])
 
 (defpartial textarea [{:keys [id name label value] :or {id name value ""}}]
-  [:label {:for name} label]
-  [:textarea {:name name :id id} value])
+  [:div {:name name
+         :class "name-holder"
+         :title label}
+   [:label {:for name} label]
+   [:textarea {:name name :id id} value]])
 
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
-   [:legend label]
-   (map-indexed (fn [idx value]
-                  (let [id (format "%s-v%s" name idx)]
-                    (html [:input {:type "radio"
-                                   :name name
-                                   :id id
-                                   :value idx}]
-                          [:label {:for id} value])))
-                values)])
+   [:div {:id name
+          :title label
+          :class "name-holder"}
+    [:legend label]
+    (map-indexed (fn [idx value]
+                   (let [id (format "%s-v%s" name idx)]
+                     (html [:input {:type "radio"
+                                    :name name
+                                    :id id
+                                    :value idx}]
+                           [:label {:for id} value])))
+                 values)]])
 
 (defpartial checkbox-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
@@ -143,15 +159,17 @@
    (map-indexed (fn [idx value]
                   (let [id (format "%s-v%s" name idx)
                         name (string/replace
-                              (string/lower-case
-                               (format "%s-V%s" name value))
+                              (format "%s-V%s" name value)
                               #"\s+"
                               "-")]
-                    (html [:input {:type "checkbox"
-                                   :name name
-                                   :id id
-                                   :value idx}]
-                          [:label {:for id} value])))
+                    (html [:div {:id name
+                                 :class "name-holder"
+                                 :title label}
+                           [:input {:type "checkbox"
+                                    :name name
+                                    :id id
+                                    :value idx}]
+                           [:label {:for id} value]])))
                 values)])
 
 (defpartial radio-table [{:keys [name label sections values]}]
@@ -164,22 +182,25 @@
       [:div {:class "ui-block-b" :style "width:60%"}
        [:fieldset {:data-role "controlgroup"
                    :data-type "horizontal"}
-        [:div {:style "text-align:right"}
-         (let [section (string/replace (string/lower-case section) #"\s+" "-")]
+        (let [name (string/replace
+                    (string/replace
+                     (format "%s-V%s" name section)
+                     #"[øåæé,/]"
+                     "")
+                    #"\s+"
+                    "-")]
+          [:div {:style "text-align:right"
+                 :id name
+                 :title (str section ": " label)
+                 :class "name-holder"}
            (map-indexed
             (fn [value label]
-              (let [id (format "%s-v%s" section value)
-                    name (string/replace
-                          (string/replace
-                           (string/lower-case
-                            (format "%s-V%s" name section))
-                           #"[øåæé,/]"
-                           "")
-                          #"\s+"
-                          "-")]
+              (let [id (format "%s-v%s"
+                               (string/replace section #"\s+" "-")
+                               value)]
                 (html [:input {:type "radio"
                                :name name
                                :id id
                                :value value}]
                       [:label {:for id} label])))
-            values))]]]])])
+            values)])]]])])

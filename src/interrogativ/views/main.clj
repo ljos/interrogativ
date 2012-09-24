@@ -1,5 +1,6 @@
 (ns interrogativ.views.main
   (:require [interrogativ.views.common :as common]
+            [interrogativ.models.data :as data]
             [noir.cookies :as cookies])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
@@ -24,7 +25,8 @@
                        "sensitiv informasjon blir ikke lagret.")]
               [:p "Start undersøkelsen ved å trykke videre."])
     :footer (common/footer
-             {:content (common/grid-b
+             {:id "forside-footer"
+              :content (common/grid-b
                         {:block-c (common/right-button
                                    {:link "#deg-selv"
                                     :label "Neste"
@@ -42,8 +44,8 @@
                 :groups ["Gutt" "Jente"]
                 :type "horizontal"})
               (common/slider
-               {:label "Hvor gammel er du?"
-                :name "P01-degselv-Q02"
+               {:name "P01-degselv-Q02"
+                :label "Hvor gammel er du?"
                 :value "16"
                 :min "10"
                 :max "25"})
@@ -60,7 +62,7 @@
                          "Arna"
                          "Annet sted"]})
               (common/select
-               {:name "P01-degselv-Q03"
+               {:name "P01-degselv-Q04"
                 :label "Hvilken studieretning tar du?"
                 :values ["Realfag"
                          "Samfunnsfag"
@@ -80,7 +82,8 @@
                          "Service og samferdsel"
                          "eknikk og industriell produksjon"]}))
     :footer (common/footer
-             {:content (common/grid-b
+             {:id "degselv-footer"
+              :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#forside"
                                     :label "ilbake"
@@ -164,19 +167,10 @@
                          "Ofte"
                          "Noe"
                          "Sjelden"
-                         "Svært sjelden"]})
-              (common/radio-list
-               {:name "P02-teknologi-Q09"
-                :label (str "Hvor ofte tenker du på at din posisjon faktisk blir registrert "
-                            "hele tiden, og kan brukes av ulike firma som Facebook, Google, "
-                            "etc?")
-                :values ["Svært ofte"
-                         "Ofte"
-                         "Noe"
-                         "Sjelden"
                          "Svært sjelden"]}))
     :footer (common/footer
-             {:content (common/grid-b
+             {:id "teknologi-footer"
+              :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#deg-selv"
                                     :inline "false"
@@ -254,7 +248,8 @@
                            "Barn"]
                 :values ["&#x2b;" "&bull;" "&minus;"]}))
     :footer (common/footer
-             {:content (common/grid-b
+             {:id "innhold-footer"
+              :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#teknologi"
                                     :inline "false"
@@ -340,7 +335,8 @@
                          "Ugreit"
                          "Svært ugreit"]}))
     :footer (common/footer
-             {:content (common/grid-b
+             {:id "deltagelse-footer"
+              :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#innhold"
                                     :inline "false"
@@ -356,6 +352,7 @@
     :header (common/header
              {:content [:h1 "Spørreundersøkelse"]})
     :content (common/content
+              [:div {:class "ikkeferdig"}]
               [:h3 "Ferdig"]
               [:p (str "Ved å trykke på knappen ”Levér” gir du samtidig ditt samtykke "
                        "til at opplysningene du har fylt ut kan bli brukt til forskning "
@@ -363,7 +360,7 @@
                        "tildelt mobilen din en unik id, men nummeret ditt eller annen "
                        "personlig informasjon blir ikke lagret.")])
     :footer (common/footer
-             {
+             {:id "ferdig-footer"
               :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#deltagelse"
@@ -411,4 +408,5 @@
                         "medier.")]
                [:p "Følg med!"])
      :footer (common/footer
-              {:content [:h1 " "]})})))
+              {:id "takk-footer"
+               :content [:h1 " "]})})))
