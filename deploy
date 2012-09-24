@@ -8,11 +8,8 @@ stty echo
 set password $expect_out(1,string)
 spawn lein do clean, uberjar
 expect "Created*"
-spawn scp target/interrogativ-0.1.0-standalone.jar bjo013@hostel.uib.no:/www/fdu/.
-expect "*password*"
-send "$password\r"
 
-spawn scp -r resources/ bjo013@hostel.uib.no:/www/fdu/.
+spawn scp target/interrogativ-0.1.0-standalone.jar bjo013@hostel.uib.no:/www/fdu/.
 expect "*password*"
 send "$password\r"
 
