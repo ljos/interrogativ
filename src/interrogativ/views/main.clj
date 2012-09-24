@@ -39,18 +39,18 @@
              {:content [:h1 "Deg selv"]})
     :content (common/content
               (common/radio-group
-               {:name "P01-degselv-Q01"
+               {:name "P01degselvQ01"
                 :label "Er du gutt eller jente?"
                 :groups ["Gutt" "Jente"]
                 :type "horizontal"})
               (common/slider
-               {:name "P01-degselv-Q02"
+               {:name "P01degselvQ02"
                 :label "Hvor gammel er du?"
                 :value "16"
                 :min "10"
                 :max "25"})
               (common/select
-               {:name "P01-degselv-Q03"
+               {:name "P01degselvQ03"
                 :label "Hvor går du på skole?"
                 :values ["Sentrum"
                          "Årstad"
@@ -62,7 +62,7 @@
                          "Arna"
                          "Annet sted"]})
               (common/select
-               {:name "P01-degselv-Q04"
+               {:name "P01degselvQ04"
                 :label "Hvilken studieretning tar du?"
                 :values ["Realfag"
                          "Samfunnsfag"
@@ -100,7 +100,7 @@
              {:content [:h1 "Teknologi"]})
     :content (common/content
               (common/radio-table
-               {:name "P02-teknologi-Q01"
+               {:name "P02teknologiQ01"
                 :label "Hvilke medieplatformer liker du best?"
                 :sections ["Mobil"
                            "Bærbar datamaskin"
@@ -112,7 +112,7 @@
                            "Papir"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/select
-               {:name "P02-teknologi-Q02"
+               {:name "P02teknologiQ02"
                 :label "Hva slags mobiltelefon har du?"
                 :values ["iPhone"
                          "Samsung"
@@ -120,14 +120,14 @@
                          "Nokia"
                          "Andre"]})
               (common/radio-table
-               {:name "P02-teknologi-Q03"
+               {:name "P02teknologiQ03"
                 :label "Hvordan vil du helst skrive?"
                 :sections ["Tastatur"
                            "Touchskjerm"
                            "Håndskrift"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P02-teknologi-Q04"
+               {:name "P02teknologiQ04"
                 :label "Hvordan vil du helst se levende bilder?"
                 :sections ["Kino"
                            "Hjemmekino"
@@ -137,21 +137,21 @@
                            "Mobilskjerm"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P02-teknologi-Q05"
+               {:name "P02teknologiQ05"
                 :label (str "Liker du å forholde deg til flere skjermer samtidig,"
                             "for eksempel at du både ser på TV og leser på mobil?")
                 :values ["Liker det"
                          "Nøytral"
                          "Liker det ikke"]})
               (common/radio-table
-               {:name "P02-teknologi-Q06"
+               {:name "P02teknologiQ06"
                 :label "Hvordan vil du helst høre lyd?"
                 :sections ["Høretelefoner"
                            "Høytalere"
                            "Ingen preferanse"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P02-teknologi-Q07"
+               {:name "P02teknologiQ07"
                 :label "Hvordan vil du helst snakke?"
                 :sections ["Stor mikrofon"
                            "Mygg-mikrofon"
@@ -159,7 +159,7 @@
                            "Mobiltelefon"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P02-teknologi-Q08"
+               {:name "P02teknologiQ08"
                 :label (str "Hvor ofte tenker du på at din posisjon faktisk blir registrert "
                             "hele tiden, og kan brukes av ulike firma som Facebook, Google, "
                             "etc?")
@@ -187,7 +187,7 @@
              {:content [:h1 "Innhold"]})
     :content (common/content
               (common/radio-table
-               {:name "P03-innhold-Q01"
+               {:name "P03innholdQ01"
                 :label (str "Hvilket geografisk område er du mest interessert i at "
                             "skal bli dekket av mediene?")
                 :sections ["Skolen"
@@ -198,7 +198,7 @@
                            "Verden"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03-innhold-Q02"
+               {:name "P03innholdQ02"
                 :label "Hvilken type informasjon er viktigst?"
                 :sections ["Nyheter"
                            "Musikk"
@@ -211,7 +211,7 @@
                            "Nakenbilder"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03-innhold-Q03"
+               {:name "P03innholdQ03"
                 :label (str "Hvilken mediekanal vil du foretrekke til saker om offentlige "
                             "forhold?")
                 :sections ["Papiravis"
@@ -224,7 +224,7 @@
                            "Ukeblader"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03-innhold-Q04"
+               {:name "P03innholdQ04"
                 :label (str "Hvor vil du helst være mens du bruker nyheter og "
                             "annen journalistikk?")
                 :sections ["Hjemme"
@@ -234,7 +234,7 @@
                            "Trening, tur"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03-innhold-Q05"
+               {:name "P03innholdQ05"
                 :label  "Hvilke kilder synes du bør være fremtredende i offentligheten?"
                 :sections ["Forskere"
                            "Kjendiser"
@@ -266,7 +266,7 @@
              {:content [:h1 "Deltakelse"]})
     :content (common/content
               (common/radio-table
-               {:name "P04-deltagelse-Q01"
+               {:name "P04deltagelseQ01"
                 :label "Hvem ønsker du mest å kommuniserer med på telefonen?"
                 :sections ["Venner"
                            "Søsken"
@@ -278,7 +278,7 @@
                            "Medelever"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P04-deltagelse-Q02"
+               {:name "P04deltagelseQ02"
                 :label "Hvilken medieproduksjon ønsker du mest å bruke tid på?"
                 :sections ["Snakke"
                            "Skrive"
@@ -288,14 +288,14 @@
                            "Programmere"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P04-deltagelse-Q03"
+               {:name "P04deltagelseQ03"
                 :label (str "Har du vært i avisen, på tv, radio, nettavis eller"
                             "andre journalistiske medier?")
                 :values ["To eller flere"
                          "En gang"
                          "Aldri"]})
               (common/radio-table
-               {:name "P04-deltagelse-Q04"
+               {:name "P04deltagelseQ04"
                 :label (str "Hvilken mediekanal vil du sannsynligvis bruke hvis "
                             "du skal bidra med et innspill til offentligheten?")
                 :sections ["Papirbrev"
@@ -308,7 +308,7 @@
                            "Sosialt medium"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P04-deltagelse-Q05"
+               {:name "P04deltagelseQ05"
                 :label (str "Hvilke typer personlig informasjon er du villig til å dele "
                             "med journalistiske offentligheten gjennom mobilen?")
                 :sections ["Egne bilder"
@@ -325,7 +325,7 @@
                            "Bosted"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P04-deltagelse-Q06"
+               {:name "P04deltagelseQ06"
                 :label (str "Er det greit at mediefirma bruker din personlige"
                             "informasjon til journalistiske formål, for eksempel"
                             "lege en raportasje med tekst og bilder?")
