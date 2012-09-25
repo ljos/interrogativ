@@ -88,7 +88,7 @@
               :content (common/grid-b
                         {:block-a (common/left-button
                                    {:link "#forside"
-                                    :label "ilbake"
+                                    :label "Tilbake"
                                     :inline "false"})
                          :block-c (common/right-button
                                    {:link "#teknologi"
@@ -372,6 +372,7 @@
                                    {:link "#deltagelse"
                                     :inline "false"
                                     :label "Tilbake"})
+                         ;; Input ends the form defined in "/"
                          :block-c [:input {:data-icon "arrow-r"
                                            :data-iconpos "right"
                                            :data-inline "false"
@@ -392,27 +393,4 @@
     deltagelse
     ferdig]))
 
-(defpage [:post "/takk"] data
-  (let [submitter-id (data/generate-submitter-id)]
-    (cookies/put! :tracker {:value submitter-id :path "/" :expires 1 :max-age 86400})
-    (data/store-answer (assoc (dissoc data :submitter) :informant submitter-id))
-    (redirect "/takk")))
 
-(defpage "/takk" []
-  (common/layout
-   (common/page
-    {:id "takk"
-     :header (common/header
-              {:content [:h1 " "]})
-     :content (common/content
-               [:h3 "Takk!"]
-               [:p (str "Du har nå fylt ut alle fire seksjonene i undersøkelsen "
-                        "”Hvilke nye medier trenger Norge mest”. "
-                        "Ditt bidrag er verdifullt for forskerne "
-                        "ved Institutt for informasjons- og medievitenskap. Vi vil "
-                        "formidle resultatene i Bergens Tidende og/eller andre lokale "
-                        "medier.")]
-               [:p "Følg med!"])
-     :footer (common/footer
-              {:id "takk-footer"
-               :content [:h1 " "]})})))
