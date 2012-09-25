@@ -9,10 +9,10 @@
   [:head
    [:title "Forskningsdagene UNG"]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-   (include-css "http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css")
-   (include-js "http://code.jquery.com/jquery-1.7.1.min.js")
-   (include-js "http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js")
+   (include-css "http://code.jquery.com/mobile/1.2.0-rc.2/jquery.mobile-1.2.0-rc.2.min.css")
+   (include-js "http://code.jquery.com/jquery-1.8.1.min.js")
    (include-js "/js/interrogativ.js")
+   (include-js "http://code.jquery.com/mobile/1.2.0-rc.2/jquery.mobile-1.2.0-rc.2.min.js")
    [:style {:type "text/css"}
     ".ui-header .ui-title, .ui-footer .ui-title {
          margin-left:  0;
@@ -34,10 +34,11 @@
        :data-inline inline}
    label])
 
-(defpartial right-button [{:keys [link label inline]
-                           :or {inline "true"}}]
+(defpartial right-button [{:keys [link label inline id]
+                           :or {inline "true" id ""}}]
   [:a {:href link
        :data-role "button"
+       :id id
        :data-icon "arrow-r"
        :data-iconpos "right"
        :data-inline inline}
