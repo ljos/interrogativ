@@ -146,7 +146,7 @@
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx value]
-                   (let [id (format "%sV%s" name idx)]
+                   (let [id (format "%sC%s" name idx)]
                      (html [:input {:type "radio"
                                     :name name
                                     :id id
@@ -158,9 +158,9 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%sV%s" name idx)
+                  (let [id (format "%sC%s" name idx)
                         name (string/replace
-                              (format "%sV%s" name value)
+                              (format "%sC%s" name value)
                               #"\s+"
                               "-")]
                     (html [:div {:id name
@@ -185,7 +185,7 @@
                    :data-type "horizontal"}
         (let [name (string/replace
                     (string/replace
-                     (format "%sV%s" name section)
+                     (format "%sC%s" name section)
                      #"[øåæé,/]"
                      "")
                     #"\s+"
@@ -196,7 +196,7 @@
                  :class "name-holder"}
            (map-indexed
             (fn [value label]
-              (let [id (format "%sV%s"
+              (let [id (format "%sC%s"
                                (string/replace section
                                  #"\s+" "")
                                value)]
