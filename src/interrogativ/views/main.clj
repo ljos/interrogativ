@@ -3,7 +3,8 @@
             [interrogativ.models.data :as data]
             [noir.cookies :as cookies])
   (:use [noir.core :only [defpage]]
-        [noir.response :only [redirect]]))
+        [noir.response :only [redirect]]
+        [hiccup.core :only [html]]))
 
 (def forside
   (common/page
@@ -36,7 +37,8 @@
   (common/page
    {:id "deg-selv"
     :header (common/header
-             {:content [:h1 "Deg selv"]})
+             {:content (html [:h1 "Deg selv"]
+                             [:a {:class "ui-btn-right"} " 1 / 4 "])})
     :content (common/content
               (common/radio-group
                {:name "P01degselvQ01"
@@ -97,7 +99,8 @@
   (common/page
    {:id "teknologi"
     :header (common/header
-             {:content [:h1 "Teknologi"]})
+             {:content (html [:h1 "Teknologi"]
+                             [:a {:class "ui-btn-right"} " 2 / 4 "])})
     :content (common/content
               (common/radio-table
                {:name "P02teknologiQ01"
@@ -184,7 +187,8 @@
   (common/page
    {:id "innhold"
     :header (common/header
-             {:content [:h1 "Innhold"]})
+             {:content (html [:h1 "Innhold"]
+                             [:a {:class "ui-btn-right"} " 3 / 4 "])})
     :content (common/content
               (common/radio-table
                {:name "P03innholdQ01"
@@ -263,7 +267,8 @@
   (common/page
    {:id "deltagelse"
     :header (common/header
-             {:content [:h1 "Deltakelse"]})
+             {:content (html [:h1 "Deltakelse"]
+                             [:a {:class "ui-btn-right"} " 4 / 4 "])})
     :content (common/content
               (common/radio-table
                {:name "P04deltagelseQ01"
@@ -342,7 +347,8 @@
                                     :inline "false"
                                     :label "Tilbake"})
                          :block-c (common/right-button
-                                   {:link "#ferdig"
+                                   {:link ""
+                                    :id "tilferdig"
                                     :inline "false"
                                     :label "Neste"})})})}))
 
