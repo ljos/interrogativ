@@ -17,4 +17,4 @@ spawn ssh bjo013@hostel.uib.no "killall java;
                                 cd www/fdu/;
                                 screen -d -m java -jar interrogativ-0.1.0-standalone.jar"
 expect "*password*"
-send "$password\r
+send "$password\r"
