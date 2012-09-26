@@ -14,17 +14,20 @@
     :content (common/content
               [:h3 "Hvilke nye medier trenger Norge mest?"]
               [:p (str "Hvis du skulle tenke deg et helt nytt og annerledes medium; "
-                       "hvordan skulle det være? Er det riktig at ingen ungdommer liker "
-                       "papirmedier? Bør man kunne dele nakenbilder på nett?")]
+                       "hvordan skulle det være?")]
               [:p (str "I denne undersøkelsen ber vi deg svære så ærlig du kan på "
-                       "spørsmål om hvordan medier bør være. Kanskje kan vi finne ideer "
-                       "til et radikalt nytt medium?")]
-              [:p (str "Ved å trykke på knappen ”Levér skjema” gir du samtidig ditt "
-                       "samtykke til at opplysningene du har fylt ut kan bli brukt til "
-                       "forskning og formidling. Din telefon blir skilt ut fra de andre "
-                       "ved at vi lager en unik id pr. telefon, men nummeret eller annen "
-                       "sensitiv informasjon blir ikke lagret.")]
-              [:p "Start undersøkelsen ved å trykke videre."])
+                       "spørsmål om hvordan medier bør være i framtiden. Vi ønsker "
+                       "å bygge et helt nytt medium og trenger din hjelp.")]
+              [:p (str "Det er frivillig å delta. Ved å trykke på knappen ”Levér "
+                        "skjema” (helt til slutt) gir du ditt "
+                       "samtykke til at opplysningene kan bli brukt til "
+                       "forskning og formidling.")]
+              [:p "Start undersøkelsen ved å trykke på \"Neste\""]
+              [:p "Ansvarlig:" [:br]
+               "Professor Lars Nyre" [:br]
+               "Institutt for informasjons- og medievitenskap" [:br]
+               "Universitetet i Bergen" [:br]
+               "Epost: Lars.Nyre@infomedia.uib.no"])
     :footer (common/footer
              {:id "forside-footer"
               :content (common/grid-b
@@ -363,8 +366,8 @@
               [:p (str "Ved å trykke på knappen ”Levér” gir du samtidig ditt samtykke "
                        "til at opplysningene du har fylt ut kan bli brukt til forskning "
                        "og formidling. Ditt svar blir skilt ut ved at vi har automatiskt "
-                       "tildelt mobilen din en unik id, men nummeret ditt eller annen "
-                       "personlig informasjon blir ikke lagret.")])
+                       "tildelt svaret ditt en unik id, men nummeret fra telefonen eller "
+                       "annen personlig informasjon blir ikke lagret.")])
     :footer (common/footer
              {:id "ferdig-footer"
               :content (common/grid-b
