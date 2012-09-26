@@ -26,9 +26,10 @@
   [:body
    content])
 
-(defpartial left-button [{:keys [name link label inline]
-                          :or [inline "true" name ""]}]
+(defpartial left-button [{:keys [id link label inline data-ajax]
+                          :or [inline "true" id ""]}]
   [:a {:href link
+       :id id
        :data-role "button"
        :data-icon "arrow-l"
        :data-inline inline}
@@ -97,7 +98,7 @@
                           :or {type "" id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:div {:id name
-          :title label
+          :title (second label)
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx group]
@@ -124,7 +125,7 @@
 
 (defpartial select [{:keys [id name label values] :or {id name}}]
   [:div {:id name
-         :title label
+         :title (second label)
          :class "name-holder"}
    [:label {:for name :class "select"} label]
    [:select {:name name :id id}
@@ -135,14 +136,14 @@
 (defpartial textarea [{:keys [id name label value] :or {id name value ""}}]
   [:div {:name name
          :class "name-holder"
-         :title label}
+         :title (second label)}
    [:label {:for name} label]
    [:textarea {:name name :id id} value]])
 
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:div {:id name
-          :title label
+          :title (second label)
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx value]
@@ -165,7 +166,7 @@
                               "-")]
                     (html [:div {:id name
                                  :class "name-holder"
-                                 :title label}
+                                 :title (second label)}
                            [:input {:type "checkbox"
                                     :name name
                                     :id id
@@ -179,7 +180,7 @@
    (for [section sections]
      [:div {:class "ui-grid-a"}
       [:div {:class "ui-block-a" :style "width:40%"}
-       [:b {:style "position:relative;top:6px"} section]]
+       [:div {:style "position:relative;top:6px"} section]]
       [:div {:class "ui-block-b" :style "width:60%"}
        [:fieldset {:data-role "controlgroup"
                    :data-type "horizontal"}
@@ -192,7 +193,7 @@
                     "-")]
           [:div {:style "text-align:right"
                  :id name
-                 :title (str section ": " label)
+                 :title (str section ": " (second label))
                  :class "name-holder"}
            (map-indexed
             (fn [value label]
