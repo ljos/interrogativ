@@ -1,18 +1,18 @@
 /*
  *  Javascript to fix the last page and add missing questions.
- * 
+ *
  */
 
 $(document).bind("pageinit", function() {
-    $("a[id=tilferdig]").click(function() {
-        
+    $("#tilferdig").click(function() {
+
         var allChoices = $("div[class=name-holder]").map(function() {return this.id;});
-        
+
         var marked = $("select").map(function() {return this.name;});
         $.merge(marked, $("input:radio:checked").map(function() {return this.name;}));
 
         var unmarked = $.grep(allChoices, function(i, v) {return ($.inArray(i, marked) === -1);});
-        
+
         var text = "<h2>Manglende spørsmål.</h2>";
         //<p> ends in line with $("div[class=ikkeferdig]").replaceWith(...)
         text += "<p>De følgende spørsmålene er ikke besvarte. Trykk på spørsmålet ";
@@ -36,10 +36,14 @@ $(document).bind("pageinit", function() {
 
         if (0 < unmarked.length) {
             // <p> ends here.
-            $("div[class=ikkeferdig]").replaceWith("<div class='ikkeferdig'>"+text+"</p>");
-        } 
-        
+            $("div.ikkeferdig").replaceWith("<div class='ikkeferdig'>"+text+"</p>");
+        }
+
         $("#ferdig").trigger("pagecreate");
+    });
+    
+    $("#tilbakeinnhold").click(function() {
+        $("div.ikkeferdig > *").remove();
     });
 });
 
