@@ -6,7 +6,7 @@
 $(document).bind("pageinit", function() {
     $("#tilferdig").click(function() {
 
-        var allChoices = $("div[class=name-holder]").map(function() {return this.id;});
+        var allChoices = $("div.name-holder").map(function() {return this.id;});
 
         var marked = $("select").map(function() {return this.name;});
         $.merge(marked, $("input:radio:checked").map(function() {return this.name;}));
@@ -20,8 +20,8 @@ $(document).bind("pageinit", function() {
         text += "og trykke levér.";
 
         for(var i in unmarked) {
-            var title = $("div[id="+unmarked[i]+"][class=name-holder]").attr("title");
-            var html = $("div[id="+unmarked[i]+"][class=name-holder]").html();
+            var title = $("#"+unmarked[i]).attr("title");
+            var html = $("#"+unmarked[i]).html();
             var body = "<p>"+title+"</p>";
             body += "<fieldset data-role=controlgroup data-mini=\"true\"";
             // if this is a [+ • −] choice we should put it horizontal

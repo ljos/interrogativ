@@ -15,14 +15,14 @@
               [:h3 "Hvilke nye medier trenger Norge mest?"]
               [:p (str "Hvis du skulle tenke deg et helt nytt og annerledes medium; "
                        "hvordan skulle det være?")]
-              [:p (str "I denne undersøkelsen ber vi deg svære så ærlig du kan på "
+              [:p (str "I denne undersøkelsen ber vi deg svare så ærlig du kan på "
                        "spørsmål om hvordan medier bør være i framtiden. Vi ønsker "
                        "å bygge et helt nytt medium og trenger din hjelp.")]
               [:p (str "Det er frivillig å delta. Ved å trykke på knappen ”Levér "
                         "skjema” (helt til slutt) gir du ditt "
                        "samtykke til at opplysningene kan bli brukt til "
                        "forskning og formidling.")]
-              [:p "Start undersøkelsen ved å trykke på \"Neste\""]
+              [:p "Start undersøkelsen ved å trykke på \"Neste\"."]
               [:br]
               [:p [:b "Ansvarlig:"] [:br]
                "Professor Lars Nyre" [:br]
@@ -89,7 +89,7 @@
                          "Naturbruk"
                          "Restaurant- og matfag"
                          "Service og samferdsel"
-                         "eknikk og industriell produksjon"]}))
+                         "Teknikk og industriell produksjon"]}))
     :footer (common/footer
              {:id "degselv-footer"
               :content (common/grid-b
