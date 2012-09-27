@@ -341,6 +341,7 @@
                         {:block-a (common/left-button
                                    {:link "#innhold"
                                     :inline "false"
+                                    :id "tilbakeinnhold"
                                     :label "Tilbake"})
                          :block-c (common/right-button
                                    {:link "#ferdig"
