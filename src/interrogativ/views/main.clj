@@ -10,7 +10,14 @@
   (common/page
    {:id "forside"
     :header (common/header
-             {:content [:h1 "Spørreundersøkelse"]})
+             {:content (html [:h1 "Spørreundersøkelse"]
+                             [:a {:href "#meny"
+                                  :data-rel "dialog"
+                                  :data-icon "gear"
+                                  :data-iconpos "right"
+                                  :data-transition "slidedown"
+                                  :class "ui-btn-right"}
+                              "Meny"])})
     :content (common/content
               [:h3 "Hvilke nye medier trenger Norge mest?"]
               [:p (str "Hvis du skulle tenke deg et helt nytt og annerledes medium; "
@@ -19,7 +26,7 @@
                        "spørsmål om hvordan medier bør være i framtiden. Vi ønsker "
                        "å bygge et helt nytt medium og trenger din hjelp.")]
               [:p (str "Det er frivillig å delta. Ved å trykke på knappen ”Levér "
-                        "skjema” (helt til slutt) gir du ditt "
+                       "skjema” (helt til slutt) gir du ditt "
                        "samtykke til at opplysningene kan bli brukt til "
                        "forskning og formidling.")]
               [:p "Start undersøkelsen ved å trykke på \"Neste\"."]
@@ -41,25 +48,30 @@
                                     :inline "false"})})})}))
 
 (def deg-selv
-  (common/page
-   {:id "deg-selv"
+  (common/page  {:id "deg-selv"
     :header (common/header
              {:content (html [:h1 "Deg selv"]
-                             [:a {:class "ui-btn-right"} " 1 / 4 "])})
+                             [:a {:class "ui-btn-right"
+                                  :href "#meny"
+                                  :data-icon "gear"
+                                  :data-iconpos "right"
+                                  :data-rel "dialog"
+                                  :data-transition "slidedown"}
+                              " 1 / 4 "])})
     :content (common/content
               (common/radio-group
-               {:name "P01degselvQ01"
+               {:name "P01Q01"
                 :label [:h4 "1. Er du gutt eller jente?"]
                 :groups ["Gutt" "Jente"]
                 :type "horizontal"})
               (common/slider
-               {:name "P01degselvQ02"
+               {:name "P01Q02"
                 :label [:h4 "2. Hvor gammel er du?"]
                 :value "16"
                 :min "10"
                 :max "25"})
               (common/select
-               {:name "P01degselvQ03"
+               {:name "P01Q03"
                 :label [:h4 "3. Hvor går du på skole?"]
                 :values ["Sentrum"
                          "Årstad"
@@ -69,27 +81,7 @@
                          "Ytrebygda"
                          "Åsane"
                          "Arna"
-                         "Annet sted"]})
-              (common/select
-               {:name "P01degselvQ04"
-                :label [:h4 "4. Hvilken studieretning tar du?"]
-                :values ["Realfag"
-                         "Samfunnsfag"
-                         "Språk"
-                         "Økonomi"
-                         "Musikk"
-                         "Dans"
-                         "Drama"
-                         "Idrettsfag"
-                         "Bygg- og anleggsteknikk"
-                         "Design og håndverk"
-                         "Elektrofag"
-                         "Helse- og sosialfag"
-                         "Medier og kommunikasjon"
-                         "Naturbruk"
-                         "Restaurant- og matfag"
-                         "Service og samferdsel"
-                         "Teknikk og industriell produksjon"]}))
+                         "Annet sted"]}))
     :footer (common/footer
              {:id "degselv-footer"
               :content (common/grid-b
@@ -107,10 +99,24 @@
    {:id "teknologi"
     :header (common/header
              {:content (html [:h1 "Teknologi"]
-                             [:a {:class "ui-btn-right"} " 2 / 4 "])})
+                             [:a {:class "ui-btn-right"
+                                  :href "#meny"
+                                  :data-icon "gear"
+                                  :data-iconpos "right"
+                                  :data-rel "dialog"
+                                  :data-transition "slidedown"}
+                              " 2 / 4 "])})
     :content (common/content
+                            (common/select
+               {:name "P02Q04"
+                :label [:h4 "4. Hva slags mobiltelefon har du?"]
+                :values ["iPhone"
+                         "Samsung"
+                         "Sony"
+                         "Nokia"
+                         "Andre"]})
               (common/radio-table
-               {:name "P02teknologiQ01"
+               {:name "P02Q05"
                 :label [:h4 "5. Hvilke medieplatformer liker du best?"]
                 :sections ["Mobil"
                            "Bærbar datamaskin"
@@ -121,24 +127,16 @@
                            "Radio"
                            "Papir"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
-              (common/select
-               {:name "P02teknologiQ02"
-                :label [:h4 "6. Hva slags mobiltelefon har du?"]
-                :values ["iPhone"
-                         "Samsung"
-                         "Sony-Ericsson"
-                         "Nokia"
-                         "Andre"]})
               (common/radio-table
-               {:name "P02teknologiQ03"
-                :label [:h4 "7. Hvordan vil du helst skrive?"]
+               {:name "P02Q06"
+                :label [:h4 "6. Hvordan vil du helst skrive?"]
                 :sections ["Tastatur"
                            "Touchskjerm"
                            "Håndskrift"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P02teknologiQ04"
-                :label [:h4 "8. Hvordan vil du helst se levende bilder?"]
+               {:name "P02Q07"
+                :label [:h4 "7. Hvordan vil du helst se levende bilder?"]
                 :sections ["Kino"
                            "Hjemmekino"
                            "Flatskjerm-TV"
@@ -147,38 +145,28 @@
                            "Mobilskjerm"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P02teknologiQ05"
-                :label [:h4 (str "9. Liker du å forholde deg til flere skjermer samtidig,"
-                                 "for eksempel at du både ser på TV og leser på mobil?")]
+               {:name "P02Q08"
+                :label [:h4 (str "8. Liker du å forholde deg til flere skjermer samtidig,"
+                                 "for eksempel at du både ser på TV og leser på mobilen?")]
                 :values ["Liker det"
                          "Nøytral"
                          "Liker det ikke"]})
               (common/radio-table
-               {:name "P02teknologiQ06"
-                :label [:h4 "10. Hvordan vil du helst høre lyd?"]
+               {:name "P02Q09"
+                :label [:h4 "9. Hvordan vil du helst høre lyd?"]
                 :sections ["Uten forsterkning"
                             "Ørepropper i mobil"
                            "Store øreklokker i mobil"
                            "Høytalere i rommet"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P02teknologiQ07"
-                :label [:h4 "11. Hvordan vil du helst snakke?"]
+               {:name "P02Q10"
+                :label [:h4 "10. Hvordan vil du helst snakke?"]
                 :sections ["Mobiltelefon"
                            "Mikrofon i videokamera"
                            "Mygg-mikrofon"
                            "Studiomikrofon"]
-                :values ["&#x2b;" "&bull;" "&minus;"]})
-              (common/radio-list
-               {:name "P02teknologiQ08"
-                :label [:h4 (str "12. Hvor ofte tenker du på at din posisjon faktisk blir "
-                             "registrert hele tiden, og kan brukes av ulike firma som "
-                             " Facebook, Google, etc?")]
-                :values ["Svært ofte"
-                         "Ofte"
-                         "Noe"
-                         "Sjelden"
-                         "Svært sjelden"]}))
+                :values ["&#x2b;" "&bull;" "&minus;"]}))
     :footer (common/footer
              {:id "teknologi-footer"
               :content (common/grid-b
@@ -196,11 +184,17 @@
    {:id "innhold"
     :header (common/header
              {:content (html [:h1 "Innhold"]
-                             [:a {:class "ui-btn-right"} " 3 / 4 "])})
+                             [:a {:class "ui-btn-right"
+                                  :href "#meny"
+                                  :data-icon "gear"
+                                  :data-iconpos "right"
+                                  :data-rel "dialog"
+                                  :data-transition "slidedown"}
+                              " 3 / 4 "])})
     :content (common/content
               (common/radio-table
-               {:name "P03innholdQ01"
-                :label [:h4 (str "13. Hvilket geografisk område er du mest interessert i at "
+               {:name "P03Q11"
+                :label [:h4 (str "11. Hvilket geografisk område er du mest interessert i at "
                                  "skal bli dekket av mediene?")]
                 :sections ["Skolen"
                            "Nærområde"
@@ -210,8 +204,8 @@
                            "Verden"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03innholdQ02"
-                :label [:h4 "14. Hvilken type informasjon er viktigst?"]
+               {:name "P03Q12"
+                :label [:h4 "12. Hvilken type informasjon synes du er viktigst?"]
                 :sections ["Nyheter"
                            "Musikk"
                            "Fakta"
@@ -219,8 +213,8 @@
                            "Underholdning"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03innholdQ03"
-                :label [:h4 (str "15. Hvilken kanal vil du foretrekke til nyheter og andre"
+               {:name "P03Q13"
+                :label [:h4 (str "13. Hvilken kanal vil du foretrekke til nyheter og andre "
                                  "offentlige saker?")]
                 :sections ["Mobil"
                            "Webmedier"
@@ -229,8 +223,8 @@
                            "Radio"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03innholdQ04"
-                :label [:h4 (str "16. Hvor vil du helst være mens du bruker nyheter og "
+               {:name "P03Q14"
+                :label [:h4 (str "14. Hvor vil du helst være mens du bruker nyheter og "
                                  "annen journalistikk?")]
                 :sections ["Hjemme"
                            "Reise"
@@ -240,9 +234,9 @@
                            "Stedet betyr ingenting"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P03innholdQ05"
-                :label  [:h4 (str "17. Hvilke personer synes du bør være fremtredende "
-                                  "i offentligheten?")]
+               {:name "P03Q15"
+                :label [:h4 (str "15. Hvilke personer synes du bør være fremtredende "
+                                 "i offentligheten?")]
                 :sections ["Kjendiser"
                            "Journalister"
                            "Politikere"
@@ -269,23 +263,17 @@
    {:id "deltagelse"
     :header (common/header
              {:content (html [:h1 "Deltakelse"]
-                             [:a {:class "ui-btn-right"} " 4 / 4 "])})
+                             [:a {:class "ui-btn-right"
+                                  :href "#meny"
+                                  :data-icon "gear"
+                                  :data-iconpos "right"
+                                  :data-rel "dialog"
+                                  :data-transition "slidedown"}
+                              " 4 / 4 "])})
     :content (common/content
               (common/radio-table
-               {:name "P04deltagelseQ01"
-                :label [:h4 "18. Hvem ønsker du mest å kommuniserer med på telefonen?"]
-                :sections ["Venner"
-                           "Søsken"
-                           "Mor"
-                           "Far"
-                           "Annen familie"
-                           "Andre voksne"
-                           "Lærere"
-                           "Medelever"]
-                :values ["&#x2b;" "&bull;" "&minus;"]})
-              (common/radio-table
-               {:name "P04deltagelseQ02"
-                :label [:h4 "19. Hvilken type medieproduksjon ønsker du selv å bruke tid på?"]
+               {:name "P04Q16"
+                :label [:h4 "16. Hvilken type medieproduksjon ønsker du selv å bruke tid på?"]
                 :sections ["Snakke selv"
                            "Skrive og lese"
                            "Ta bilder"
@@ -294,15 +282,15 @@
                            "Programmere datamaskiner"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-list
-               {:name "P04deltagelseQ03"
-                :label [:h4 (str "20. Hvor mange ganger har du vært i avisen, på tv "
+               {:name "P04Q17"
+                :label [:h4 (str "17. Hvor mange ganger har du vært i avisen, på tv "
                                  "eller lignende?")]
                 :values ["To eller flere"
                          "En gang"
                          "Aldri"]})
               (common/radio-table
-               {:name "P04deltagelseQ04"
-                :label [:h4 (str "21. Hvilken mediekanal vil du sannsynligvis bruke hvis "
+               {:name "P04Q18"
+                :label [:h4 (str "18. Hvilken mediekanal vil du sannsynligvis bruke hvis "
                                  "du skal bidra med et innspill til offentligheten?")]
                 :sections ["Papirbrev"
                            "Telefonsamtale"
@@ -314,27 +302,21 @@
                            "Sosialt medium"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (common/radio-table
-               {:name "P04deltagelseQ05"
-                :label [:h4 (str "22. Hvilke typer personlig informasjon er du villig "
+               {:name "P04Q19"
+                :label [:h4 (str "19. Hvilke typer personlig informasjon er du villig "
                                  "til å dele med journalistiske offentligheten gjennom "
                                  "mobilen?")]
                 :sections ["Dine bilder"
-                           "Dine  videoer"
+                           "Dine videoer"
                            "Din posisjon"
                            "Økonomiske forhold"
                            "Medisinsk informasjon"
                            "Sivilstatus"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
-              (common/radio-list
-               {:name "P04deltagelseQ06"
-                :label [:h4 (str "23. Er det greit at mediefirma bruker din personlige"
-                                 "informasjon til journalistiske formål, for eksempel"
-                                 "lage en raportasje med tekst og bilder?")]
-                :values ["Helt greit"
-                         "Greit"
-                         "Nøytral"
-                         "Ugreit"
-                         "Svært ugreit"]}))
+              (common/textarea
+               {:name "P04Q20"
+                :label [:h4 (str "20. Har du noe du vil si? Vi tar det på største alvor "
+                                 "i våre analyser.")]}))
     :footer (common/footer
              {:id "deltagelse-footer"
               :content (common/grid-b
@@ -378,16 +360,25 @@
                                            :name "submitter"
                                            :value "Levér"}]})})}))
 
+(def meny
+  (common/page
+   {:id "meny"
+    :header (common/header
+             {:content [:h1 "Meny"]})
+    :content  [:div {:data-role "content" :data-theme "c"}
+               [:p {:id "menyp"}]]}))
+
 (defpage "/" []
- ;if (cookies/get :tracker)
- ;(redirect "/takk")
-  (common/layout
-   [:form {:action "/takk" :method "post"}
-    forside
-    deg-selv
-    teknologi
-    innhold
-    deltagelse
-    ferdig]))
+  (if (cookies/get :tracker)
+    (redirect "/takk")
+    (common/layout
+     [:form {:action "/takk" :method "post"}
+      forside
+      deg-selv
+      teknologi
+      innhold
+      deltagelse
+      ferdig
+      meny])))
 
 

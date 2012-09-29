@@ -5,15 +5,13 @@
 
 $(document).bind("pageinit", function() {
     $("#tilferdig").click(function() {
-
         var allChoices = $("div.name-holder").map(function() {return this.id;});
-
         var marked = $("select").map(function() {return this.name;});
         $.merge(marked, $("input:radio:checked").map(function() {return this.name;}));
 
         var unmarked = $.grep(allChoices, function(i, v) {return ($.inArray(i, marked) === -1);});
 
-        var text = "<h2>Manglende spørsmål.</h2>";
+        var text = "<h2>Manglende svar.</h2>";
         //<p> ends in line with $("div[class=ikkeferdig]").replaceWith(...)
         text += "<p>De følgende spørsmålene er ikke besvarte. Trykk på spørsmålet ";
         text += "for å svare. Om du ikke vil svare så kan du bla nederst på siden ";
@@ -39,7 +37,7 @@ $(document).bind("pageinit", function() {
             $("div.ikkeferdig").replaceWith("<div class='ikkeferdig'>"+text+"</p>");
         }
 
-        $("#ferdig").trigger("pagecreate");
+        $("#div.ikkeferdig").trigger("create");
     });
     
     $("#tilbakeinnhold").click(function() {
@@ -47,6 +45,34 @@ $(document).bind("pageinit", function() {
     });
 });
 
+function avslutt() {
+    var html  =  "<h4>Er du sikker på at du vil avslutte?</h4>";
+        html += "<a href=\"#ferdig\" data-role=\"button\">Ja</a>";
+        html += "<a href=\"#\" data-rel=\"back\" data-role=\"button\">Nei</a>";
+    $("#menyp").fadeOut("fast", function() {
+        $("#menyp").html(html);
+        $("#menyp").trigger("create");
+        $("#menyp").fadeIn("slow");
+    });
+}
+
 $(document).delegate("#ferdig", "pagebeforeshow", function() {
     $("#ferdig div[role=heading]").remove();
+});
+
+$(document).delegate("#meny", "pagebeforeshow", function() {
+    var html  = "<h4>Du kan avslutte når som helst ved å trykke på denne knappen.</h4>";
+        html += "<a href=\"#\""
+                + " id=\"avslutt\""
+                + " data-role=\"button\""
+                + " data-theme=\"c\""
+                + " onclick=\"avslutt()\">"
+                + "Avslutt</a>";
+        html += "<a href=\"#\""
+                + " data-rel=\"back\""
+                + " data-role=\"button\""
+                + " data-theme=\"a\">"
+                + "Tilbake</a>";
+    $("#menyp").html(html);
+    $("#menyp").trigger("create");
 });
