@@ -8,7 +8,8 @@
 (defpage [:post "/takk"] data
   (let [submitter-id (data/generate-submitter-id)]
     (cookies/put! :tracker {:value submitter-id :path "/" :expires 1 :max-age 86400})
-    (data/store-answer (assoc (dissoc data :submitter) :informant submitter-id))
+    (data/store-answer (assoc (dissoc data :submitter)
+                         :informant submitter-id))
     (redirect "/takk")))
 
 (defpage "/takk" []
@@ -25,7 +26,9 @@
                         "ved Institutt for informasjons- og medievitenskap. Vi vil "
                         "formidle resultatene i Bergens Tidende og/eller andre lokale "
                         "medier.")]
-               [:p "Følg med!"])
+               [:p "Følg med!"]
+               [:p "Hilsen" [:br]
+                "Lars.Nyre@infomedia.uib.no"])
      :footer (common/footer
               {:id "takk-footer"
                :content [:h1 " "]})})))

@@ -43,7 +43,9 @@
       submitter-id)))
 
 (defn create-csv-from-file [file-name]
-  (let [submissions (read-string (str "[" (slurp file-name) "]"))
+  (let [submissions (read-string (str "[" (string/replace (slurp file-name)
+                                            #"(?imu)[øåæé,/]" "")
+                                      "]"))
         keys (into (sorted-set) (mapcat keys submissions))]
     (with-out-str 
       (println (string/join "," (map name keys)))
