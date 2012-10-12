@@ -49,7 +49,8 @@
       (println (string/join "," (map name keys)))
       (doseq [submission submissions]
         (println (string/join ","
-                              (for [key keys]
-                                (get submission key -1))))))))
+                              (map (partial format "\"%s\"")
+                                   (for [key keys]
+                                     (get submission key -1)))))))))
 
 
