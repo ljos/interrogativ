@@ -382,12 +382,14 @@
  ;if (cookies/get :tracker)
  ;(redirect "/takk")
   (common/layout
-   [:form {:action "/takk" :method "post"}
-    forside
-    deg-selv
-    teknologi
-    innhold
-    deltagelse
-    ferdig]))
+   {:title "Forskningsdagene UNG"
+    :body (common/body
+           [:form {:action "/takk" :method "post"}
+            forside
+            deg-selv
+            teknologi
+            innhold
+            deltagelse
+            ferdig])}))
 
 
