@@ -5,9 +5,12 @@
         [hiccup.core :only [html]])
   (:refer-clojure :exclude [name id]))
 
-(defpartial layout [& content]
+(defpartial body [& content]
+  [:body content])
+
+(defpartial layout [{:keys [title body]}]
   [:head
-   [:title "Forskningsdagene UNG"]
+   [:title title]
    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
    (include-css "http://code.jquery.com/mobile/1.2.0-rc.2/jquery.mobile-1.2.0-rc.2.min.css")
    (include-js "http://code.jquery.com/jquery-1.8.1.min.js")
@@ -23,8 +26,7 @@
          bottom: 0px;
          width: 100%;
      }"]]
-  [:body
-   content])
+  [:body body])
 
 (defpartial left-button [{:keys [id link label inline data-ajax]
                           :or [inline "true" id ""]}]
