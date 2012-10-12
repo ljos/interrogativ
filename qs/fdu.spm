@@ -1,3 +1,5 @@
+=== Forskningsdagene UNG ===
+
 # Spørreundersøkelse :pre
 ## Hvilke nye medier trenger Norge mest?
 Hvis du skulle tenke deg et helt nytt og annerledes medium; hvordan
@@ -37,92 +39,91 @@ Epost: bjo013@uib.no
 
 # Deg selv
 
-?: Er du gutt eller jente?
-   + Gutt
-   + Jente
+?: Er du gutt eller jente? :horizontal
+   - Gutt
+   - Jente
 
 ?: Hvor gammel er du?
    <10 - 25> :16
 
 ?: Hvor går du på skole?
-  * Sentrum
-  * Årstad
-  * Laksevåg
-  * Fyllingsdalen
-  * Fana
-  * Ytrebygda
-  * Åsane
-  * Arna
-  * Annet sted
+  + Sentrum
+  + Årstad
+  + Laksevåg
+  + Fyllingsdalen
+  + Fana
+  + Ytrebygda
+  + Åsane
+  + Arna
+  + Annet sted
 
 ?: Hvilken studieretning tar du?
-   * Realfag
-   * Samfunnsfag
-   * Språk
-   * Økonomi
-   * Musikk
-   * Dans
-   * Drama
-   * Idrettsfag
-   * Bygg- og anleggsteknikk
-   * Design og håndverk
-   * Elektrofag
-   * Helse- og sosialfag
-   * Medier og kommunikasjon
-   * Naturbruk
-   * Restaurant- og matfag
-   * Service og samferdsel
-   * Teknikk og industriell produksjon
+   + Realfag
+   + Samfunnsfag
+   + Språk
+   + Økonomi
+   + Musikk
+   + Dans
+   + Drama
+   + Idrettsfag
+   + Bygg- og anleggsteknikk
+   + Design og håndverk
+   + Elektrofag
+   + Helse- og sosialfag
+   + Medier og kommunikasjon
+   + Naturbruk
+   + Restaurant- og matfag
+   + Service og samferdsel
+   + Teknikk og industriell produksjon
 
 # Teknologi
 
-?: Hvilken medieplatformer liker du best?       
-  + Mobil
-  + Bærbar datamaskin
-  + Spillmaskiner
-  + Lesebrett
-  + TV
-  + Musikkspiller
-  + Radio
-  + Papir
-  1. &#x2b;
-  2. &bull;
-  3. &minus;
+?: Hvilken medieplatformer liker du best?
+  - Mobil
+  - Bærbar datamaskin
+  - Spillmaskiner
+  - Lesebrett
+  - TV
+  - Musikkspiller
+  - Radio
+  - Papir
+  * &#x2b;  :v 1
+  * &bull;  :v 2
+  * &minus; :v 3
 
 ?: Hva slags mobiltelefon har du?
-   * iPhone
-   * Samsung
-   * Sony-Ericsson
-   * Nokia
-   * Andre
+   + iPhone
+   + Samsung
+   + Sony-Ericsson
+   + Nokia
+   + Andre
 
 ?: Hvordan vil du helst skrive?
-   + Tastatur
-   + Touchskjerm
-   + Håndskrift
-   1. +
-   2. •
-   3. −
+   - Tastatur
+   - Touchskjerm
+   - Håndskrift
+   * +
+   * •
+   * −
 
 ?: Liker du å forholde deg til flere skjermer samtidig, for eksempel
    at du både ser på TV og leser på mobil?
-   + Liker det
-   + Nøytral
-   + Liker det ikke
-
+   - Liker det
+   - Nøytral
+   - Liker det ikke
 
 # Spørreundersøkelse :submit
 ## Ferdig
 Ved å trykke på knappen "Levér" gir du samtidig ditt samtykke til at
-opplysningene du har fylt ut jan bli brukt til forskning og
+opplysningene du har fylt ut kan bli brukt til forskning og
 formidling. Ditt svar blir skilt ut ved at vi har automatiskt tildelt
 svaret en unik id, men nummeret fra telefonen eller annen personlig
 informasjon blir ikke lagret.
 
-# Spørreundersøkelse
+# Spørreundersøkelse :post
 ## Takk!
 Du har nå fylt ut alle fire seksjonene i undersøkelsen "Hvilke nye
-medier trenger Norge mest". Dutt bidrag er verdifullt for forskerne
+medier trenger Norge mest". Ditt bidrag er verdifullt for forskerne
 ved Institutt for informasjons- og medievitenskap. Vi vil formidle
 resultatene i Bergens Tidende og/eller andre lokale medier.
 
