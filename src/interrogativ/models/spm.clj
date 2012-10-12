@@ -21,6 +21,7 @@
 
 (def page-nb (atom 0))
 (def question-nb (atom 0))
+(def submit-page (atom :not-set))
 
 (defn remove-line [string]
   (string/replace-first string #".*\n" ""))
@@ -29,23 +30,36 @@
   (re-find #".*" string))
 
 (defn parse-header [header]
-  (common/header
-   {:content (html (string/trim (second (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)" header)))
-                   [:a {:class "ui-btn-right"} "1 / %PAGE_NB%"])}))
+  (let [header (string/trim (second (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)" header)))]
+    (when (re-matches #".*?:submit\s*$" header)
+      (compare-and-set! submit-page :not-set page-nb))
+    (common/header
+     {:content (html [:h1 header]
+                     [:a {:class "ui-btn-right"}
+                      "1 / %PAGE_NB%"])})))
 
-(defn parse-footer [page-id]
-  (common/footer
-   {:id (format "footer-p%s" page-id)
-    :content (common/grid-b
-              {:block-a (if (< 1 page-id)
-                          (common/right-button
-                           {:link (format "#page-%s" (dec page-id))
-                            :label "Tilbake"
-                            :inline "false"}))
-               :block-c (common/right-button
-                         {:link (format "#page-%s" (inc page-id))
-                          :label "Neste"
-                          :inline "false"})})}))
+(defn parse-footer [line]
+  (let [page-type (second (re-find #".*\s*:(\w+)\s*"))]
+    (common/footer
+     {:id (format "footer-p%s" @page-nb)
+      :content (common/grid-b
+                {:block-a (when-not (or (= page-type "pre") 
+                                        (= page-type "post"))
+                            (common/right-button
+                             {:link (format "#page-%s" (dec @page-nb))
+                              :label "Tilbake"
+                              :inline "false"}))
+                 :block-c (if (= page-type "submit")
+                            [:input {:data-icon "arrow-r"
+                                     :data-iconpos "right"
+                                     :data-inline "false"
+                                     :type "submit"
+                                     :name "submitter"
+                                     :value "Levér"}]
+                            (common/right-button
+                             {:link (format "#page-%s" (inc @page-nb))
+                              :label "Neste"
+                              :inline "false"}))})})))
 
 (defn parse-heading [heading]
   [(keyword (format "h%s" (count (re-find #"#+" (string/trimr heading)))))
@@ -105,7 +119,7 @@
                     :header (parse-header line)
                     :content (common/content
                               (parse-document (remove-line page)))
-                    :footer (parse-footer page-id)})
+                    :footer (parse-footer line)})
                   (parse-document (string/replace-first document page ""))))
           
           (re-matches heading line)
@@ -131,9 +145,9 @@
     (common/layout
      {:title (second title)
       :body (common/body
-             (string/replace
-              (parse-document
-               (string/replace-first document
-                                     (first title) ""))
-              "%PAGE_NB%"
-              (str @page-nb)))})))
+             (html (string/replace
+                    (parse-document
+                     (string/replace-first document
+                                           (first title) ""))
+                    "%PAGE_NB%"
+                    (str @page-nb))))})))
