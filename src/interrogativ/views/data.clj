@@ -59,6 +59,7 @@
 
 (defpage "/data" {}
   (html (for [f (.listFiles (java.io.File. "db/"))
+              :when (not (.isDirectory f))
               :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
           [:div [:a {:href (format "/data/%s" name)} name] [:br]])))
 
