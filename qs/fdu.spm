@@ -106,11 +106,173 @@ Epost: bjo013@uib.no
    * •
    * −
 
+?: Hvordan vil du helst se levende bilder?
+   - Kino
+   - Hjemmekino
+   - Flatskjerm-TV
+   - Dataskjerm
+   - iPad/Lesebrett
+   - Mobilskjerm
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Liker du å forholde deg til flere skjermer samtidig,
+   for eksempel at du både ser på TV og leser på mobil?
+   - Liker det
+   - Nøytral
+   - Liker det ikke
+
+?: Hvordan vil du helst høre lyd?
+   - Uten forsterkning
+   - Ørepropper i mobil
+   - Store øreklokker i mobil
+   - Høytalere i rommet
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvor ofte tenker du på at din posisjon faktisk blir
+   registrert hele tiden, og kan brukes av ulike firma som
+   Facebook, Google, etc?
+   - Svært ofte
+   - Ofte
+   - Noe
+   - Sjelden
+   - Svært sjelden
+
 ?: Liker du å forholde deg til flere skjermer samtidig, for eksempel
    at du både ser på TV og leser på mobil?
    - Liker det
    - Nøytral
    - Liker det ikke
+
+# Innhold
+?: Hvilket geografisk område er du mest interessert i at
+   skal bli dekket av mediene?
+   - Skolen
+   - Nærområde
+   - Bergen
+   - Hordaland
+   - Norge
+   - Verden
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvilken type informasjon er viktigst?
+   - Nyheter
+   - Musikk
+   - Fakta
+   - Fiksjon
+   - Underholdning
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvilken kanal vil du foretrekke til nyheter og andre
+   offentlige saker?
+   - Mobil
+   - Webmedier
+   - Fjernsyn
+   - Papiravis
+   - Radio
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvor vil du helst være mens du bruker nyheter og
+   annen journalistikk?
+   - Hjemme
+   - Reise
+   - Skolen
+   - Café/Klubb
+   - Trening, tur
+   - Stedet betyr ingenting
+   * &#x2b;
+   * &bull;
+   * &minus;
+            
+?: Hvilke personer synes du bør være fremtredende
+   i offentligheten?
+   - Kjendiser
+   - Journalister
+   - Politikere
+   - Forskere
+   - Forretningsfolk
+   - Lærere
+   - Vanlige voksne
+   - Ungdom
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+# Deltagelse
+?: Hvem ønsker du mest å kommuniserer med på telefonen?
+   - Venner
+   - Søsken
+   - Mor
+   - Far
+   - Annen familie
+   - Andre voksne
+   - Lærere
+   - Medelever
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvilken type medieproduksjon ønsker du selv å bruke tid på?
+   - Snakke selv
+   - Skrive og lese
+   - Ta bilder
+   - Filme video
+   - Lage musikk
+   - Programmere datamaskiner
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvor mange ganger har du vært i avisen, på tv
+   eller lignende?
+   - To eller flere
+   - En gang
+   - Aldri
+
+?: Hvilken mediekanal vil du sannsynligvis bruke hvis
+   du skal bidra med et innspill til offentligheten?
+   - Papirbrev
+   - Telefonsamtale
+   - SMS
+   - Epost
+   - Video
+   - Kommentar i nettaviser
+   - Blogg
+   - Sosialt medium
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Hvilke typer personlig informasjon er du villig
+   til å dele med journalistiske offentligheten gjennom
+   mobilen?
+   - Dine bilder
+   - Dine videoer
+   - Din posisjon
+   - Økonomiske forhold
+   - Medisinsk informasjon
+   - Sivilstatus
+   * &#x2b;
+   * &bull;
+   * &minus;
+
+?: Er det greit at mediefirma bruker din personlige
+   informasjon til journalistiske formål, for eksempel
+   lage en raportasje med tekst og bilder?
+   - Helt greit
+   - Greit
+   - Nøytral
+   - Ugreit
+   - Svært ugreit
 
 # Spørreundersøkelse :submit
 ## Ferdig
@@ -120,7 +282,7 @@ formidling. Ditt svar blir skilt ut ved at vi har automatiskt tildelt
 svaret en unik id, men nummeret fra telefonen eller annen personlig
 informasjon blir ikke lagret.
 
-# Spørreundersøkelse :post
+# Spørreundersøkelse :nb
 ## Takk!
 Du har nå fylt ut alle fire seksjonene i undersøkelsen "Hvilke nye
 medier trenger Norge mest". Ditt bidrag er verdifullt for forskerne
