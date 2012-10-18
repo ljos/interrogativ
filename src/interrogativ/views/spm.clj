@@ -24,8 +24,7 @@
                   {:name (:name question)
                    :label (:label question)
                    :groups (:groups question)
-                   :type (if (contains? (:options question)
-                                        :horizontal)
+                   :type (if (contains? (:options question) :horizontal)
                            "horizontal")})
     :select (common/select
              {:name (:name question)
@@ -58,20 +57,28 @@
        :question (create-question c)
        :br       [:br]))))
 
-(defn create-footer [prev curr-id next]
+(defn create-footer [prev page next]
   (common/footer
-   {:id (format "footer-%s" curr-id)
+   {:id (format "footer-%s" (:id page))
     :content (common/grid-b
-              {:block-a (if prev
+              {:block-a (if-not (or (nil? prev)
+                                    (contains? (:options prev) :submit))
                           (common/left-button
                            {:link (format "#%s" (:id prev))
                             :inline "false"
                             :label "Tilbake"}))
-               :block-c (if next
-                          (common/right-button
-                           {:link (format "#%s" (:id next))
-                            :inline "false"
-                            :label "Neste"}))})}))
+               :block-c (cond (contains? options :submit)
+                              [:input {:data-icon "arrow-r"
+                                       :data-iconpos "right"
+                                       :data-inline "false"
+                                       :type "submit"
+                                       :name "submitter"
+                                       :value "Levér"}]
+                              (not (nil? next)) 
+                              (common/right-button
+                               {:link (format "#%s" (:id next))
+                                :inline "false"
+                                :label "Neste"}))})}))
 
 (defn create-document [document]
   (common/layout
@@ -90,10 +97,8 @@
                                                         (:header page))
                                  :content (create-content (:content page))
                                  :footer (create-footer previous-page
-                                                        (:id page)
+                                                        page
                                                         next-page)})]
-                
-                
                  (recur (rest body)
                         (first body)
                         page
