@@ -21,11 +21,13 @@
          margin-left:  0;
          margin-right: 0;
      }
-     .ui-footer {
+    .ui-footer {
          position: absolute;
          bottom: 0px;
          width: 100%;
-     }"]]
+    }
+    .ui-content {
+        margin-bottom: 1cm;"]]
   [:body body])
 
 (defpartial left-button [{:keys [id link label inline data-ajax]

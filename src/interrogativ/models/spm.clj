@@ -17,7 +17,7 @@
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n*?\z)")
 (def question-start #"\s*\?:\s*.*")
 (def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[+*<-])")
-(def choice #"(?s)[+*<-]\.?\s*(.*?)\s*(?=\n|\z)")
+(def choice #"(?s)[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
 
 (def page-nb (atom 0))
@@ -39,10 +39,11 @@
    :options (re-seq #":\w+" header)})
 
 (defn parse-heading [heading]
-  {:type (keyword
-          (format "h%s"
-                  (count (re-find #"#+"
-                                  (string/trimr heading)))))
+  {:type :heading
+   :h (keyword
+       (format "h%s"
+               (count (re-find #"#+"
+                               (string/trimr heading)))))
    :value (second (re-find #"#+\s*(.*)" heading))})
 
 (defn parse-question [question-block]
@@ -58,7 +59,8 @@
         options (second (re-seq #":\w+" question))
         choices (map first (re-seq choice question-block))]
     (cond (not-empty (filter (partial re-matches #"^\*.*") choices))
-          {:type :radio-table
+          {:type :question
+           :question :radio-table
            :name name
            :label label
            :options options
@@ -66,27 +68,30 @@
                           (filter (partial re-matches #"^-.*") choices))
            :values (map (comp second (partial re-find choice))
                         (filter (partial re-matches #"^\*.*") choices))}
-          
+
           (re-matches slider (first choices))
           (let [slider (re-find slider (first choices))]
-            {:type :slider
+            {:type :question
+             :question :slider
              :name name
              :label label
              :options options
              :min (nth slider 1)
              :max (nth slider 2)
              :value (nth slider 3)})
-          
+
           (empty? (remove (partial re-matches #"^\+.*") choices))
-          {:type :select
+          {:type :question
+           :question :select
            :name name
            :label label
            :options options
            :values (map (comp second (partial re-find choice))
                         choices)}
-          
+
           (not-empty (filter (partial re-matches #"^-.*") choices))
-          {:type :radio-group
+          {:type :question
+           :question :radio-group
            :name name
            :label [:h4 label]
            :options options
@@ -112,7 +117,7 @@
                    :content (parse-document (remove-line page))}
                   (parse-document
                    (string/replace-first document page ""))))
-          
+
           (re-matches heading line)
           (cons (parse-heading line)
                 (parse-document (remove-line document)))
@@ -133,7 +138,8 @@
           (parse-document (remove-line document)))))
 
 (defn parse [spm]
-  (reset! page-nb 0) 
+  (reset! page-nb 0)
+  (reset! question-nb 0)
   (let [document (slurp spm)
         title (re-find title document)]
     {:type :document
