@@ -9,13 +9,14 @@
 
 (def ^{:dynamic :private} *pages* 0)
 
-(defn create-header [page-id header]
+(defn create-header [page]
   (common/header
-   {:content (html [:h1 (:value header)]
-                   [:a {:class "ui-btn-right"}
-                    (format " %s / %s "
-                            (re-find #"\d+" page-id)
-                            *pages*)])}))
+   {:content (html
+              [:h1 (get-in page [:header :value])]
+              [:a {:class "ui-btn-right"}
+               (format " %s / %s "
+                       (re-find #"\d+" (:id page))
+                       *pages*)])}))
 
 (defn create-question [question]
   (case (:question question)
@@ -24,7 +25,7 @@
                   {:name (:name question)
                    :label (:label question)
                    :groups (:groups question)
-                   :type (if (contains? (:options question) :horizontal)
+                   :type (if (contains? (:options question) ":horizontal")
                            "horizontal")})
     :select (common/select
              {:name (:name question)
@@ -48,37 +49,43 @@
           :br [:br]
           item))])
 
-(defn create-content [content]
+(defn create-content [page]
   (common/content
-   (for [c content]
-     (case (:type c)
-       :heading  [(:h c) (:value c)]
-       :p        (create-paragraph (:content c))
-       :question (create-question c)
+   (for [content (:content page)]
+     (case (:type content)
+       :heading  [(:h content) (:value content)]
+       :p        (create-paragraph (:content content))
+       :question (create-question content)
        :br       [:br]))))
 
 (defn create-footer [prev page next]
   (common/footer
    {:id (format "footer-%s" (:id page))
-    :content (common/grid-b
-              {:block-a (if-not (or (nil? prev)
-                                    (contains? (:options prev) :submit))
-                          (common/left-button
-                           {:link (format "#%s" (:id prev))
-                            :inline "false"
-                            :label "Tilbake"}))
-               :block-c (cond (contains? options :submit)
-                              [:input {:data-icon "arrow-r"
-                                       :data-iconpos "right"
-                                       :data-inline "false"
-                                       :type "submit"
-                                       :name "submitter"
-                                       :value "Levér"}]
-                              (not (nil? next)) 
-                              (common/right-button
-                               {:link (format "#%s" (:id next))
-                                :inline "false"
-                                :label "Neste"}))})}))
+    :content (if (and (nil? next)
+                      (some (partial = ":submit")
+                            (:options (:header prev))))
+               [:h1 " "]
+               (common/grid-b
+                {:block-a (if-not (or (nil? prev)
+                                      (some (partial = ":submit")
+                                            (:options (:header prev))))
+                            (common/left-button
+                             {:link (format "#%s" (:id prev))
+                              :inline "false"
+                              :label "Tilbake"}))
+                 :block-c (cond (some (partial = ":submit")
+                                      (:options (:header page)))
+                                [:input {:data-icon "arrow-r"
+                                         :data-iconpos "right"
+                                         :data-inline "false"
+                                         :type "submit"
+                                         :name "submitter"
+                                         :value "Levér"}]
+                                (not (nil? next)) 
+                                (common/right-button
+                                 {:link (format "#%s" (:id next))
+                                  :inline "false"
+                                  :label "Neste"}))}))}))
 
 (defn create-document [document]
   (common/layout
@@ -93,9 +100,8 @@
                (reverse pages)
                (let [html-page (common/page
                                 {:id (:id page)
-                                 :header (create-header (:id page)
-                                                        (:header page))
-                                 :content (create-content (:content page))
+                                 :header (create-header page)
+                                 :content (create-content page)
                                  :footer (create-footer previous-page
                                                         page
                                                         next-page)})]
