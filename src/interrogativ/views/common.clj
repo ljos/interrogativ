@@ -77,9 +77,9 @@
          [:div {:class "ui-block-b"} block-b]
          [:div {:class "ui-block-c"} block-c])])))
 
-(defpartial header [{:keys [data-position content]
-                     :or {data-position ""}}]
-  [:div {:data-role "header" :data-position data-position}
+(defpartial header [{:keys [data-position content data-theme]
+                     :or {data-position "" data-theme "a"}}]
+  [:div {:data-role "header" :data-position data-position :data-theme data-theme}
    content])
 
 (defpartial footer [{:keys [data-position content id]
@@ -138,11 +138,8 @@
                  values)]])
 
 (defpartial textarea [{:keys [id name label value] :or {id name value ""}}]
-  [:div {:name name
-         :class "name-holder"
-         :title (second label)}
-   [:label {:for name} label]
-   [:textarea {:name name :id id} value]])
+  [:label {:for name} label]
+  [:textarea {:name name :id id} value])
 
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
@@ -191,7 +188,7 @@
         (let [name (string/replace
                     (string/replace
                      (format "%sC%s" name section)
-                     #"[øåæé,/]"
+                     #"(?iu)[øåæé,/]"
                      "")
                     #"\s+"
                     "-")]
