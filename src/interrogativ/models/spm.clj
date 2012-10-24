@@ -17,8 +17,9 @@
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n*?\z)")
 (def question-start #"\s*\?:\s*.*")
 (def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[+*<-])")
-(def choice #"(?s)[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
+(def choice #"(?s)[+*<\[-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
+(def textarea #"\s*\[txt(@.*)?\]\s*")
 
 (def page-nb (atom 0))
 (def question-nb (atom 0))
@@ -79,6 +80,15 @@
              :min (nth slider 1)
              :max (nth slider 2)
              :value (nth slider 3)})
+
+          (re-matches textarea (first choices))
+          (let [textarea (second (re-find textarea (first choices)))]
+            {:type :question
+             :question :textarea
+             :name name
+             :label label
+             :options options
+             :value textarea})
 
           (empty? (remove (partial re-matches #"^\+.*") choices))
           {:type :question

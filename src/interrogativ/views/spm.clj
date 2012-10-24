@@ -8,19 +8,26 @@
         [hiccup.core :only [html]]))
 
 (def ^{:dynamic :private} *pages* 0)
+(def ^{:dynamic :private} *submit-page* nil)
+
+(def ^:private qs (atom {}))
+(def ^:private submits (atom {}))
 
 (defn create-header [page]
   (common/header
    {:content (html
               [:h1 (get-in page [:header :value])]
-              [:a {:class "ui-btn-right"}
-               (format " %s / %s "
-                       (re-find #"\d+" (:id page))
-                       *pages*)])}))
+              (common/menu-button
+               {:label (format " %s / %s "
+                               (re-find #"\d+" (:id page))
+                               *pages*)}))}))
 
 (defn create-question [question]
   (case (:question question)
-    :textarea nil ;(common/textarea) doesn't exist yet
+    :textarea (common/textarea
+               {:name (:name question)
+                :label (:label question)
+                :value (:value question)})
     :radio-group (common/radio-group
                   {:name (:name question)
                    :label (:label question)
@@ -87,32 +94,87 @@
                                   :inline "false"
                                   :label "Neste"}))}))}))
 
-(defn create-document [document]
-  (common/layout
-   {:title (:title document)
-    :body (html
-           (loop [body (rest (:body document))
-                  page (first (:body document))
-                  previous-page nil
-                  next-page (first body)
-                  pages '()]
-             (if (nil? page)
-               (reverse pages)
-               (let [html-page (common/page
-                                {:id (:id page)
-                                 :header (create-header page)
-                                 :content (create-content page)
-                                 :footer (create-footer previous-page
-                                                        page
-                                                        next-page)})]
-                 (recur (rest body)
-                        (first body)
-                        page
-                        (second body)
-                        (cons html-page pages))))))}))
+(defn create-pages [document]
+  (loop [body (rest document)
+         page (first document)
+         previous-page nil
+         next-page (first body)
+         pages '()]
+    (if (nil? page)
+      (reverse pages)
+      (let [html-page (common/page
+                       {:id (:id page)
+                        :header (create-header page)
+                        :content (create-content page)
+                        :footer (create-footer previous-page
+                                               page
+                                               next-page)})]
+        (recur (rest body)
+               (first body)
+               page
+               (second body)
+               (cons html-page pages))))))
+
+(defn create-questioneer [document]
+  (html
+   [:form {:action *submit-page*
+           :method "post"}
+    (create-pages document)]
+   (common/page
+    {:id "menu"
+     :header (common/header
+              {:content [:h1 "Meny"]})
+     :content (html [:div {:data-role "content"
+                           :data-theme "c"}]
+                    [:p {:id "menyp"}])})))
+
+(defn create-post-page [document]
+  (create-pages document))
 
 (defn create-page-from [file]
-  (let [document (spm/parse file)]
-    (binding [*pages* (count (:body document))]
-      (create-document document))))
+  (let [document (spm/parse file)
+        submit? (comp (partial some (partial = ":submit"))
+                      #(get-in % [:header :options]))
+        question-pages (loop [pages (:body document)]
+                         (cond (empty? pages)
+                               (throw (Exception.
+                                       "No submit page."))
+                               (submit? (last pages))
+                               pages
+                               :else
+                               (recur (butlast pages))))
+        post-pages (loop [pages (:body document)]
+                     (cond (empty? pages)
+                           (throw (Exception.
+                                   "No submit page."))
+                           (submit? (first pages))
+                           (cons (assoc (second pages) :id "submit")
+                                 (nnext pages))
+                           :else
+                           (recur (rest pages))))
+        page-name (format "/%s"(re-find #".*(?=\.)" file))
+        submit-page (format "%s/%s" page-name (:id (first post-pages)))]
+    (binding [*pages* (count (:body question-pages))
+              *submit-page* submit-page]
+      (let [questioneer  (create-questioneer question-pages)
+            post-page (create-post-page post-pages)]       
+        (swap! qs
+          assoc (keyword page-name)
+            (common/layout
+             {:title "title"
+              :body questioneer}))
+        (swap! submits
+          assoc (keyword submit-page)
+            (common/layout
+             {:title "Takk!"
+              :body post-page})) 
+        (eval `(do (defpage ~submit-page []
+                     (get (deref submits) ~(keyword submit-page)))
+                   (defpage ~(format "%s/" submit-page) []
+                     (redirect ~submit-page))))
+        (eval `(do (defpage ~page-name []
+                     (get (deref qs) ~(keyword page-name)))
+                   (defpage ~(format "%s/" page-name) []
+                     (redirect ~page-name))))))))
 
+(create-page-from "qs/fdu.spm")
