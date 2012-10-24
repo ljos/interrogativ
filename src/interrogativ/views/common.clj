@@ -49,6 +49,15 @@
        :data-inline inline}
    label])
 
+(defpartial menu-button [{:keys [label]}]
+  [:a {:href "#menu"
+       :data-rel "dialog"
+       :data-icon "gear"
+       :data-iconpos "right"
+       :data-transition "slidedown"
+       :class "ui-btn-right"}
+   label])
+
 (defn grid-a
   ([{:keys [block-a block-b]
      :or [block-a "" block-b ""]}]
@@ -137,7 +146,8 @@
                    [:option {:value idx} value])
                  values)]])
 
-(defpartial textarea [{:keys [id name label value] :or {id name value ""}}]
+(defpartial textarea [{:keys [id name label value]
+                       :or {id name value ""}}]
   [:label {:for name} label]
   [:textarea {:name name :id id} value])
 
