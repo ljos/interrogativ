@@ -10,6 +10,9 @@
 (def ^{:dynamic :private} *pages* 0)
 (def ^{:dynamic :private} *submit-page* nil)
 
+;;These atoms are here to hold the pages, this is so that we
+;;can ensure that the jvm can process the questioneers instead
+;;of crashing.
 (def ^:private qs (atom {}))
 (def ^:private submits (atom {}))
 
