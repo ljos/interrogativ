@@ -50,12 +50,12 @@
    label])
 
 (defpartial menu-button [{:keys [label]}]
-  [:a {:href "#menu"
-       :data-rel "dialog"
+  [:a {:class "ui-btn-right"
+       :href "#meny"
        :data-icon "gear"
        :data-iconpos "right"
-       :data-transition "slidedown"
-       :class "ui-btn-right"}
+       :data-rel "dialog"
+       :data-transition "slidedown"}
    label])
 
 (defn grid-a
@@ -111,7 +111,8 @@
                           :or {type "" id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:div {:id name
-          :title (second label)
+          :title (second (re-find #"\d+\.\s*(.*)"
+                                  (second label)))
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx group]
@@ -138,7 +139,7 @@
 
 (defpartial select [{:keys [id name label values] :or {id name}}]
   [:div {:id name
-         :title (second label)
+         :title (second (re-find #"\d+\.\s*(.*)" (second label)))
          :class "name-holder"}
    [:label {:for name :class "select"} label]
    [:select {:name name :id id}
@@ -154,7 +155,7 @@
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:div {:id name
-          :title (second label)
+          :title (second (re-find #"\d+\.\s*(.*)" (second label)))
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx value]
@@ -177,7 +178,8 @@
                               "-")]
                     (html [:div {:id name
                                  :class "name-holder"
-                                 :title (second label)}
+                                 :title (second (re-find #"\d+\.\s*(.*)"
+                                                         (second label)))}
                            [:input {:type "checkbox"
                                     :name name
                                     :id id
@@ -204,13 +206,16 @@
                     "-")]
           [:div {:style "text-align:right"
                  :id name
-                 :title (str section ": " (second label))
+                 :title (str section
+                             ": "
+                             (second (re-find #"\d+\.\s*(.*)"
+                                              (second label))))
                  :class "name-holder"}
            (map-indexed
             (fn [value label]
               (let [id (format "%sC%s"
                                (string/replace section
-                                 #"\s+" "")
+                                               #"\s+" "")
                                value)]
                 (html [:input {:type "radio"
                                :name name
