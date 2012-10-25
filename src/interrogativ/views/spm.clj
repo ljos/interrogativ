@@ -134,14 +134,14 @@
   (html
    [:form {:action *submit-page*
            :method "post"}
-    (create-pages document)]
-   (common/page
-    {:id "menu"
-     :header (common/header
-              {:content [:h1 "Meny"]})
-     :content (html [:div {:data-role "content"
-                           :data-theme "c"}]
-                    [:p {:id "menyp"}])})))
+    (create-pages document)
+    (common/page
+     {:id "meny"
+      :header (common/header
+               {:content [:h1 "Meny"]})
+      :content (html [:div {:data-role "content"
+                            :data-theme "c"}]
+                     [:p {:id "menyp"}])})]))
 
 (defn create-post-page [document]
   (create-pages document))
