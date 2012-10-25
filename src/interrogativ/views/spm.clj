@@ -92,6 +92,8 @@
                                       (submit-page? prev))
                             (common/left-button
                              {:link (format "#%s" (:id prev))
+                              :id (if (= "ferdig" (:id page))
+                                    "tilbakeinnhold")
                               :inline "false"
                               :label "Tilbake"}))
                  :block-c (cond (submit-page? page)
