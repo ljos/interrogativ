@@ -72,6 +72,8 @@
 
 (defn create-content [page]
   (common/content
+   (if (submit-page? page)
+     [:div {:class "ikkeferdig"}])
    (for [content (:content page)]
      (case (:type content)
        :heading  [(:h content) (:value content)]
@@ -99,9 +101,11 @@
                                          :type "submit"
                                          :name "submitter"
                                          :value "Levér"}]
-                                (not (nil? next)) 
+                                (not (nil? next))
                                 (common/right-button
                                  {:link (format "#%s" (:id next))
+                                  :id (if (= "ferdig" (:id next))
+                                        "tilferdig")
                                   :inline "false"
                                   :label "Neste"}))}))}))
 
