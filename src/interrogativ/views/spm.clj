@@ -24,6 +24,7 @@
   (common/header
    {:content (html
               [:h1 (get-in page [:header :value])]
+              ;; This is really ugly, need to fix.
               (if (or (re-find #"\d+" (:id page))
                       (submit-page? page))
                 (common/menu-button
