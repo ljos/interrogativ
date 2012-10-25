@@ -24,10 +24,15 @@
   (common/header
    {:content (html
               [:h1 (get-in page [:header :value])]
-              (common/menu-button
-               {:label (format " %s / %s "
-                               (re-find #"\d+" (:id page))
-                               *pages*)}))}))
+              (if (or (re-find #"\d+" (:id page))
+                      (submit-page? page))
+                (common/menu-button
+                 {:label (format " %s / %s "
+                                 ;; Especially ugly because of this.
+                                 (if (submit-page? page)
+                                   *pages*
+                                   (re-find #"\d+" (:id page)))
+                                 *pages*)})))}))
 
 (defn create-question [question]
   (case (:question question)
