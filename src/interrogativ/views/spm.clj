@@ -45,7 +45,8 @@
                   {:name (:name question)
                    :label [:h4 (:label question)]
                    :groups (:groups question)
-                   :type (if (contains? (:options question) ":horizontal")
+                   :type (if (contains? (:options question)
+                                        ":horizontal")
                            "horizontal")})
     :select (common/select
              {:name (:name question)
