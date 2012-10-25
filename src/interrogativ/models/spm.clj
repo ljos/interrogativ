@@ -103,7 +103,7 @@
           {:type :question
            :question :radio-group
            :name name
-           :label [:h4 label]
+           :label label
            :options options
            :groups (map (comp second (partial re-find choice))
                         choices)})))
