@@ -178,7 +178,7 @@
         (swap! qs
           assoc (keyword page-name)
             (common/layout
-             {:title "title"
+             {:title (:title document)
               :body questioneer}))
         (swap! submits
           assoc (keyword submit-page)
