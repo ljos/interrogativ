@@ -16,6 +16,10 @@
 (def ^:private qs (atom {}))
 (def ^:private submits (atom {}))
 
+(defn submit-page? [page]
+  (some (partial = ":submit")
+        (get-in page [:header :options])))
+
 (defn create-header [page]
   (common/header
    {:content (html
@@ -72,19 +76,16 @@
   (common/footer
    {:id (format "footer-%s" (:id page))
     :content (if (and (nil? next)
-                      (some (partial = ":submit")
-                            (:options (:header prev))))
+                      (submit-page? prev))
                [:h1 " "]
                (common/grid-b
                 {:block-a (if-not (or (nil? prev)
-                                      (some (partial = ":submit")
-                                            (:options (:header prev))))
+                                      (submit-page? prev))
                             (common/left-button
                              {:link (format "#%s" (:id prev))
                               :inline "false"
                               :label "Tilbake"}))
-                 :block-c (cond (some (partial = ":submit")
-                                      (:options (:header page)))
+                 :block-c (cond (submit-page? page)
                                 [:input {:data-icon "arrow-r"
                                          :data-iconpos "right"
                                          :data-inline "false"
@@ -136,22 +137,24 @@
 
 (defn create-page-from [file]
   (let [document (spm/parse file)
-        submit? (comp (partial some (partial = ":submit"))
-                      #(get-in % [:header :options]))
         question-pages (loop [pages (:body document)]
                          (cond (empty? pages)
                                (throw (Exception.
                                        "No submit page."))
-                               (submit? (last pages))
-                               pages
+                               (submit-page? (last pages))
+                               (concat (butlast pages)
+                                       (list (assoc (last pages)
+                                               :id "ferdig")))
+
                                :else
                                (recur (butlast pages))))
         post-pages (loop [pages (:body document)]
                      (cond (empty? pages)
                            (throw (Exception.
                                    "No submit page."))
-                           (submit? (first pages))
-                           (cons (assoc (second pages) :id "submit")
+                           (submit-page? (first pages))
+                           (cons (assoc (second pages)
+                                   :id "takk")
                                  (nnext pages))
                            :else
                            (recur (rest pages))))
