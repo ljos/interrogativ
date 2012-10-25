@@ -171,7 +171,7 @@
                            (recur (rest pages))))
         page-name (format "/%s"(re-find #".*(?=\.)" file))
         submit-page (format "%s/%s" page-name (:id (first post-pages)))]
-    (binding [*pages* (count (:body question-pages))
+    (binding [*pages* (count question-pages)
               *submit-page* submit-page]
       (let [questioneer  (create-questioneer question-pages)
             post-page (create-post-page post-pages)]       
