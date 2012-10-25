@@ -195,7 +195,8 @@
                                              :expires 1
                                              :max-age 86400})
                      (data/store-answer (assoc (dissoc ~'data :submitter)
-                                          :informant ~'submitter-id))
+                                          :informant ~'submitter-id)
+                                        ~page-name)
                      (redirect ~submit-page)))
                  (defpage ~submit-page []
                    (get (deref submits) ~(keyword submit-page)))
