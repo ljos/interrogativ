@@ -174,7 +174,7 @@
     (binding [*pages* (count question-pages)
               *submit-page* submit-page]
       (let [questioneer  (create-questioneer question-pages)
-            post-page (create-post-page post-pages)]       
+            post-page (create-post-page post-pages)]
         (swap! qs
           assoc (keyword page-name)
             (common/layout
@@ -184,14 +184,25 @@
           assoc (keyword submit-page)
             (common/layout
              {:title "Takk!"
-              :body post-page})) 
-        (eval `(do (defpage ~submit-page []
-                     (get (deref submits) ~(keyword submit-page)))
-                   (defpage ~(format "%s/" submit-page) []
-                     (redirect ~submit-page))))
-        (eval `(do (defpage ~page-name []
-                     (get (deref qs) ~(keyword page-name)))
-                   (defpage ~(format "%s/" page-name) []
-                     (redirect ~page-name))))))))
+              :body post-page}))
+        (eval `(do
+                 (defpage [:post ~submit-page] ~'data
+                   (let [~'submitter-id (data/generate-submitter-id)]
+                     (cookies/put! :tracker {:value ~'submitter-id
+                                             :path ~page-name
+                                             :expires 1
+                                             :max-age 86400})
+                     (data/store-answer (assoc (dissoc ~'data :submitter)
+                                          :informant ~'submitter-id))
+                     (redirect ~submit-page)))
+                 (defpage ~submit-page []
+                   (get (deref submits) ~(keyword submit-page)))
+                 (defpage ~(format "%s/" submit-page) []
+                   (redirect ~submit-page))))
+        (eval `(do
+                 (defpage ~page-name []
+                   (get (deref qs) ~(keyword page-name)))
+                 (defpage ~(format "%s/" page-name) []
+                   (redirect ~page-name))))))))
 
 (create-page-from "qs/fdu.spm")
