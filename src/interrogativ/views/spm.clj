@@ -43,23 +43,23 @@
                 :value (:value question)})
     :radio-group (common/radio-group
                   {:name (:name question)
-                   :label (:label question)
+                   :label [:h4 (:label question)]
                    :groups (:groups question)
                    :type (if (contains? (:options question) ":horizontal")
                            "horizontal")})
     :select (common/select
              {:name (:name question)
-              :label (:label question)
+              :label  [:h4 (:label question)]
               :values (:values question)})
     :slider (common/slider
              {:name (:name question)
-              :label (:label question)
+              :label [:h4 (:label question)]
               :max (:max question)
               :min (:min question)
               :value (:value question)})
     :radio-table (common/radio-table
                   {:name (:name question)
-                   :label (:label question)
+                   :label [:h4 (:label question)]
                    :sections (:sections question)
                    :values (:values question)})))
 
