@@ -141,9 +141,9 @@
      {:id "meny"
       :header (common/header
                {:content [:h1 "Meny"]})
-      :content (html [:div {:data-role "content"
-                            :data-theme "c"}]
-                     [:p {:id "menyp"}])})]))
+      :content [:div {:data-role "content"
+                      :data-theme "c"}
+                [:p {:id "menyp"}]]})]))
 
 (defn create-post-page [document]
   (create-pages document))
