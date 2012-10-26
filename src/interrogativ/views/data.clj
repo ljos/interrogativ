@@ -16,10 +16,18 @@
     [:form {:action "/login" :method "post"}
      [:div
       [:label {:for "uname"} "Username:"]
-      [:input {:type "text" :name "uname" :id "uname" :value "" :data-role "none"}]]
+      [:input {:type "text"
+               :name "uname"
+               :id "uname"
+               :value ""
+               :data-role "none"}]]
      [:div
       [:label {:for "pword"} "Password:"]
-      [:input {:type "password" :name "pword" :id "pword" :value "" :data-role "none"}]]
+      [:input {:type "password"
+               :name "pword"
+               :id "pword"
+               :value ""
+               :data-role "none"}]]
      [:div
       [:input {:type "submit"
                :name "submit"
@@ -40,8 +48,8 @@
 
 (defpage [:post "/login"] {:keys [uname pword]}
   (let [encrypted (passwd-for uname)]
-    (if-not (and (not (empty? encrypted))
-                 (crypt/compare pword encrypted))
+    (if-not (or (not (empty? encrypted))
+                (crypt/compare pword encrypted))
       (redirect "/login")
       (do (session/put! :admin true)
           (redirect "/data")))))
@@ -57,15 +65,28 @@
 (defpage "/data/" {}
   (redirect "/data"))
 
+(defn directory-to-links [dir]
+  (for [f (.listFiles (java.io.File. (str "db/" dir)))
+        :when (not (.isDirectory f))
+        :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
+    [:div [:a {:href  (str "data/" (str/replace (str dir "/" name)
+                                                "/" "_"))} name] [:br]]))
+
 (defpage "/data" {}
-  (html (for [f (.listFiles (java.io.File. "db/"))
-              :when (not (.isDirectory f))
-              :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
-          [:div [:a {:href (format "/data/%s" name)} name] [:br]])))
+  (html [:p
+         [:h4 "db/"]
+         (directory-to-links "")]
+        (for [page (map #(-> % str (str/replace-first ":" ""))
+                        (keys @data/domains))]
+          [:p
+           [:h4 page]
+           (directory-to-links page)])))
 
 (defpage "/data/:file" {:keys [file]}
+  (println file)
   (content-type "text/csv"
                 (data/create-csv-from-file
                  (format "db/%s"
-                         (str/replace
-                          file #"\.csv$" ".dat")))))
+                         (str/replace (str/replace
+                                       file #"\.csv$" ".dat")
+                                      "_" "/")))))

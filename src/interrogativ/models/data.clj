@@ -33,16 +33,21 @@
   (.format (SimpleDateFormat. "yyyy-MM-dd")
            (.getTime (Calendar/getInstance))))
 
+(defn- page-agent [page]
+  (add-watch (agent nil) :file-writer
+             (fn [key agent old new]
+               (let [file-name (format "db/%s/%s.dat" page (date))]
+                 (println file-name)
+                 (spit file-name new :append true)))))
+
 (def domains (atom {}))
 
 (defn create-store [page]
-  (let [page-key (page-keyword page)
-        file (format "db/%s/%s.dat" page (date))]
-    (-> page File. .mkdir)
-    (spit file "" name :append true)
+  (let [page-key (keyword page)]
+    (println page (-> (format "db/%s" page) File. .mkdirs))
     (swap! domains
       assoc-in [page-key :store]
-        (file-agent file))
+       (page-agent page))
     (swap! domains
       assoc-in [page-key :submits]
         (sorted-set))))
