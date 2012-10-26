@@ -187,6 +187,7 @@
             (common/layout
              {:title "Takk!"
               :body post-page}))
+        (data/create-store page-name)
         (eval `(do
                  (defpage [:post ~submit-page] ~'data
                    (let [~'submitter-id (data/generate-submitter-id)]
@@ -194,8 +195,10 @@
                                              :path ~page-name
                                              :expires 1
                                              :max-age 86400})
-                     (data/store-answer (assoc (dissoc ~'data :submitter)
-                                          :informant ~'submitter-id)
+                     (data/store-answer
+                      (-> ~'data
+                          (dissoc :submitter)
+                          (assoc :informant ~'submitter-id))
                                         ~page-name)
                      (redirect ~submit-page)))
                  (defpage ~submit-page []
