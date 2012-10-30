@@ -80,7 +80,16 @@
                         (keys @data/domains))]
           [:p
            [:h4 page]
-           (directory-to-links page)])))
+           (directory-to-links page)])
+        [:p
+         [:form {:method "post"
+                 :enctype "multipart/form-data"
+                 :action "/upload"}
+          [:input {:type "file"
+                   :name "file"}]
+          [:br]
+          [:input {:type "submit"
+                   :value "Upload"}]]]))
 
 (defpage "/data/:file" {:keys [file]}
   (content-type "text/csv"
@@ -89,3 +98,7 @@
                          (str/replace (str/replace
                                        file #"\.csv$" ".dat")
                                       "_" "/")))))
+
+(defpage [:post "/upload"] {:keys [file]}
+  (data/upload-file file)
+  (redirect "/data"))
