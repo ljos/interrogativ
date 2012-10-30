@@ -74,7 +74,7 @@
 
 (defpage "/data" {}
   (html [:p
-         [:h4 [:a {:href "/"} "db/"]]
+         [:h4 [:a {:href "/"} "/"]]
          (directory-to-links "")]
         (for [page (map #(-> % str (str/replace-first ":" ""))
                         (keys @data/domains))]
