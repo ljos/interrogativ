@@ -81,6 +81,7 @@
           [:p
            [:h4  [:a {:href page} page]]
            (directory-to-links page)])
+        [:hr]
         [:p
          [:form {:method "post"
                  :enctype "multipart/form-data"
