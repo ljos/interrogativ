@@ -69,8 +69,12 @@
   (for [f (.listFiles (java.io.File. (str "db/" dir)))
         :when (not (.isDirectory f))
         :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
-    [:div [:a {:href  (str "data/" (str/replace (str dir "/" name)
-                                                "/" "_"))} name] [:br]]))
+    [:div {:style "text-indent:1em"}
+     [:a {:href  (str "data/"
+                      (str/replace (str dir "/" name)
+                                   "/" "_"))}
+      name]
+     [:br]]))
 
 (defpage "/data" {}
   (html [:p
