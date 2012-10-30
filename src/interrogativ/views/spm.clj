@@ -2,6 +2,7 @@
   (:require [interrogativ.views.common :as common]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
+            [clojure.tools.logging :as log]
             [noir.cookies :as cookies])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]
@@ -158,6 +159,7 @@
                                (concat (butlast pages)
                                        (list (assoc (last pages)
                                                :id "ferdig")))
+  (log/info "Create page from file:" file)
 
                                :else
                                (recur (butlast pages))))

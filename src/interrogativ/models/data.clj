@@ -1,6 +1,7 @@
 (ns interrogativ.models.data
   (require [clojure.java.io :as io]
-           [clojure.string :as string])
+           [clojure.string :as string]
+           [clojure.tools.logging :as log])
   (import [java util.Calendar
                 text.SimpleDateFormat
                 io.File]))
@@ -28,18 +29,23 @@
 (def ^:private store (file-agent file-name))
 
 (defn date []
-  (.format (SimpleDateFormat. "yyyy-MM-dd")
-           (.getTime (Calendar/getInstance))))
+  (let [date (.format (SimpleDateFormat. "yyyy-MM-dd")
+                      (.getTime (Calendar/getInstance)))]
+    (log/info "Current date is: " date)
+    date))
 
 (defn- page-agent [page]
   (add-watch (agent nil) :file-writer
              (fn [key agent old new]
                (let [file-name (format "db/%s/%s.dat" page (date))]
+                 (log/info "Store to file " file-name
+                           " new answer:" new)
                  (spit file-name new :append true)))))
 
 (def domains (atom {}))
 
 (defn create-store [page]
+  (log/info "Create store for page: " page)
   (let [page-key (keyword page)]
     (-> (str "db/" page) File. .mkdirs)
     (swap! domains
@@ -81,13 +87,16 @@
      (loop [submitter-id (random-string 16)]
        (if (contains? submitters submitter-id)
          (recur (random-string 16))
-         submitter-id)))
+         (do (log/info "Created new id: " submitter-id)
+             submitter-id))))
   ([page]
      (loop [submitter-id (random-string 16)]
        (if (contains? (get-in @domains [(keyword page) :submits])
                       submitter-id)
          (recur (random-string 16))
-         submitter-id))))
+         (do (log/info "Create new id: " submitter-id
+                       " for page: " page)
+             submitter-id)))))
 
 (defn create-csv-from-file [file-name]
   (let [submissions (read-string
@@ -96,6 +105,7 @@
                                           #"(?imu)[øåæé,/]" "")
                           "]"))
         keys (into (sorted-set) (mapcat keys submissions))]
+    (log/info "Create csv from file: " file-name)
     (with-out-str 
       (println (string/join "," (map name keys)))
       (doseq [submission submissions]
@@ -105,6 +115,7 @@
                                      (get submission key -1)))))))))
 
 (defn create-csvs-for-page [page]
+  (log/info "Create csv's for page: " page)
   (for [file (.listFiles (File. (format "db/%s" page)))
         :when (not (.isDirectory file))]
     (create-csv-from-file file)))
