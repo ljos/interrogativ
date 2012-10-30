@@ -156,4 +156,5 @@
      :title (second title)
      :body (parse-document
             (string/replace-first
-             document (first title) ""))}))
+             document (if (nil? title)
+                        "" (first title)) ""))}))
