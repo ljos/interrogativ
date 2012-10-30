@@ -27,8 +27,6 @@
 
 (def ^:private store (file-agent file-name))
 
-
-
 (defn date []
   (.format (SimpleDateFormat. "yyyy-MM-dd")
            (.getTime (Calendar/getInstance))))
@@ -37,33 +35,39 @@
   (add-watch (agent nil) :file-writer
              (fn [key agent old new]
                (let [file-name (format "db/%s/%s.dat" page (date))]
-                 (println file-name)
                  (spit file-name new :append true)))))
 
 (def domains (atom {}))
 
 (defn create-store [page]
   (let [page-key (keyword page)]
-    (println page (-> (format "db/%s" page) File. .mkdirs))
+    (-> (str "db/" page) File. .mkdirs)
     (swap! domains
       assoc-in [page-key :store]
-       (page-agent page))
+      (page-agent page))
     (swap! domains
       assoc-in [page-key :submits]
-        (sorted-set))))
+      (let [file (File. (str "db" page "/" (date) ".dat"))]
+        (if (.exists file)
+          (into (sorted-set)
+                (map :informant
+                     (read-string (str "["
+                                       (slurp file)
+                                       "]"))))
+         (sorted-set))))))
 
 (defn store-answer
   ([answer]
-     (when-not (contains? submitters (:submitter answer))
-       (swap! submitters conj (:submitter answer))
+     (when-not (contains? submitters (:informant answer))
+       (swap! submitters conj (:informant answer))
        (async-append store (str answer "\n"))))
   ([answer page]
      (let [page-key (keyword page)]
        (when-not (contains? (get-in @domains [page-key :submits])
-                            (:submitter answer))
+                            (:informant answer))
          (swap! domains
-           assoc-in [page-key :submits]
-             conj (:submitter answer))
+           update-in [page-key :submits]
+             conj (:informant answer))
          (async-append (get-in @domains [page-key :store])
                        (str answer "\n"))))))
 
@@ -100,4 +104,7 @@
                                    (for [key keys]
                                      (get submission key -1)))))))))
 
-
+(defn create-csvs-for-page [page]
+  (for [file (.listFiles (File. (format "db/%s" page)))
+        :when (not (.isDirectory file))]
+    (create-csv-from-file file)))
