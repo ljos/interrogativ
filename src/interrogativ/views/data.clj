@@ -83,7 +83,6 @@
            (directory-to-links page)])))
 
 (defpage "/data/:file" {:keys [file]}
-  (println file)
   (content-type "text/csv"
                 (data/create-csv-from-file
                  (format "db/%s"
