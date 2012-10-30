@@ -99,6 +99,10 @@
                                        file #"\.csv$" ".dat")
                                       "_" "/")))))
 
+(pre-route "/upload" {}
+  (if-not (session/get :admin)
+    (redirect "/login")))
+
 (defpage [:post "/upload"] {:keys [file]}
   (data/upload-file file)
   (redirect "/data"))
