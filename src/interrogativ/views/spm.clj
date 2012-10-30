@@ -4,6 +4,7 @@
             [interrogativ.models.spm :as spm]
             [clojure.tools.logging :as log]
             [noir.cookies :as cookies])
+  (:import [java io.File])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]
         [hiccup.core :only [html]]))
@@ -213,4 +214,6 @@
                  (defpage ~(format "%s/" page-name) []
                    (redirect ~page-name))))))))
 
-(create-page-from "qs/fdu.spm")
+(doseq [file (.listFiles (File. "qs/"))
+        :when (not (.isDirectory file))]
+  (create-page-from (.getPath file)))
