@@ -177,6 +177,7 @@
               *submit-page* submit-page]
       (let [questioneer  (create-questioneer question-pages)
             post-page (create-post-page post-pages)]
+        (data/create-store page-name)
         (swap! qs
           assoc (keyword page-name)
             (common/layout
@@ -187,7 +188,6 @@
             (common/layout
              {:title "Takk!"
               :body post-page}))
-        (data/create-store page-name)
         (eval `(do
                  (defpage [:post ~submit-page] ~'data
                    (let [~'submitter-id (data/generate-submitter-id)]
