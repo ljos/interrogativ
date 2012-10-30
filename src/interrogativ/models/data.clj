@@ -4,7 +4,9 @@
            [clojure.tools.logging :as log])
   (import [java util.Calendar
                 text.SimpleDateFormat
-                io.File]))
+                io.File
+                nio.file.Files
+           nio.file.StandardCopyOption]))
 
 (def today (.format (SimpleDateFormat. "yyyy-MM-dd")
                     (.getTime (Calendar/getInstance))))
@@ -119,3 +121,9 @@
   (for [file (.listFiles (File. (format "db/%s" page)))
         :when (not (.isDirectory file))]
     (create-csv-from-file file)))
+
+(defn upload-file [{:keys [filename tempfile]}]
+  (log/info (format "Storing file qs/%s" filename))
+  (Files/move (.toPath tempfile)
+              (.toPath (File. (str "qs/" filename)))
+              (into-array [StandardCopyOption/REPLACE_EXISTING])))
