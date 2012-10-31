@@ -16,7 +16,7 @@
 (def text #"^\s*[^#?+*<-].*")
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n*?\z)")
 (def question-start #"\s*\?:\s*.*")
-(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[+*<-])")
+(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[+*<-]|\z)")
 (def choice #"(?s)[+*<\[-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
 (def textarea #"\s*\[txt(@.*)?\]\s*")
