@@ -1,6 +1,6 @@
 (ns interrogativ.models.spm
   (:require [clojure.java.io :as io]
-            [clojure.string :as string]
+            [clojure.string :as str]
             [clojure.zip :as zip]
             [interrogativ.views.common :as common])
   (:use [hiccup.core :only [html]])
@@ -26,14 +26,14 @@
 (def submit-page (atom :not-set))
 
 (defn remove-line [string]
-  (string/replace-first string #".*(\n|\z)" ""))
+  (str/replace-first string #".*(\n|\z)" ""))
 
 (defn first-line [string]
   (re-find #".*" string))
 
 (defn parse-header [header]
   {:type :header
-   :value (string/trim
+   :value (str/trim
            (second
             (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)"
                      header)))
@@ -44,7 +44,7 @@
    :h (keyword
        (format "h%s"
                (count (re-find #"#+"
-                               (string/trimr heading)))))
+                               (str/trimr heading)))))
    :value (second (re-find #"#+\s*(.*)" heading))})
 
 (defn parse-question [question-block]
@@ -53,8 +53,8 @@
         question (second (re-find question question-block))
         label (format "%s. %s"
                       nb
-                      (string/trim
-                       (string/replace
+                      (str/trim
+                       (str/replace
                         question
                         #"\n+|:\w+\s*" " ")))
         options (second (re-seq #":\w+" question))
@@ -110,13 +110,13 @@
 
 (defn parse-paragraph [paragraph]
   (interpose {:type :br}
-             (map #(string/replace % #"\n" " ")
-                  (string/split paragraph #"\n\n"))))
+             (map #(str/replace % #"\n" " ")
+                  (str/split paragraph #"\n\n"))))
 
 (defn parse-document [document]
   (let [line (first-line document)]
-    (cond (string/blank? document)
-          (string/trim document)
+    (cond (str/blank? document)
+          (str/trim document)
 
           (re-matches header line)
           (let [page (re-find page document)
@@ -126,7 +126,7 @@
                    :header (parse-header line)
                    :content (parse-document (remove-line page))}
                   (parse-document
-                   (string/replace-first document page ""))))
+                   (str/replace-first document page ""))))
 
           (re-matches heading line)
           (cons (parse-heading line)
@@ -136,13 +136,13 @@
           (let [question-block (re-find question-block document)]
             (cons (parse-question question-block)
                   (parse-document
-                   (string/replace-first document question-block ""))))
+                   (str/replace-first document question-block ""))))
 
           (re-matches text line)
           (let [paragraph (re-find paragraph document)]
             (cons {:type :p :content (parse-paragraph paragraph)}
                   (parse-document
-                   (string/replace-first document paragraph ""))))
+                   (str/replace-first document paragraph ""))))
 
           :else
           (parse-document (remove-line document)))))
@@ -155,6 +155,6 @@
     {:type :document
      :title (second title)
      :body (parse-document
-            (string/replace-first
+            (str/replace-first
              document (if (nil? title)
                         "" (first title)) ""))}))
