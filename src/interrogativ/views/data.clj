@@ -55,12 +55,12 @@
           (redirect "/data")))))
 
 (pre-route "/data" {}
-           (if-not (session/get :admin)
-             (redirect "/login")))
+  (if-not (session/get :admin)
+    (redirect "/login")))
 
 (pre-route "/data/*" {}
-           (if-not (session/get :admin)
-             (redirect "/login")))
+  (if-not (session/get :admin)
+    (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))
