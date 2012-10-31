@@ -26,7 +26,7 @@
 (def submit-page (atom :not-set))
 
 (defn remove-line [string]
-  (string/replace-first string #".*\n" ""))
+  (string/replace-first string #".*(\n|\z)" ""))
 
 (defn first-line [string]
   (re-find #".*" string))

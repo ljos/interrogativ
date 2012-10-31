@@ -218,6 +218,6 @@
      (eval `(defpage ~page-name []
               (html [:h1 "Missing submit-page"]))))))
 
-(doseq [file (.listFiles (File. "qs/"))
-        :when (not (.isDirectory file))]
-  (create-page-from (.getPath file)))
+;; (doseq [file (.listFiles (File. "qs/"))
+;;         :when (not (.isDirectory file))]
+;;   (create-page-from (.getPath file)))
