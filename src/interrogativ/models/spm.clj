@@ -8,7 +8,7 @@
            [java.util.regex Pattern]))
 
 (def document #"^(?s).*\z")
-(def title #"===\s*(.*?)\s*===\n*")
+(def title #"=+\s*(.*?)\s*=+\n*")
 (def page #"(?s)#[^#].*?(?=\n#[^#]|\z)")
 (def header #"^#[^#]\s*.*")
 (def heading #"(?m)^##+.*")
