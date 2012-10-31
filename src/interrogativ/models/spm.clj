@@ -12,7 +12,7 @@
 (def page #"(?s)#[^#].*?(?=\n#[^#]|\z)")
 (def header #"^#[^#]\s*.*")
 (def heading #"(?m)^##+.*")
-(def paragraph #"(?s).*?(?=\n\n\n|\n#|\z)")
+(def paragraph #"(?s).*?(?=\n\n\n|\n#|\n\s*\?:|\z)")
 (def text #"^\s*[^#?+*<-].*")
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n*?\z)")
 (def question-start #"\s*\?:\s*.*")
