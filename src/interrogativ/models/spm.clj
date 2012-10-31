@@ -138,6 +138,9 @@
                   (parse-document
                    (str/replace-first document question-block ""))))
 
+          ;;; should create a match for unordered lists
+          ;;; maybe even ordered lists as well
+          
           (re-matches text line)
           (let [paragraph (re-find paragraph document)]
             (cons {:type :p :content (parse-paragraph paragraph)}
