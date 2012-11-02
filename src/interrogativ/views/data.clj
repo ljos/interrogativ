@@ -4,6 +4,8 @@
             [noir.util.crypt :as crypt]
             [clojure.string :as str]
             [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.tools.logging :as log])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect content-type]]
         [hiccup.core :only [html]]))
@@ -97,6 +99,7 @@
                    :value "Upload"}]]]))
 
 (defpage "/data/:file" {:keys [file]}
+  (log/info (str "Serving CSV file: " file))
   (content-type "text/csv"
                 (data/create-csv-from-file
                  (format "db/%s"
