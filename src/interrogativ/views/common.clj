@@ -30,7 +30,8 @@
          width: 100%;
     }
     .ui-content {
-        margin-bottom: 1cm;"]]
+        margin-bottom: 1cm;
+    }"]]
   [:body body])
 
 (defpartial left-button [{:keys [id link label inline data-ajax]
