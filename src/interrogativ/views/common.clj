@@ -185,7 +185,7 @@
    [:legend label]
    (map-indexed (fn [idx value]
                   (let [id (format "%sC%s" name idx)
-                        name (-> (format %sC%s name value)
+                        name (-> (format "%sC%s" name value)
                                  (string/replace #"\s+" "-"))]
                     (html [:div {:id name
                                  :class "name-holder"
