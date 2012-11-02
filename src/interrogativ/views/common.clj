@@ -8,14 +8,17 @@
 (defpartial body [& content]
   [:body content])
 
+(def ^:private jquery "http://code.jquery.com/")
+
 (defpartial layout [{:keys [title body]}]
   [:head
    [:title title]
-   [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-   (include-css "http://code.jquery.com/mobile/1.2.0-rc.2/jquery.mobile-1.2.0-rc.2.min.css")
-   (include-js "http://code.jquery.com/jquery-1.8.1.min.js")
-   (include-js "/js/interrogativ.js")
-   (include-js "http://code.jquery.com/mobile/1.2.0-rc.2/jquery.mobile-1.2.0-rc.2.min.js")
+   [:meta {:name "viewport"
+           :content "width=device-width, initial-scale=1"}]
+   (include-css (str jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
+   (include-js  (str jquery "jquery-1.8.2.min.js"))
+   (include-js  (str jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
+   (include-js  "/js/interrogativ.js")
    [:style {:type "text/css"}
     ".ui-header .ui-title, .ui-footer .ui-title {
          margin-left:  0;
