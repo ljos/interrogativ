@@ -14,12 +14,12 @@
 (def heading #"(?m)^##+.*")
 (def paragraph #"(?s).*?(?=\n\n\n|\n#|\n\s*\?:|\z)")
 (def text #"^\s*[^#?+*<-].*")
-(def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n*?\z)")
+(def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n\n|\z)")
 (def question-start #"\s*\?:\s*.*")
-(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[+*<-]|\z)")
-(def choice #"(?s)[+*<\[-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
+(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[+*<-]|\z)")
+(def choice #"(?s)[\[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
-(def textarea #"\s*\[txt(@.*)?\]\s*")
+(def textarea #"\s*\[txt@(.*)?\]\s*")
 
 (def page-nb (atom 0))
 (def question-nb (atom 0))
@@ -59,7 +59,14 @@
                         #"\n+|:\w+\s*" " ")))
         options (second (re-seq #":\w+" question))
         choices (map first (re-seq choice question-block))]
-    (cond (not-empty (filter (partial re-matches #"^\*.*") choices))
+    (cond (empty? choices)
+          {:type :question
+           :question :select
+           :label label
+           :options options
+           :values ["missing values"]}
+          
+          (not-empty (filter (partial re-matches #"^\*.*") choices))
           {:type :question
            :question :radio-table
            :name name
