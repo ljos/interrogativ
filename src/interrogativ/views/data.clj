@@ -1,5 +1,6 @@
 (ns interrogativ.views.data
   (:require [interrogativ.models.data :as data]
+            [interrogativ.views.spm :as spm]
             [noir.session :as session]
             [noir.util.crypt :as crypt]
             [clojure.string :as str]
@@ -112,5 +113,7 @@
     (redirect "/login")))
 
 (defpage [:post "/upload"] {:keys [file]}
-  (data/upload-file file)
+  (when-let [filename (not-empty (:filename file))]
+    (data/upload-file file)
+    (spm/create-page-from (str "qs/" filename)))
   (redirect "/data"))
