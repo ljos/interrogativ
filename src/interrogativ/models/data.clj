@@ -58,9 +58,8 @@
         (if (.exists file)
           (into (sorted-set)
                 (map :informant
-                     (read-string (str "["
-                                       (slurp file)
-                                       "]"))))
+                     (read-string
+                      (str "[" (slurp file) "]"))))
          (sorted-set))))))
 
 (defn store-answer
@@ -101,10 +100,7 @@
 
 (defn create-csv-from-file [file-name]
   (let [submissions (read-string
-                     (str "["
-                          (string/replace (slurp file-name)
-                                          #"(?imu)[øåæé,/]" "")
-                          "]"))
+                     (str "[" (slurp file-name) "]"))
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv from file: " file-name)
     (with-out-str 
