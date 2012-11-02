@@ -16,8 +16,8 @@
 ;;These atoms are here to hold the pages, this is so that we
 ;;can ensure that the jvm can process the questioneers instead
 ;;of crashing.
-(def ^:private qs (atom {}))
-(def ^:private submits (atom {}))
+(def qs (atom {}))
+(def submits (atom {}))
 
 (defn submit-page? [page]
   (some (partial = ":submit")
@@ -153,71 +153,76 @@
 
 (defn create-page-from [file]
   (log/info "Create page from file:" file)
-  (try+
-   (let [document (spm/parse file)
-         page-name (format "/%s"(re-find #".*(?=\.)" file))
-         question-pages (loop [pages (:body document)]
-                          (cond (empty? pages)
-                                (throw+ page-name)
-                                (submit-page? (last pages))
-                                (concat (butlast pages)
-                                        (list (assoc (last pages)
-                                                :id "ferdig")))
+  (let [page-name (format "/%s"(re-find #".*?(?=\.|\z)" file))]
+    (try+
+     (let [document (spm/parse file)
+           question-pages (loop [pages (:body document)]
+                            (cond (empty? pages)
+                                  (throw+ page-name)
+                                  (submit-page? (last pages))
+                                  (concat (butlast pages)
+                                          (list (assoc (last pages)
+                                                  :id "ferdig")))
 
-                                :else
-                                (recur (butlast pages))))
-         post-pages (loop [pages (:body document)]
-                      (cond (empty? pages)
-                            (throw+ page-name)
-                            (submit-page? (first pages))
-                            (cons (assoc (second pages)
-                                    :id "takk")
-                                  (nnext pages))
-                            :else
-                            (recur (rest pages))))
-         submit-page (format "%s/%s" page-name (:id (first post-pages)))]
-     (binding [*pages* (count question-pages)
-               *submit-page* submit-page]
-       (let [questioneer  (create-questioneer question-pages)
-             post-page (create-post-page post-pages)]
-         (data/create-store page-name)
-         (swap! qs
-           assoc (keyword page-name)
-           (common/layout
-            {:title (:title document)
-             :body questioneer}))
-         (swap! submits
-           assoc (keyword submit-page)
-           (common/layout
-            {:title "Takk!"
-             :body post-page}))
-         (eval `(do
-                  (defpage [:post ~submit-page] ~'data
-                    (let [~'submitter-id (data/generate-submitter-id)]
-                      (cookies/put! :tracker {:value ~'submitter-id
-                                              :path ~page-name
-                                              :expires 1
-                                              :max-age 86400})
-                      (data/store-answer
-                       (-> ~'data
-                           (dissoc :submitter)
-                           (assoc :informant ~'submitter-id))
-                       ~page-name)
-                      (redirect ~submit-page)))
-                  (defpage ~submit-page []
-                    (get (deref submits) ~(keyword submit-page)))
-                  (defpage ~(format "%s/" submit-page) []
-                    (redirect ~submit-page))))
-         (eval `(do
-                  (defpage ~page-name []
-                    (get (deref qs) ~(keyword page-name)))
-                  (defpage ~(format "%s/" page-name) []
-                    (redirect ~page-name)))))))
-   (catch String page-name
-     (log/info "Missing submit-page for file " file)
-     (eval `(defpage ~page-name []
-              (html [:h1 "Missing submit-page"]))))))
-
-;; (doseq [file (.listFiles (File. "qs/"))
-;;         :when (not (.isDirectory file))]
-;;   (create-page-from (.getPath file)))
+                                  :else
+                                  (recur (butlast pages))))
+           post-pages (loop [pages (:body document)]
+                        (cond (empty? pages)
+                              (throw+ page-name)
+                              (submit-page? (first pages))
+                              (cons (assoc (second pages)
+                                      :id "takk")
+                                    (nnext pages))
+                              :else
+                              (recur (rest pages))))
+           submit-page (format "%s/%s" page-name (:id (first post-pages)))]
+       (binding [*pages* (count question-pages)
+                 *submit-page* submit-page]
+         (let [questioneer  (create-questioneer question-pages)
+               post-page (create-post-page post-pages)]
+           (data/create-store page-name)
+           (swap! qs
+             assoc (keyword page-name)
+             (common/layout
+              {:title (:title document)
+               :body questioneer}))
+           (swap! submits
+             assoc (keyword submit-page)
+             (common/layout
+              {:title "Takk!"
+               :body post-page}))
+           (eval `(do
+                    (defpage [:post ~submit-page] ~'data
+                      (let [~'submitter-id (data/generate-submitter-id)]
+                        (cookies/put! :tracker {:value ~'submitter-id
+                                                :path ~page-name
+                                                :expires 1
+                                                :max-age 86400})
+                        (data/store-answer
+                         (-> ~'data
+                             (dissoc :submitter)
+                             (assoc :informant ~'submitter-id))
+                         ~page-name)
+                        (redirect ~submit-page)))
+                    (defpage ~submit-page []
+                      (get (deref submits) ~(keyword submit-page)))
+                    (defpage ~(format "%s/" submit-page) []
+                      (redirect ~submit-page))))
+           (eval `(do
+                    (defpage ~page-name []
+                      (get (deref qs) ~(keyword page-name)))
+                    (defpage ~(format "%s/" page-name) []
+                      (redirect ~page-name)))))))
+     (catch String page-name
+       (log/info "Missing submit-page for file:" file)
+       (data/create-store page-name)
+       (eval `(defpage ~page-name []
+                (html [:h1 "Missing submit-page"]))))
+     (catch Exception e
+       (log/error "Unexcepted exception cought: " e)
+       (.printStackTrace e)
+       (data/create-store page-name)
+       (eval `(defpage ~page-name []
+                (html
+                 [:h1 (str "Unexpected exception."
+                           "See log for more information.")])))))))
