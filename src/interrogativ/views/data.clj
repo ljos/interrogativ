@@ -6,6 +6,7 @@
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.tools.logging :as log])
+  (:import [java.io FileNotFoundException])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect content-type]]
         [hiccup.core :only [html]]))
@@ -103,8 +104,10 @@
                    :value "Upload"}]]]))
 
 (defpage "/data/:file" {:keys [file]}
-  (cond (re-find #".csv" file)
-        (do (log/info (str "Serving CSV file: " file))
+  (try
+    (cond (re-find #".csv" file)
+          (do
+            (log/info "Serving CSV file:" file)
             (->> (-> file
                      (str/replace #"\.csv" ".dat")
                      (str/replace "_" "/"))
@@ -112,13 +115,17 @@
                  data/create-csv-from-file
                  (content-type "text/csv")))
 
-        (re-find #".spm" file)
-        (do (log/info (str "Serving spm file: " file))
+          (re-find #".spm" file)
+          (do
+            (log/info "Serving spm file:" file)
             (content-type "text/plain"
                           (slurp (str "qs/" file))))
-        
-        :else
-        (redirect "/data")))
+          
+          :else
+          (throw (FileNotFoundException.)))
+    (catch FileNotFoundException _
+      (log/error "File not found:" file)
+      (redirect "/data"))))
 
 (pre-route "/upload" {}
   (if-not (session/get :admin)
