@@ -15,7 +15,7 @@
    [:title title]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (str jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
+   (include-css (str jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.css"))
    (include-js  (str jquery "jquery-1.8.2.min.js"))
    (include-js  (str jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
    (include-js  "/js/interrogativ.js")
