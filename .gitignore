@@ -4,6 +4,7 @@ pom.xml
 /target/
 /lib/
 /db/
+/qs/
 /classes/
 .lein-deps-sum
 .cake
