@@ -86,6 +86,8 @@
                         (keys @data/domains))]
           [:p
            [:h4  [:a {:href page} page]]
+           [:a {:href (str "/data/" page)}
+            "Spm-file"]
            (directory-to-links page)])
         [:hr]
         [:p
@@ -106,6 +108,11 @@
                          (-> file
                              (str/replace #"\.csv" ".dat")
                              (str/replace "_" "/"))))))
+
+(defpage "data/qs/:file" {:keys [file]}
+  (do (log/info (str "Serving file: " file))
+      (content-type "text/plain"
+                    (slurp (str "qs/" file ".spm")))))
 
 (pre-route "/upload" {}
   (if-not (session/get :admin)
