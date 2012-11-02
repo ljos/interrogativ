@@ -4,7 +4,6 @@
             [noir.session :as session]
             [noir.util.crypt :as crypt]
             [clojure.string :as str]
-            [clojure.java.io :as io])
             [clojure.java.io :as io]
             [clojure.tools.logging :as log])
   (:use [noir.core :only [defpage pre-route]]
@@ -83,7 +82,7 @@
   (html [:p
          [:h4 [:a {:href "/"} "/"]]
          (directory-to-links "")]
-        (for [page (map #(-> % str (str/replace-first ":" ""))
+        (for [page (map #(-> % str (str/replace-first ":/" ""))
                         (keys @data/domains))]
           [:p
            [:h4  [:a {:href page} page]]
