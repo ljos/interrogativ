@@ -103,9 +103,9 @@
   (content-type "text/csv"
                 (data/create-csv-from-file
                  (format "db/%s"
-                         (str/replace (str/replace
-                                       file #"\.csv$" ".dat")
-                                      "_" "/")))))
+                         (-> file
+                             (str/replace #"\.csv" ".dat")
+                             (str/replace "_" "/"))))))
 
 (pre-route "/upload" {}
   (if-not (session/get :admin)
