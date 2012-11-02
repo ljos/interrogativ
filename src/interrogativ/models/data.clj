@@ -1,12 +1,11 @@
 (ns interrogativ.models.data
-  (require [clojure.java.io :as io]
-           [clojure.string :as string]
-           [clojure.tools.logging :as log])
-  (import [java util.Calendar
-                text.SimpleDateFormat
-                io.File
-                nio.file.Files
-           nio.file.StandardCopyOption]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as string]
+            [clojure.tools.logging :as log])
+  (:import [java io.File
+                 util.Calendar
+                 text.SimpleDateFormat]
+           [org.apache.commons.io FileUtils]))
 
 (def today (.format (SimpleDateFormat. "yyyy-MM-dd")
                     (.getTime (Calendar/getInstance))))
@@ -124,6 +123,5 @@
 
 (defn upload-file [{:keys [filename tempfile]}]
   (log/info (format "Storing file qs/%s" filename))
-  (Files/move (.toPath tempfile)
-              (.toPath (File. (str "qs/" filename)))
-              (into-array [StandardCopyOption/REPLACE_EXISTING])))
+  (FileUtils/copyFile tempfile
+                      (File. (str "qs/" filename))))
