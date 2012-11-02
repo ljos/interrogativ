@@ -88,7 +88,9 @@
 
 (defpartial header [{:keys [data-position content data-theme]
                      :or {data-position "" data-theme "a"}}]
-  [:div {:data-role "header" :data-position data-position :data-theme data-theme}
+  [:div {:data-role "header"
+         :data-position data-position
+         :data-theme data-theme}
    content])
 
 (defpartial footer [{:keys [data-position content id]
@@ -98,7 +100,10 @@
 
 (defpartial page [{:keys [id header content footer data-title data-theme]
                    :or {id "" header "" footer "" data-title "" data-theme ""}}]
-  [:div {:data-role "page" :id id :data-title data-title :data-theme data-theme}
+  [:div {:data-role "page"
+         :id id
+         :data-title data-title
+         :data-theme data-theme}
    header
    content
    footer])
@@ -107,12 +112,17 @@
   [:div {:data-role "content"} content
    [:br] [:br]])
 
+(defn title [label]
+  (-> label
+      second
+      (re-find #"\d+\.\s*(.*)")
+      second))
+
 (defpartial radio-group [{:keys [name label groups type]
                           :or {type "" id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:div {:id name
-          :title (second (re-find #"\d+\.\s*(.*)"
-                                  (second label)))
+          :title (title label)
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx group]
@@ -139,7 +149,7 @@
 
 (defpartial select [{:keys [id name label values] :or {id name}}]
   [:div {:id name
-         :title (second (re-find #"\d+\.\s*(.*)" (second label)))
+         :title (title label)
          :class "name-holder"}
    [:label {:for name :class "select"} label]
    [:select {:name name :id id}
@@ -155,7 +165,7 @@
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:div {:id name
-          :title (second (re-find #"\d+\.\s*(.*)" (second label)))
+          :title (title label)
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx value]
@@ -172,14 +182,11 @@
    [:legend label]
    (map-indexed (fn [idx value]
                   (let [id (format "%sC%s" name idx)
-                        name (string/replace
-                              (format "%sC%s" name value)
-                              #"\s+"
-                              "-")]
+                        name (-> (format %sC%s name value)
+                                 (string/replace #"\s+" "-"))]
                     (html [:div {:id name
                                  :class "name-holder"
-                                 :title (second (re-find #"\d+\.\s*(.*)"
-                                                         (second label)))}
+                                 :title (title label)}
                            [:input {:type "checkbox"
                                     :name name
                                     :id id
@@ -197,25 +204,17 @@
       [:div {:class "ui-block-b" :style "width:60%"}
        [:fieldset {:data-role "controlgroup"
                    :data-type "horizontal"}
-        (let [name (string/replace
-                    (string/replace
-                     (format "%sC%s" name section)
-                     #"(?iu)[øåæé,/]"
-                     "")
-                    #"\s+"
-                    "-")]
+        (let [name (-> (format "%sC%s" name section)
+                       (string/replace #"(?iu)[øåæé,/]" "")
+                       (string/replace #"\s+" "-"))]
           [:div {:style "text-align:right"
                  :id name
-                 :title (str section
-                             ": "
-                             (second (re-find #"\d+\.\s*(.*)"
-                                              (second label))))
+                 :title (str section ": " (title label))
                  :class "name-holder"}
            (map-indexed
             (fn [value label]
               (let [id (format "%sC%s"
-                               (string/replace section
-                                               #"\s+" "")
+                               (string/replace section #"\s+" "")
                                value)]
                 (html [:input {:type "radio"
                                :name name
