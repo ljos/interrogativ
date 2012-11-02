@@ -73,8 +73,8 @@
         :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
     [:div {:style "text-indent:1em"}
      [:a {:href  (str "data/"
-                      (str/replace (str dir "/" name)
-                                   "/" "_"))}
+                      (-> (str dir "/" name)
+                          (str/replace "/" "_")))}
       name]
      [:br]]))
 

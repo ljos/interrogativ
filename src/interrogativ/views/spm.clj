@@ -175,7 +175,9 @@
                                     (nnext pages))
                               :else
                               (recur (rest pages))))
-           submit-page (format "%s/%s" page-name (:id (first post-pages)))]
+           submit-page (format "%s/%s"
+                               page-name
+                               (:id (first post-pages)))]
        (binding [*pages* (count question-pages)
                  *submit-page* submit-page]
          (let [questioneer  (create-questioneer question-pages)

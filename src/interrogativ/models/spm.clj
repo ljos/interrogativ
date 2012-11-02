@@ -33,30 +33,29 @@
 
 (defn parse-header [header]
   {:type :header
-   :value (str/trim
-           (second
-            (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)"
-                     header)))
+   :value (->> header
+               (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)")
+               second
+               str/trim)
    :options (re-seq #":\w+" header)})
 
 (defn parse-heading [heading]
   {:type :heading
-   :h (keyword
-       (format "h%s"
-               (count (re-find #"#+"
-                               (str/trimr heading)))))
+   :h (->> heading
+           str/trimr
+           (re-find #"#+")
+           count
+           (format "h%s")
+           keyword)
    :value (second (re-find #"#+\s*(.*)" heading))})
 
 (defn parse-question [question-block]
   (let [nb (swap! question-nb inc)
         name (format "spm-%s" nb)
         question (second (re-find question question-block))
-        label (format "%s. %s"
-                      nb
-                      (str/trim
-                       (str/replace
-                        question
-                        #"\n+|:\w+\s*" " ")))
+        label (str nb ". " (-> question
+                               (str/replace #"\n+|:\w+\s*" " ")
+                               str/trim))
         options (second (re-seq #":\w+" question))
         choices (map first (re-seq choice question-block))]
     (cond (empty? choices)
