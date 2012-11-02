@@ -117,10 +117,10 @@
    [:br] [:br]])
 
 (defn title [label]
-  (-> label
-      second
-      (re-find #"\d+\.\s*(.*)")
-      second))
+  (->> label
+       second
+       (re-find #"\d+\.\s*(.*)")
+       second))
 
 (defpartial radio-group [{:keys [name label groups type]
                           :or {type "" id name}}]
