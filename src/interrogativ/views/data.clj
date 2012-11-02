@@ -86,7 +86,9 @@
                         (keys @data/domains))]
           [:p
            [:h4  [:a {:href page} page]]
-           [:a {:href (str "/data/" page)}
+           [:a {:href (str "/data/"
+                           (str/replace-first page "qs/" "")
+                           ".spm")}
             "Spm-file"]
            (directory-to-links page)])
         [:hr]
@@ -101,18 +103,22 @@
                    :value "Upload"}]]]))
 
 (defpage "/data/:file" {:keys [file]}
-  (log/info (str "Serving CSV file: " file))
-  (content-type "text/csv"
-                (data/create-csv-from-file
-                 (format "db/%s"
-                         (-> file
-                             (str/replace #"\.csv" ".dat")
-                             (str/replace "_" "/"))))))
+  (cond (re-find #".csv" file)
+        (do (log/info (str "Serving CSV file: " file))
+            (->> (-> file
+                     (str/replace #"\.csv" ".dat")
+                     (str/replace "_" "/"))
+                 (str "db/")
+                 data/create-csv-from-file
+                 (content-type "text/csv")))
 
-(defpage "data/qs/:file" {:keys [file]}
-  (do (log/info (str "Serving file: " file))
-      (content-type "text/plain"
-                    (slurp (str "qs/" file ".spm")))))
+        (re-find #".spm" file)
+        (do (log/info (str "Serving spm file: " file))
+            (content-type "text/plain"
+                          (slurp (str "qs/" file))))
+        
+        :else
+        (redirect "/data")))
 
 (pre-route "/upload" {}
   (if-not (session/get :admin)
