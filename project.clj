@@ -1,4 +1,4 @@
-(defproject interrogativ "0.1.0"
+(defproject interrogativ "0.2.1"
   :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [noir "1.3.0-beta3"]
