@@ -13,30 +13,35 @@
         [hiccup.core :only [html]]))
 
 (defpage "/login" {}
-  (common/layout
+  (common/layout-bs
    {:title "Login"
     :body (common/body
-           [:form {:action "/login" :method "post"}
-            [:div
-             [:label {:for "uname"} "Username:"]
-             [:input {:type "text"
-                      :name "uname"
-                      :id "uname"
-                      :value ""
-                      :data-role "none"}]]
-            [:div
-             [:label {:for "pword"} "Password:"]
-             [:input {:type "password"
-                      :name "pword"
-                      :id "pword"
-                      :value ""
-                      :data-role "none"}]]
-            [:div
-             [:input {:type "submit"
-                      :name "submit"
-                      :id "submit"
-                      :value "login"
-                      :data-role "none"}]]])}))
+           [:div {:style (str "margin-left:1em;"
+                              "margin-top:1em;"
+                              "margin-right:1em;")}
+            [:fieldset
+             [:legend "Login"]
+             [:form {:action "/login"
+                     :method "post"}
+              [:div 
+               [:input {:type "text"
+                        :name "uname"
+                        :id "uname"
+                        :value ""
+                        :placeholder "Username"}]]
+              [:div
+               [:input {:type "password"
+                        :name "pword"
+                        :id "pword"
+                        :value ""
+                        :placeholder "Password"}]]
+              [:div
+               [:input {:class "btn btn-primary"
+                        :type "submit"
+                        :name "submit"
+                        :id "submit"
+                        :value "login"
+                        :data-role "none"}]]]]])}))
 
 (defn passwd-for [user]
   (with-open [rdr (io/reader "passwd")]
@@ -58,12 +63,12 @@
           (redirect "/data")))))
 
 (pre-route "/data" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (pre-route "/data/*" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))
@@ -84,78 +89,70 @@
         :when (not (.isDirectory f))
         :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
     (html
-     [:a {:href (str "data/"
+     [:a {:href (str "/download/"
                      (-> (str dir "/" name)
                          (str/replace "/" "_")))
           :class "csv"}
       name]
      [:br])))
 
-(defpage "/data-jqui" {}
+(defpage "/data/:page" {:keys [page]}
+  (let [frontpage (= page "frontpage")]
+    (common/layout-bs
+     {:title page
+      :body (common/body
+             [:ul {:class "breadcrumb"}
+              [:li
+               [:a {:href "/data"} "Pages"]
+               [:span {:class "divider"} "/"]]
+              [:li {:class "active"}
+               page]]
+             [:fieldset {:style "margin-left:1em;margin-right:1em"}
+              [:legend "Data"
+               [:span {:class "divider"} " : "]
+               [:a {:href (if frontpage
+                            "/" (str "/qs/" page))}
+                "page"]
+               (when-not frontpage
+                 (list [:span {:class "divider"} " / "]
+                       [:a {:href (str "/download/" page ".spm" )}
+                        "script"]))]
+              (directory-to-links-ui
+               (if frontpage
+                 "" (str "qs/" page)))])})))
+
+(defpage "/data" {}
   (common/layout
    {:title "Data"
     :body (common/body
-           [:div {:id "accordion"}
-            [:h3 "front-page"]
-            [:div 
-             [:a {:href "/" :class "link"} "link"]
-             [:a {:href "/data/fdu.spm" :class "file"} "file"]
-             [:br]
-             [:br]
-             [:div (directory-to-links-ui "")]]
-            (for [page (map #(-> % str (str/replace-first ":/" ""))
+           [:ul {:class "breadcrumb"}
+            [:li {:class "active"} "Pages"]]
+           [:fieldset {:style "margin-left:1em;margin-right:1em"}
+            [:legend "Pages"]
+            [:a {:href "/data/frontpage"}
+             "frontpage"]
+            [:br]
+            (for [page (map #(-> % str (str/replace-first ":/qs/" ""))
                             (keys @data/domains))]
-              (html [:h3 page]
-                    [:div
-                     [:a {:href page :class "link"}
-                      "link"]
-                     [:a {:href (str "/data/"
-                                     (str/replace-first page "qs/" "")
-                                     ".spm")
-                          :class "file"}
-                      "file"]
-                     [:br]
-                     [:br]
-                     (directory-to-links-ui page)]))]
-           [:hr]
-           [:p
+              (list [:a {:href (str"/data/" page)}
+                     page]
+                    [:br]))
+            [:hr]
             [:form {:method "post"
                     :enctype "multipart/form-data"
                     :action "/upload"}
              [:input {:type "file"
-                      :name "file"}]
+                      :value "Choose file"}]
              [:br]
-             [:input {:type "submit"
-                      :value "Upload"}]]]) }))
-
-(defpage "/data" {}
-  (common/layout 
-   {:title "Data"
-    :body (common/body
-           [:p
-            [:h4 [:a {:href "/"} "/"]]
-            (directory-to-links "")]
-           (for [page (map #(-> % str (str/replace-first ":/" ""))
-                           (keys @data/domains))]
-             [:p
-              [:h4  [:a {:href page} page]]
-              [:a {:href (str "/data/"
-                              (str/replace-first page "qs/" "")
-                              ".spm")}
-               "Spm-file"]
-              (directory-to-links page)])
-           [:hr]
-           [:p
-            [:form {:method "post"
-                    :enctype "multipart/form-data"
-                    :action "/upload"}
-             [:input {:type "file"
-                      :name "file"}]
-             [:br]
-             [:input {:type "submit"
+             [:input {:class "btn btn-mini"
+                      :type "submit"
                       :value "Upload"}]]])}))
 
-(defpage "/data/:file" {:keys [file]}
+(pre-route "/download/*" {}
+           (if-not (session/get :admin)
+             (redirect "login")))
+
+(defpage "/download/:file" {:keys [file]}
   (try
     (cond (re-find #".csv" file)
           (do
@@ -180,8 +177,8 @@
       (redirect "/data"))))
 
 (pre-route "/upload" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (defpage [:post "/upload"] {:keys [file]}
   (when-let [filename (not-empty (:filename file))]
