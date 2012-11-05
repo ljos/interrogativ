@@ -1,5 +1,5 @@
 (ns interrogativ.views.spm
-  (:require [interrogativ.views.common :as common]
+  (:require [interrogativ.views.mobile :as mobile]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
             [clojure.tools.logging :as log]
@@ -24,13 +24,13 @@
         (get-in page [:header :options])))
 
 (defn create-header [page]
-  (common/header
+  (mobile/header
    {:content (html
               [:h1 (get-in page [:header :value])]
               ;; This is really ugly, need to fix.
               (if (or (re-find #"\d+" (:id page))
                       (submit-page? page))
-                (common/menu-button
+                (mobile/menu-button
                  {:label (format " %s / %s "
                                  ;; Especially ugly because of this.
                                  (if (submit-page? page)
@@ -40,28 +40,28 @@
 
 (defn create-question [question]
   (case (:question question)
-    :textarea (common/textarea
+    :textarea (mobile/textarea
                {:name (:name question)
                 :label (:label question)
                 :value (:value question)})
-    :radio-group (common/radio-group
+    :radio-group (mobile/radio-group
                   {:name (:name question)
                    :label [:h4 (:label question)]
                    :groups (:groups question)
                    :type (if (contains? (:options question)
                                         ":horizontal")
                            "horizontal")})
-    :select (common/select
+    :select (mobile/select
              {:name (:name question)
               :label  [:h4 (:label question)]
               :values (:values question)})
-    :slider (common/slider
+    :slider (mobile/slider
              {:name (:name question)
               :label [:h4 (:label question)]
               :max (:max question)
               :min (:min question)
               :value (:value question)})
-    :radio-table (common/radio-table
+    :radio-table (mobile/radio-table
                   {:name (:name question)
                    :label [:h4 (:label question)]
                    :sections (:sections question)
@@ -74,7 +74,7 @@
           item))])
 
 (defn create-content [page]
-  (common/content
+  (mobile/content
    (if (submit-page? page)
      [:div {:class "ikkeferdig"}])
    (for [content (:content page)]
@@ -85,15 +85,15 @@
        :br       [:br]))))
 
 (defn create-footer [prev page next]
-  (common/footer
+  (mobile/footer
    {:id (format "footer-%s" (:id page))
     :content (if (and (nil? next)
                       (submit-page? prev))
                [:h1 " "]
-               (common/grid-b
+               (mobile/grid-b
                 {:block-a (if-not (or (nil? prev)
                                       (submit-page? prev))
-                            (common/left-button
+                            (mobile/left-button
                              {:link (format "#%s" (:id prev))
                               :id (if (= "ferdig" (:id page))
                                     "tilbakeinnhold")
@@ -107,7 +107,7 @@
                                          :name "submitter"
                                          :value "Levér"}]
                                 (not (nil? next))
-                                (common/right-button
+                                (mobile/right-button
                                  {:link (format "#%s" (:id next))
                                   :id (if (= "ferdig" (:id next))
                                         "tilferdig")
@@ -122,7 +122,7 @@
          pages '()]
     (if (nil? page)
       (reverse pages)
-      (let [html-page (common/page
+      (let [html-page (mobile/page
                        {:id (:id page)
                         :header (create-header page)
                         :content (create-content page)
@@ -140,9 +140,9 @@
    [:form {:action *submit-page*
            :method "post"}
     (create-pages document)
-    (common/page
+    (mobile/page
      {:id "meny"
-      :header (common/header
+      :header (mobile/header
                {:content [:h1 "Meny"]})
       :content [:div {:data-role "content"
                       :data-theme "c"}
@@ -185,14 +185,16 @@
            (data/create-store page-name)
            (swap! qs
              assoc (keyword page-name)
-             (common/layout
+             (mobile/layout
               {:title (:title document)
-               :body questioneer}))
+               :body (mobile/body
+                      questioneer)}))
            (swap! submits
              assoc (keyword submit-page)
-             (common/layout
+             (mobile/layout
               {:title "Takk!"
-               :body post-page}))
+               :body (mobile/body
+                      post-page)}))
            (eval `(do
                     (defpage [:post ~submit-page] ~'data
                       (let [~'submitter-id (data/generate-submitter-id)]
