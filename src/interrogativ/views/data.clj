@@ -182,11 +182,31 @@
                     :enctype "multipart/form-data"
                     :action "/upload"}
              [:input {:type "file"
-                      :value "Choose file"}]
-             [:br]
-             [:input {:class "btn btn-mini"
-                      :type "submit"
-                      :value "Upload"}]]])}))
+                      :id "file-chooser"
+                      :name "file"}]
+             [:div {:class "input-prepend"
+                    :id "cf-btn"}
+              [:button {:class "btn btn-primary"
+                        :id "choose-btn"
+                        :type "button"}
+               "Choose file"]
+              [:span {:class "input-xlarge uneditable-input"
+                      :type "text"}]]
+             [:div {:class "input-prepend"
+                    :id "uc-btn"}
+              [:button {:class "btn btn-inverse"
+                        :id "cancel-btn"
+                        :type "button"}
+               "&times;"]
+              [:button {:class "btn btn-primary"
+                        :id "upload-btn"
+                        :type "submit"}
+               "Add"]
+              [:span {:class "input-xlarge uneditable-input"
+                      :type "text"
+                      :id "text"}]]]]
+           
+           (include-js "/js/upload-file.js"))}))
 
 (pre-route "/download/*" {}
   (if-not (session/get :admin)
