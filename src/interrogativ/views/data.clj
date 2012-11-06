@@ -10,7 +10,8 @@
   (:import [java.io FileNotFoundException])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect content-type]]
-        [hiccup.core :only [html]]))
+        [hiccup.core :only [html]]
+        [hiccup.page :only [include-js include-css]]))
 
 (defpage "/login" {}
   (common/layout
@@ -60,6 +61,44 @@
       (do (session/put! :admin true)
           (redirect "/data")))))
 
+(defpage "/edit/:page" {:keys [page]}
+  (common/layout
+   {:title (str "Edit " page)
+    :body (common/body
+           (include-css "/css/editor.css")
+           [:form {:name "editor"
+                   :action "/upload"
+                   :method "post"}
+            [:ul {:class "breadcrumb"}
+             [:li
+              [:a {:href "/data"} "Pages"]
+              [:span {:class "divider"} "/"]]
+             [:li
+              [:a {:href (str "/data/" page)}
+               page]
+              [:span {:class "divider"} "/"]]
+             [:li {:class "active"}
+              "edit"]
+             [:br]
+             [:div {:class "btn-toolbar"
+                    :align "right"}
+              [:button {:class "btn btn-primary"
+                        :id "save"
+                        :type "submit"}
+               [:i {:class "icon-upload icon-white"}]
+               " Save"]]]
+            [:input {:type "hidden"
+                     :id "text"
+                     :name "text"}]
+            [:input {:type "hidden"
+                     :name "page"
+                     :value page}]
+            [:div {:id "editor"}
+             (slurp (str "qs/" page ".spm"))]]
+           (include-js (str "http://d1n0x3qji82z53.cloudfront.net/"
+                            "src-min-noconflict/ace.js"))
+           (include-js "/js/editor-save.js"))}))
+
 (pre-route "/data" {}
   (if-not (session/get :admin)
     (redirect "/login")))
@@ -102,6 +141,9 @@
                 "page"]
                (when-not frontpage
                  (list [:span {:class "divider"} " / "]
+                       [:a {:href (str "/edit/" page)}
+                        "edit"]
+                       [:span {:class "divider"} " / "]
                        [:a {:href (str "/download/" page ".spm" )}
                         "download"]))]
               (directory-to-links
@@ -166,11 +208,25 @@
       (redirect "/data"))))
 
 (pre-route "/upload" {}
-
-(defpage [:post "/upload"] {:keys [file]}
-  (when-let [filename (not-empty (:filename file))]
-    (data/upload-file file)
-    (spm/create-page-from (str "qs/" filename)))
-  (redirect "/data"))
   (if-not (session/get :admin)
     (redirect "/login")))
+
+(defpage [:post "/upload"] data
+  (cond (:file data)
+        (let [file (:file data)]
+          (when-let [filename (not-empty (:filename file))]
+            (data/upload-file file)
+            (spm/create-page-from (str "qs/" filename)))
+          (redirect "/data"))
+
+        (:text data)
+        (let [page (:page data)
+              text (str/replace (:text data) "\r" "")
+              file (str "qs/" page ".spm")]
+          (log/info "Uploading revision to " file)
+          (spit file text)
+          (spm/create-page-from file)
+          (redirect (str "/data/" page)))
+
+        :else
+        (redirect "/data")))
