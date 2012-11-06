@@ -154,9 +154,11 @@
           (re-find #".spm" file)
           (do
             (log/info "Serving spm file:" file)
-            (content-type "text/plain"
-                          (slurp (str "qs/" file))))
-          
+            (->> file
+                 (str "qs/")
+                 slurp
+                 (content-type "text/plain")))
+
           :else
           (throw (FileNotFoundException.)))
     (catch FileNotFoundException _
