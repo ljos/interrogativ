@@ -5,10 +5,10 @@
         [hiccup.core :only [html]])
   (:refer-clojure :exclude [name id]))
 
+(def jquery "http://code.jquery.com/")
+
 (defpartial body [& content]
   [:body content])
-
-(def jquery "http://code.jquery.com/")
 
 (defpartial layout [{:keys [title body]}]
   [:head
@@ -18,3 +18,4 @@
     (include-js "/bootstrap/js/bootstrap.min.js")
     (include-js (str jquery "jquery-1.8.2.js"))]]
   body)
+
