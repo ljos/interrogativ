@@ -94,7 +94,7 @@
                [:span {:class "divider"} "/"]]
               [:li {:class "active"}
                page]]
-             [:fieldset {:style "margin-left:1em;margin-right:1em"}
+             [:fieldset 
               [:legend "Data"
                [:span {:class "divider"} " : "]
                [:a {:href (if frontpage
@@ -114,7 +114,7 @@
     :body (common/body
            [:ul {:class "breadcrumb"}
             [:li {:class "active"} "Pages"]]
-           [:fieldset {:style "margin-left:1em;margin-right:1em"}
+           [:fieldset
             [:legend "Pages"]
             [:a {:href "/data/frontpage"}
              "frontpage"]
