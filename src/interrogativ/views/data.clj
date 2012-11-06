@@ -74,23 +74,12 @@
 (defn directory-to-links [dir]
   (for [f (.listFiles (java.io.File. (str "db/" dir)))
         :when (not (.isDirectory f))
-        :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
-    [:div {:style "text-indent:1em"}
-     [:a {:href  (str "data/"
-                      (-> (str dir "/" name)
-                          (str/replace "/" "_")))}
-      name]
-     [:br]]))
-
-(defn directory-to-links-ui [dir]
-  (for [f (.listFiles (java.io.File. (str "db/" dir)))
-        :when (not (.isDirectory f))
-        :let [name (str/replace (.getName f) #"\.dat$" ".csv")]]
+        :let [name (-> (.getName f)
+                       (str/replace #"\.dat$" ".csv"))]]
     (html
      [:a {:href (str "/download/"
                      (-> (str dir "/" name)
-                         (str/replace "/" "_")))
-          :class "csv"}
+                         (str/replace "/" "_")))}
       name]
      [:br])))
 
@@ -114,8 +103,8 @@
                (when-not frontpage
                  (list [:span {:class "divider"} " / "]
                        [:a {:href (str "/download/" page ".spm" )}
-                        "script"]))]
-              (directory-to-links-ui
+                        "download"]))]
+              (directory-to-links
                (if frontpage
                  "" (str "qs/" page)))])})))
 
