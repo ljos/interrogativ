@@ -13,7 +13,7 @@
         [hiccup.core :only [html]]))
 
 (defpage "/login" {}
-  (common/layout-bs
+  (common/layout
    {:title "Login"
     :body (common/body
            [:div {:style (str "margin-left:1em;"
@@ -98,7 +98,7 @@
 
 (defpage "/data/:page" {:keys [page]}
   (let [frontpage (= page "frontpage")]
-    (common/layout-bs
+    (common/layout
      {:title page
       :body (common/body
              [:ul {:class "breadcrumb"}
