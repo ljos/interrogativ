@@ -86,7 +86,11 @@
                         :id "save"
                         :type "submit"}
                [:i {:class "icon-upload icon-white"}]
-               " Save"]]]
+               " Save"]
+              [:button {:href (str "/data/" page)
+                        :class "btn btn-danger"}
+               [:i {:class "icon-remove-circle icon-white"}]
+               " Cancel"]]]
             [:input {:type "hidden"
                      :id "text"
                      :name "text"}]
