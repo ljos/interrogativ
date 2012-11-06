@@ -15,33 +15,28 @@
 (defpage "/login" {}
   (common/layout
    {:title "Login"
-    :body (common/body
-           [:div {:style (str "margin-left:1em;"
-                              "margin-top:1em;"
-                              "margin-right:1em;")}
-            [:fieldset
-             [:legend "Login"]
-             [:form {:action "/login"
-                     :method "post"}
-              [:div 
-               [:input {:type "text"
-                        :name "uname"
-                        :id "uname"
-                        :value ""
-                        :placeholder "Username"}]]
-              [:div
-               [:input {:type "password"
-                        :name "pword"
-                        :id "pword"
-                        :value ""
-                        :placeholder "Password"}]]
-              [:div
-               [:input {:class "btn btn-primary"
-                        :type "submit"
-                        :name "submit"
-                        :id "submit"
-                        :value "login"
-                        :data-role "none"}]]]]])}))
+    :body (common/body           
+           [:fieldset 
+            [:legend "Login"]
+            [:form {:action "/login"
+                    :method "post"}
+             [:div
+              [:input {:type "text"
+                       :name "uname"
+                       :id "uname"
+                       :placeholder "Username"}]]
+             [:div
+              [:input {:type "password"
+                       :name "pword"
+                       :id "pword"
+                       :placeholder "Password"}]]
+             [:div
+              [:input {:class "btn btn-primary"
+                       :type "submit"
+                       :name "submit"
+                       :id "submit"
+                       :value "login"
+                       :data-role "none"}]]]])}))
 
 (defn passwd-for [user]
   (with-open [rdr (io/reader "passwd")]
