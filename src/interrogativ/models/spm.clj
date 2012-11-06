@@ -19,7 +19,7 @@
 (def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[+*<-]|\z)")
 (def choice #"(?s)[\[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
-(def textarea #"\s*\[txt@(.*)?\]\s*")
+(def textarea #"\s*\[txt:?(.*)?\]\s*")
 
 (def page-nb (atom 0))
 (def question-nb (atom 0))
