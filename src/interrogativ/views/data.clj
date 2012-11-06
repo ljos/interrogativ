@@ -43,11 +43,14 @@
     (loop [lines (line-seq rdr)]
       (cond (empty? lines)
             ""
+
             (re-matches (re-pattern (format "^%s:.*" user))
                         (first lines))
-            ,(str/replace (first lines) #"^.*?:" "")
+            (-> (first lines)
+                (str/replace #"^.*?:" ""))
+
             :else
-            ,(recur (rest lines))))))
+            (recur (rest lines))))))
 
 (defpage [:post "/login"] {:keys [uname pword]}
   (let [encrypted (passwd-for uname)]
