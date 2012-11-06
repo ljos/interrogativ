@@ -140,16 +140,23 @@
              [:fieldset 
               [:legend "Data"
                [:span {:class "divider"} " : "]
+             [:ul {:class "nav nav-pills"}
+              [:li {:class "disabled"}
+               [:a "Data"
+                [:span {:class "divider"} " : "]]]
+              [:li
                [:a {:href (if frontpage
                             "/" (str "/qs/" page))}
-                "page"]
-               (when-not frontpage
-                 (list [:span {:class "divider"} " / "]
+                "page"]]
+              (when-not frontpage
+                (list [:li
                        [:a {:href (str "/edit/" page)}
-                        "edit"]
-                       [:span {:class "divider"} " / "]
+                        "edit"]]
+                      [:li
                        [:a {:href (str "/download/" page ".spm" )}
-                        "download"]))]
+                        "download"]]))]
+             [:div {:class "links"}
+              [:hr {:style "margin-top:-1em;"}]
               (directory-to-links
                (if frontpage
                  "" (str "qs/" page)))])})))
