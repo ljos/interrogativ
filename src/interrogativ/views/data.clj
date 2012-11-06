@@ -137,9 +137,6 @@
                [:span {:class "divider"} "/"]]
               [:li {:class "active"}
                page]]
-             [:fieldset 
-              [:legend "Data"
-               [:span {:class "divider"} " : "]
              [:ul {:class "nav nav-pills"}
               [:li {:class "disabled"}
                [:a "Data"
