@@ -61,12 +61,12 @@
           (redirect "/data")))))
 
 (pre-route "/data" {}
-           (if-not (session/get :admin)
-             (redirect "/login")))
+  (if-not (session/get :admin)
+    (redirect "/login")))
 
 (pre-route "/data/*" {}
-           (if-not (session/get :admin)
-             (redirect "/login")))
+  (if-not (session/get :admin)
+    (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))
@@ -147,8 +147,8 @@
                       :value "Upload"}]]])}))
 
 (pre-route "/download/*" {}
-           (if-not (session/get :admin)
-             (redirect "login")))
+  (if-not (session/get :admin)
+    (redirect "login")))
 
 (defpage "/download/:file" {:keys [file]}
   (try
@@ -175,11 +175,11 @@
       (redirect "/data"))))
 
 (pre-route "/upload" {}
-           (if-not (session/get :admin)
-             (redirect "/login")))
 
 (defpage [:post "/upload"] {:keys [file]}
   (when-let [filename (not-empty (:filename file))]
     (data/upload-file file)
     (spm/create-page-from (str "qs/" filename)))
   (redirect "/data"))
+  (if-not (session/get :admin)
+    (redirect "/login")))
