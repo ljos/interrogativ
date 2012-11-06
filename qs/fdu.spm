@@ -114,9 +114,9 @@ Epost: bjo013@uib.no
    - Dataskjerm
    - iPad/Lesebrett
    - Mobilskjerm
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Liker du å forholde deg til flere skjermer samtidig,
    for eksempel at du både ser på TV og leser på mobil?
@@ -129,9 +129,9 @@ Epost: bjo013@uib.no
    - Ørepropper i mobil
    - Store øreklokker i mobil
    - Høytalere i rommet
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvor ofte tenker du på at din posisjon faktisk blir
    registrert hele tiden, og kan brukes av ulike firma som
@@ -157,9 +157,9 @@ Epost: bjo013@uib.no
    - Hordaland
    - Norge
    - Verden
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvilken type informasjon er viktigst?
    - Nyheter
@@ -167,9 +167,9 @@ Epost: bjo013@uib.no
    - Fakta
    - Fiksjon
    - Underholdning
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvilken kanal vil du foretrekke til nyheter og andre
    offentlige saker?
@@ -178,9 +178,9 @@ Epost: bjo013@uib.no
    - Fjernsyn
    - Papiravis
    - Radio
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvor vil du helst være mens du bruker nyheter og
    annen journalistikk?
@@ -190,9 +190,9 @@ Epost: bjo013@uib.no
    - Café/Klubb
    - Trening, tur
    - Stedet betyr ingenting
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
             
 ?: Hvilke personer synes du bør være fremtredende
    i offentligheten?
@@ -204,9 +204,9 @@ Epost: bjo013@uib.no
    - Lærere
    - Vanlige voksne
    - Ungdom
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 # Deltagelse
 ?: Hvem ønsker du mest å kommuniserer med på telefonen?
@@ -218,9 +218,9 @@ Epost: bjo013@uib.no
    - Andre voksne
    - Lærere
    - Medelever
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvilken type medieproduksjon ønsker du selv å bruke tid på?
    - Snakke selv
@@ -229,9 +229,9 @@ Epost: bjo013@uib.no
    - Filme video
    - Lage musikk
    - Programmere datamaskiner
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvor mange ganger har du vært i avisen, på tv
    eller lignende?
@@ -249,9 +249,9 @@ Epost: bjo013@uib.no
    - Kommentar i nettaviser
    - Blogg
    - Sosialt medium
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Hvilke typer personlig informasjon er du villig
    til å dele med journalistiske offentligheten gjennom
@@ -262,9 +262,9 @@ Epost: bjo013@uib.no
    - Økonomiske forhold
    - Medisinsk informasjon
    - Sivilstatus
-   * &#x2b;
-   * &bull;
-   * &minus;
+   * +
+   * •
+   * −
 
 ?: Er det greit at mediefirma bruker din personlige
    informasjon til journalistiske formål, for eksempel
@@ -274,6 +274,10 @@ Epost: bjo013@uib.no
    - Nøytral
    - Ugreit
    - Svært ugreit
+
+?: Har du noe du vil si? Vi tar det på største alvor i
+   våre analyser.
+[txt]
 
 # Spørreundersøkelse :submit
 ## Ferdig
