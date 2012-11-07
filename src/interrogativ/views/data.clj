@@ -112,38 +112,7 @@
               [:span {:class "input-xlarge uneditable-input"
                       :type "text"
                       :id "text"}]]]]
-           
            (include-js "/js/upload-file.js"))}))
-
-(pre-route "/download/*" {}
-  (if-not (session/get :admin)
-    (redirect "login")))
-
-(defpage "/download/:file" {:keys [file]}
-  (try
-    (cond (re-find #".csv" file)
-          (do
-            (log/info "Serving CSV file:" file)
-            (->> (-> file
-                     (str/replace #"\.csv" ".dat")
-                     (str/replace "_" "/"))
-                 (str "db/")
-                 data/create-csv-from-file
-                 (content-type "text/csv")))
-
-          (re-find #".spm" file)
-          (do
-            (log/info "Serving spm file:" file)
-            (->> file
-                 (str "qs/")
-                 slurp
-                 (content-type "text/plain")))
-
-          :else
-          (throw (FileNotFoundException.)))
-    (catch FileNotFoundException _
-      (log/error "File not found:" file)
-      (redirect "/data"))))
 
 (pre-route "/upload" {}
   (if-not (session/get :admin)
