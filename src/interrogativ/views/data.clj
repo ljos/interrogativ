@@ -108,4 +108,4 @@
               [:span {:class "input-xlarge uneditable-input"
                       :type "text"
                       :id "text"}]]]]
-           (include-js "/js/upload-file.js"))}))
+           (include-js "/cljs/upload.js"))}))
