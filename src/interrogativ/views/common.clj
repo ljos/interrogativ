@@ -1,9 +1,6 @@
 (ns interrogativ.views.common
-  (:require [clojure.string :only [replace lower-case] :as string])
   (:use [noir.core :only [defpartial]]
-        [hiccup.page :only [include-js include-css]]
-        [hiccup.core :only [html]])
-  (:refer-clojure :exclude [name id]))
+        [hiccup.page :only [include-js include-css]]))
 
 (def jquery "http://code.jquery.com/")
 
