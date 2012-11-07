@@ -45,34 +45,34 @@ $(document).bind("pageinit", function() {
     });
 });
 
-function avslutt() {
-    var html  =  "<h4>Er du sikker på at du vil avslutte?</h4>";
-        html += "<a href=\"#ferdig\" data-role=\"button\">Ja</a>";
-        html += "<a href=\"#\" data-rel=\"back\" data-role=\"button\">Nei</a>";
-    $("#menyp").fadeOut("fast", function() {
-        $("#menyp").html(html);
-        $("#menyp").trigger("create");
-        $("#menyp").fadeIn("slow");
-    });
-}
+// function avslutt() {
+//     var html  =  "<h4>Er du sikker på at du vil avslutte?</h4>";
+//         html += "<a href=\"#ferdig\" data-role=\"button\">Ja</a>";
+//         html += "<a href=\"#\" data-rel=\"back\" data-role=\"button\">Nei</a>";
+//     $("#menyp").fadeOut("fast", function() {
+//         $("#menyp").html(html);
+//         $("#menyp").trigger("create");
+//         $("#menyp").fadeIn("slow");
+//     });
+// }
 
-$(document).delegate("#ferdig", "pagebeforeshow", function() {
-    $("#ferdig div[role=heading]").remove();
-});
+// $(document).delegate("#ferdig", "pagebeforeshow", function() {
+//     $("#ferdig div[role=heading]").remove();
+// });
 
-$(document).delegate("#meny", "pagebeforeshow", function() {
-    var html  = "<h4>Du kan avslutte når som helst ved å trykke på denne knappen.</h4>";
-        html += "<a href=\"#\""
-                + " id=\"avslutt\""
-                + " data-role=\"button\""
-                + " data-theme=\"c\""
-                + " onclick=\"avslutt()\">"
-                + "Avslutt</a>";
-        html += "<a href=\"#\""
-                + " data-rel=\"back\""
-                + " data-role=\"button\""
-                + " data-theme=\"a\">"
-                + "Tilbake</a>";
-    $("#menyp").html(html);
-    $("#menyp").trigger("create");
-});
+// $(document).delegate("#meny", "pagebeforeshow", function() {
+//     var html  = "<h4>Du kan avslutte når som helst ved å trykke på denne knappen.</h4>";
+//         html += "<a href=\"#\""
+//                 + " id=\"avslutt\""
+//                 + " data-role=\"button\""
+//                 + " data-theme=\"c\""
+//                 + " onclick=\"avslutt()\">"
+//                 + "Avslutt</a>";
+//         html += "<a href=\"#\""
+//                 + " data-rel=\"back\""
+//                 + " data-role=\"button\""
+//                 + " data-theme=\"a\">"
+//                 + "Tilbake</a>";
+//     $("#menyp").html(html);
+//     $("#menyp").trigger("create");
+// });
