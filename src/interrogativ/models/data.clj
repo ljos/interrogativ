@@ -1,6 +1,6 @@
 (ns interrogativ.models.data
   (:require [clojure.java.io :as io]
-            [clojure.string :as string]
+            [clojure.string :as str]
             [clojure.tools.logging :as log])
   (:import [java util.Calendar
                  text.SimpleDateFormat]))
@@ -102,12 +102,12 @@
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv from file: " file-name)
     (with-out-str 
-      (println (string/join "," (map name keys)))
+      (println (str/join "," (map name keys)))
       (doseq [submission submissions]
-        (println (string/join ","
-                              (map (partial format "\"%s\"")
-                                   (for [key keys]
-                                     (get submission key -1)))))))))
+        (println (str/join ","
+                           (map (partial format "\"%s\"")
+                                (for [key keys]
+                                  (get submission key -1)))))))))
 
 (defn create-csvs-for-page [page]
   (log/info "Create csv's for page: " page)
