@@ -1,11 +1,5 @@
 (ns interrogativ.models.spm
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.zip :as zip]
-            [interrogativ.views.common :as common])
-  (:use [hiccup.core :only [html]])
-  (:import [java.io BufferedReader StringReader]
-           [java.util.regex Pattern]))
+  (:require [clojure.string :as str]))
 
 (def document #"^(?s).*\z")
 (def title #"=+\s*(.*?)\s*=+\n*")
