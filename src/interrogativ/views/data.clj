@@ -1,17 +1,13 @@
 (ns interrogativ.views.data
   (:require [interrogativ.views.common :as common]
             [interrogativ.models.data :as data]
-            [interrogativ.views.spm :as spm]
             [noir.session :as session]
             [clojure.string :as str]
             [clojure.java.io :as io]
             [clojure.tools.logging :as log])
-  (:import [java.io FileNotFoundException])
   (:use [noir.core :only [defpage pre-route]]
-        [noir.response :only [redirect content-type]]
-        [hiccup.core :only [html]]
-        [hiccup.page :only [include-js include-css]]))
-
+        [noir.response :only [redirect]]
+        [hiccup.page :only [include-js]]))
 
 (pre-route "/data" {}
   (if-not (session/get :admin)
