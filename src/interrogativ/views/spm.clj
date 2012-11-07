@@ -4,7 +4,6 @@
             [interrogativ.models.spm :as spm]
             [clojure.tools.logging :as log]
             [noir.cookies :as cookies])
-  (:import [java io.File])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]
         [hiccup.core :only [html]]

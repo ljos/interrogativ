@@ -2,10 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as string]
             [clojure.tools.logging :as log])
-  (:import [java io.File
-                 util.Calendar
-                 text.SimpleDateFormat]
-           [org.apache.commons.io FileUtils]))
+  (:import [java util.Calendar
+                 text.SimpleDateFormat]))
 
 (def today (.format (SimpleDateFormat. "yyyy-MM-dd")
                     (.getTime (Calendar/getInstance))))
@@ -48,13 +46,13 @@
 (defn create-store [page]
   (log/info "Create store for page: " page)
   (let [page-key (keyword page)]
-    (-> (str "db/" page) File. .mkdirs)
+    (-> (str "db/" page) io/file .mkdirs)
     (swap! domains
       assoc-in [page-key :store]
       (page-agent page))
     (swap! domains
       assoc-in [page-key :submits]
-      (let [file (File. (str "db" page "/" (date) ".dat"))]
+      (let [file (io/file (str "db" page "/" (date) ".dat"))]
         (if (.exists file)
           (into (sorted-set)
                 (map :informant
@@ -113,11 +111,15 @@
 
 (defn create-csvs-for-page [page]
   (log/info "Create csv's for page: " page)
-  (for [file (.listFiles (File. (format "db/%s" page)))
+  (for [file (.listFiles (io/file (format "db/%s" page)))
         :when (not (.isDirectory file))]
     (create-csv-from-file file)))
 
 (defn upload-file [{:keys [filename tempfile]}]
   (log/info (format "Storing file qs/%s" filename))
-  (FileUtils/copyFile tempfile
-                      (File. (str "qs/" filename))))
+  (let [filename (str "qs/"
+                      (-> filename
+                          (str/replace #"\..*$" ""))
+                      ".spm")]
+    (io/copy tempfile
+             (io/file filename))))

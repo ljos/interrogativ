@@ -115,7 +115,7 @@
   (redirect "/data"))
 
 (defn directory-to-links [dir]
-  (for [f (.listFiles (java.io.File. (str "db/" dir)))
+  (for [f (.listFiles (io/file (str "db/" dir)))
         :when (not (.isDirectory f))
         :let [name (-> (.getName f)
                        (str/replace #"\.dat$" ".csv"))]]
