@@ -29,7 +29,7 @@
         :when (not (.isDirectory f))
         :let [name (-> (.getName f)
                        (str/replace #"\.dat$" ".csv"))]]
-    (html
+    (list
      [:a {:href (str "/download/"
                      (-> (str dir "/" name)
                          (str/replace "/" "_")))}
