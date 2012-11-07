@@ -57,5 +57,5 @@
                            (str "qs/" page ".spm"))))]]
            (include-js (str "http://d1n0x3qji82z53.cloudfront.net/"
                             "src-min-noconflict/ace.js"))
-           (include-js "/js/editor-save.js"))}))
+           (include-js "/cljs/editor.js"))}))
 
