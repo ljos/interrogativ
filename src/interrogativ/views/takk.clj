@@ -1,5 +1,5 @@
 (ns interrogativ.views.takk
-  (:require [interrogativ.views.common :as common]
+  (:require [interrogativ.views.mobile :as mobile]
             [interrogativ.models.data :as data]
             [noir.cookies :as cookies])
   (:use [noir.core :only [defpage]]
@@ -13,12 +13,12 @@
     (redirect "/takk")))
 
 (defpage "/takk" []
-  (common/layout
-   (common/page
+  (mobile/layout
+   (mobile/page
     {:id "takk"
-     :header (common/header
+     :header (mobile/header
               {:content [:h1 " "]})
-     :content (common/content
+     :content (mobile/content
                [:h3 "Takk!"]
                [:p (str "Du har nå fylt ut alle fire seksjonene i undersøkelsen "
                         "”Hvilke nye medier trenger Norge mest”. "
@@ -29,6 +29,6 @@
                [:p "Følg med!"]
                [:p "Hilsen" [:br]
                 "Lars.Nyre@infomedia.uib.no"])
-     :footer (common/footer
+     :footer (mobile/footer
               {:id "takk-footer"
                :content [:h1 " "]})})))
