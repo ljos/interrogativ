@@ -1,5 +1,6 @@
 (ns interrogativ.models.spm
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  (:use interrogativ.models.types))
 
 (def document #"^(?s).*\z")
 (def title #"=+\s*(.*?)\s*=+\n*")
@@ -15,10 +16,6 @@
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
 (def textarea #"\s*\[txt:?(.*)?\]\s*")
 
-(def page-nb (atom 0))
-(def question-nb (atom 0))
-(def submit-page (atom :not-set))
-
 (defn remove-line [string]
   (str/replace-first string #".*(\n|\z)" ""))
 
@@ -26,26 +23,25 @@
   (re-find #".*" string))
 
 (defn parse-header [header]
-  {:type :header
-   :value (->> header
-               (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)")
-               second
-               str/trim)
-   :options (re-seq #":\w+" header)})
+  (->Header
+   (->> header
+        (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)")
+        second
+        str/trim)
+   (re-seq #":\w+" header)))
 
 (defn parse-heading [heading]
-  {:type :heading
-   :h (->> heading
-           str/trimr
-           (re-find #"#+")
-           count
-           (format "h%s")
-           keyword)
-   :value (second (re-find #"#+\s*(.*)" heading))})
+  (->Heading
+   (->> heading
+        str/trimr
+        (re-find #"#+")
+        count
+        (format "h%s")
+        keyword)
+   (second (re-find #"#+\s*(.*)" heading))))
 
-(defn parse-question [question-block]
-  (let [nb (swap! question-nb inc)
-        name (format "spm-%s" nb)
+(defn parse-question [nb question-block]
+  (let [name (format "spm-%s" nb)
         question (second (re-find question question-block))
         label (str nb ". " (-> question
                                (str/replace #"\n+|:\w+\s*" " ")
@@ -53,111 +49,124 @@
         options (second (re-seq #":\w+" question))
         choices (map first (re-seq choice question-block))]
     (cond (empty? choices)
-          {:type :question
-           :question :select
-           :label label
-           :options options
-           :values ["missing values"]}
+          (->SelectQuestion
+           name
+           label
+           options
+           ["missing values"])
           
           (not-empty (filter (partial re-matches #"^\*.*") choices))
-          {:type :question
-           :question :radio-table
-           :name name
-           :label label
-           :options options
-           :sections (map (comp second (partial re-find choice))
-                          (filter (partial re-matches #"^-.*") choices))
-           :values (map (comp second (partial re-find choice))
-                        (filter (partial re-matches #"^\*.*") choices))}
+          (->RadioTableQuestion
+           name
+           label
+           options
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^-.*") choices))
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^\*.*") choices)))
 
           (re-matches slider (first choices))
           (let [slider (re-find slider (first choices))]
-            {:type :question
-             :question :slider
-             :name name
-             :label label
-             :options options
-             :min (nth slider 1)
-             :max (nth slider 2)
-             :value (nth slider 3)})
+            (->SliderQuestion
+             name
+             label
+             options
+             (nth slider 1)
+             (nth slider 2)
+             (nth slider 3)))
 
           (re-matches textarea (first choices))
           (let [textarea (second (re-find textarea (first choices)))]
-            {:type :question
-             :question :textarea
-             :name name
-             :label label
-             :options options
-             :value textarea})
+            (->TextareaQuestion
+             name
+             label
+             options
+             textarea))
 
           (empty? (remove (partial re-matches #"^\+.*") choices))
-          {:type :question
-           :question :select
-           :name name
-           :label label
-           :options options
-           :values (map (comp second (partial re-find choice))
-                        choices)}
+          (->SelectQuestion
+           name
+           label
+           options
+           (map (comp second (partial re-find choice))
+                choices))
 
           (not-empty (filter (partial re-matches #"^-.*") choices))
-          {:type :question
-           :question :radio-group
-           :name name
-           :label label
-           :options options
-           :groups (map (comp second (partial re-find choice))
-                        choices)})))
+          (->RadioGroupQuestion
+           name
+           label
+           options
+           (map (comp second (partial re-find choice))
+                choices)))))
 
 (defn parse-paragraph [paragraph]
-  (interpose {:type :br}
-             (map #(str/replace % #"\n" " ")
-                  (str/split paragraph #"\n\n"))))
+  (->Paragraph
+   (interpose (->Breakline)
+              (map #(str/replace % #"\n" " ")
+                   (str/split paragraph #"\n\n")))))
+
+(defn parse-page [page-id question-id page-text]
+  (loop [content (remove-line page-text)
+         question-id question-id
+         page []]
+    (if (str/blank? content)
+      [(->Page
+        page-id
+        (parse-header (first-line page-text))
+        page)
+       question-id]
+      (let [line (first-line content)]
+        (cond (re-matches heading line)
+              (recur (remove-line content)
+                     question-id
+                     (conj page (parse-heading line)))
+              
+              (re-matches question-start line)
+              (let [question-block (re-find question-block content)]
+                (recur (str/replace-first content question-block "")
+                       (inc question-id)
+                       (conj page (parse-question question-id
+                                                  question-block))))
+
+              (re-matches text line)
+              (let [paragraph (re-find paragraph content)]
+                (recur (str/replace-first content paragraph "")
+                       question-id
+                       (conj page (parse-paragraph paragraph))))
+
+              :else
+              (recur (remove-line content) question-id page))))))
 
 (defn parse-document [document]
-  (let [line (first-line document)]
-    (cond (str/blank? document)
-          (str/trim document)
+  (loop [document document
+         page-id 1
+         question-id 1
+         content []]
+    (let [line (first-line document)
+          page-text (re-find page document)]
+      (if (str/blank? document)
+            content
+            (if page-text
+              (let [[page question-id]  (parse-page page-id
+                                                    question-id
+                                                    page-text)]
+                (recur (str/replace-first document page-text "")
+                       (inc page-id)
+                       question-id
+                       (conj content page)))
+              (recur (remove-line document)
+                     page-id
+                     question-id
+                     content))))))
 
-          (re-matches header line)
-          (let [page (re-find page document)
-                page-id (swap! page-nb inc)]
-            (cons {:type :page
-                   :id (format "page-%s" page-id)
-                   :header (parse-header line)
-                   :content (parse-document (remove-line page))}
-                  (parse-document
-                   (str/replace-first document page ""))))
-
-          (re-matches heading line)
-          (cons (parse-heading line)
-                (parse-document (remove-line document)))
-
-          (re-matches question-start line)
-          (let [question-block (re-find question-block document)]
-            (cons (parse-question question-block)
-                  (parse-document
-                   (str/replace-first document question-block ""))))
-
-          ;;; should create a match for unordered lists
-          ;;; maybe even ordered lists as well
-          
-          (re-matches text line)
-          (let [paragraph (re-find paragraph document)]
-            (cons {:type :p :content (parse-paragraph paragraph)}
-                  (parse-document
-                   (str/replace-first document paragraph ""))))
-
-          :else
-          (parse-document (remove-line document)))))
 
 (defn parse [spm]
-  (reset! page-nb 0)
-  (reset! question-nb 0)
   (let [document (slurp spm)
         title (re-find title document)]
-    {:type :document
-     :title (second title)
-     :body (parse-document
-            (str/replace-first
-             document (if (nil? title)
-                        "" (first title)) ""))}))
+    (->Document
+     (second title)
+     (parse-document
+      (str/replace-first
+       document
+       (if (nil? title) "" (first title))
+       "")))))

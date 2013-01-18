@@ -38,7 +38,7 @@
   body)
 
 (defpartial left-button [{:keys [id link label inline data-ajax]
-                          :or [inline "true" id ""]}]
+                          :or [label "Tilbake" inline "false" id ""]}]
   [:a {:href link
        :id id
        :data-role "button"
@@ -47,7 +47,7 @@
    label])
 
 (defpartial right-button [{:keys [link label inline id]
-                           :or {inline "true" id ""}}]
+                           :or {label "Neste" inline "false" id ""}}]
   [:a {:href link
        :data-role "button"
        :id id
@@ -55,6 +55,14 @@
        :data-iconpos "right"
        :data-inline inline}
    label])
+
+(defpartial submit-button []
+  [:input {:data-icon "arrow-r"
+           :data-iconpos "right"
+           :data-inline "false"
+           :type "submit"
+           :name "submitter"
+           :value "Levér"}])
 
 (defpartial menu-button [{:keys [label]}]
   [:a {:class "ui-btn-right"
