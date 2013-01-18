@@ -12,3 +12,7 @@ pom.xml
 passwd
 
 .DS_Store
+
+.lein-repl-history
+
+*.clj#
