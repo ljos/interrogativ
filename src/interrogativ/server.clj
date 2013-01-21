@@ -37,13 +37,14 @@
     (cljs/build (:src-dir options) options)))
 
 (defn -main [& m]
-  (let [mode (keyword (or (first m) :dev))
+  (let [mode (keyword (or (first m) :prod))
         port (Integer. (get (System/getenv) "PORT" "8080"))
         option (if (= :dev mode) :simple :advanced)]
-    (build option options-all)
-    (build option options-editor)
-    (build option options-mobile)
-    (build option options-upload)
+    (when (= :dev mode)
+      (build option options-all)
+      (build option options-editor)
+      (build option options-mobile)
+      (build option options-upload))
     (server/start port {:mode mode
                         :ns 'interrogativ})
     (doseq [file (.listFiles (io/file "qs/"))
