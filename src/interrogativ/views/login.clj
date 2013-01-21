@@ -50,8 +50,9 @@
 
 (defpage [:post "/login"] {:keys [uname pword]}
   (let [encrypted (passwd-for uname)]
-    (if-not (or (not (empty? encrypted))
-                (crypt/compare pword encrypted))
-      (redirect "/login")
-      (do (session/put! :admin true)
-          (redirect "/data")))))
+    (if (and (not (str/blank? encrypted))
+             (crypt/compare pword encrypted))
+      (do (session/put! :user uname)
+          (log/info uname "logged in.")
+          (redirect "/data"))
+      (redirect "/login"))))
