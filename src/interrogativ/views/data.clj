@@ -48,8 +48,7 @@
                [:a "Data"
                 [:span {:class "divider"} " : "]]]
               [:li
-               [:a {:href (if frontpage
-                            "/" (str "/qs/" page))}
+               [:a {:href (if frontpage "/" (str "/qs/" page))}
                 "page"]]
               (when-not frontpage
                 (list [:li
@@ -92,7 +91,7 @@
               [:button {:class "btn btn-primary"
                         :id "choose-btn"
                         :type "button"}
-               "Choose file"]
+               "Upload "]
               [:span {:class "input-xlarge uneditable-input"
                       :type "text"}]]
              [:div {:class "input-prepend"
