@@ -10,15 +10,15 @@
         [hiccup.page :only [include-js]]))
 
 (pre-route "/data" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
-
-(pre-route "/data/*" {}
-  (if-not (session/get :admin)
+  (if-not (session/get :user)
     (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))
+
+(pre-route "/data/*" {}
+  (if-not (session/get :user)
+    (redirect "/login")))
 
 (defn directory-to-links [dir]
   (for [f (.listFiles (io/file (str "db/" dir)))

@@ -8,7 +8,7 @@
         [noir.response :only [redirect]]))
 
 (pre-route "/upload" {}
-  (if-not (session/get :admin)
+  (if-not (session/get :user)
     (redirect "/login")))
 
 (defpage [:post "/upload"] data

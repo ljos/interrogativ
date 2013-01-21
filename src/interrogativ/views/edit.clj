@@ -8,11 +8,11 @@
         [hiccup.page :only [include-js include-css]]))
 
 (pre-route "/edit*" {}
-  (if-not (session/get :admin)
+  (if-not (session/get :user)
     (redirect "/login")))
 
 (defpage "/edit/:page" {:keys [page]}
-  (log/info "Editing page:" page)
+  (log/info (session/get :user) "editing page:" page)
   (common/layout
    {:title (str "Edit " page)
     :body (common/body
