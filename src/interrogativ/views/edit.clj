@@ -17,6 +17,7 @@
    {:title (str "Edit " page)
     :body (common/body
            (include-css "/css/editor.css")
+           (include-js "/ace/ace.js")
            [:form {:name "editor"
                    :action "/upload"
                    :method "post"}
@@ -55,7 +56,5 @@
                (catch FileNotFoundException _
                  (log/info "File not found: "
                            (str "qs/" page ".spm"))))]]
-           (include-js (str "http://d1n0x3qji82z53.cloudfront.net/"
-                            "src-min-noconflict/ace.js"))
            (include-js "/cljs/editor.js"))}))
 
