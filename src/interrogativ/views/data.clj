@@ -80,6 +80,19 @@
                      page]
                     [:br]))
             [:hr]
+            [:div {:class "btn-toolbar"}
+             [:form  {:method "post"
+                      :action "/new"}
+              [:div {:class "input-prepend"}
+               [:button {:class "btn btn-primary"
+                         :type "submit"}
+                [:i {:class "icon-plus icon-white"}]
+                " New"]
+               [:input {:id "new"
+                        :name "new"
+                        :class "input-xlarge"
+                       :type "text"}]]]]
+            [:p " or "]
             [:form {:method "post"
                     :enctype "multipart/form-data"
                     :action "/upload"}
