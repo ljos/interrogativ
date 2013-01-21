@@ -16,6 +16,7 @@
         (let [file (:file data)]
           (when-let [filename (not-empty (:filename file))]
             (data/upload-file file)
+            (log/info (session/get :user) "uploading file " file)
             (spm/create-page-from (str "qs/" filename)))
           (redirect "/data"))
 
@@ -23,7 +24,7 @@
         (let [page (:page data)
               text (str/replace (:text data) "\r" "")
               file (str "qs/" page ".spm")]
-          (log/info "Uploading revision to " file)
+          (log/info (session/get :user) "uploading revision to " file)
           (spit file text)
           (spm/create-page-from file)
           (redirect (str "/data/" page)))

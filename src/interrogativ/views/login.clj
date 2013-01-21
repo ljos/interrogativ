@@ -1,6 +1,6 @@
 (ns interrogativ.views.login
   (:require [interrogativ.views.common :as common]
-            [clojure.tools.logging :as log]
+            [clojure.tools.logging :as log]            
             [noir.util.crypt :as crypt]
             [noir.session :as session]
             [clojure.string :as str]
