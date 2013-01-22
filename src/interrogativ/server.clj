@@ -37,10 +37,10 @@
     (cljs/build (:src-dir options) options)))
 
 (defn -main [& m]
-  (let [mode (keyword (or (first m) :prod))
+  (let [mode (keyword (or (first m) :dev))
         port (Integer. (get (System/getenv) "PORT" "8080"))
         option (if (= :dev mode) :simple :advanced)]
-    (when (= :dev mode)
+    (when (= :dev (first m))
       (build option options-all)
       (build option options-editor)
       (build option options-mobile)
