@@ -22,23 +22,15 @@
                             (mobile/left-button
                              {:link (format "#%s" (:id prev))
                               :id (if (= "ferdig" (:id page))
-                                    "tilbakeinnhold")
-                              :inline "false"
-                              :label "Tilbake"}))
+                                    "tilbakeinnhold")}))
                  :block-c (cond (= "ferdig" (:id page))
-                                [:input {:data-icon "arrow-r"
-                                         :data-iconpos "right"
-                                         :data-inline "false"
-                                         :type "submit"
-                                         :name "submitter"
-                                         :value "Levér"}]
+                                (mobile/submit-button)
+                                
                                 (not (nil? next))
                                 (mobile/right-button
                                  {:link (format "#%s" (:id next))
                                   :id (if (= "ferdig" (:id next))
-                                        "tilferdig")
-                                  :inline "false"
-                                  :label "Neste"}))}))}))
+                                        "tilferdig")}))}))}))
 
 (defn create-mobile-page [pages previous-page page next-page]
   (mobile/page
