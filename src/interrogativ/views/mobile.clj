@@ -21,19 +21,7 @@
    (include-js
     (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
    (include-js "/cljs/mobile.js")
-   [:style {:type "text/css"}
-    ".ui-header .ui-title, .ui-footer .ui-title {
-         margin-left:  0;
-         margin-right: 0;
-     }
-    .ui-footer {
-         position: absolute;
-         bottom: 0px;
-         width: 100%;
-    }
-    .ui-content {
-        margin-bottom: 1cm;
-    }"]]
+   (include-css "css/mobile.css")]
   body)
 
 (defpartial left-button [{:keys [id link label inline]
