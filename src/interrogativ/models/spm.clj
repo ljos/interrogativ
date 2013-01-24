@@ -71,8 +71,11 @@
 (defn create-mobile-survey [page-name pages]
   [:form {:action (str page-name "/takk")
           :method "post"}
-   (create-mobile-content (butlast pages))
-   (create-submit-page (last (butlast pages)) (last pages))
+   (create-mobile-content
+    (assoc pages
+      (dec (count pages))
+      (assoc (last pages)
+        :id "ferdig")))
    (mobile/page
     {:id "meny"
      :header (mobile/header
