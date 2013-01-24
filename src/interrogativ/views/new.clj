@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [noir.session :as session]
             [clojure.tools.logging :as log]
-            [interrogativ.views.spm :as spm]
+            [interrogativ.models.spm :as spm]
             [interrogativ.views.common :as common])
   (:use [noir.response :only [redirect]]
         [noir.core :only [defpage pre-route]]))
@@ -18,5 +18,5 @@
           user (session/get :user)]
       (log/info user "created new survey:" file)
       (spit file "")
-      (spm/create-page-from file)
+      (spm/create-survey-from file)
       (redirect (str "/data/" new)))))
