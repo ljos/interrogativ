@@ -1,6 +1,5 @@
 pom.xml
 *jar
-/resources/
 /target/
 /lib/
 /db/
@@ -16,3 +15,5 @@ passwd
 .lein-repl-history
 
 *.clj#
+
+resources/public/cljs/*

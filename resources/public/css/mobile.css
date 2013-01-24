@@ -1,0 +1,14 @@
+.ui-header .ui-title, .ui-footer .ui-title {
+    margin-left:  0;
+    margin-right: 0;
+}
+
+.ui-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.ui-content {
+    margin-bottom: 1cm;
+}
