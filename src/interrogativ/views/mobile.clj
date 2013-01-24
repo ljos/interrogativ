@@ -1,9 +1,9 @@
 (ns interrogativ.views.mobile
-  (:require [interrogativ.views.common :as common]
-            [clojure.string :only [replace lower-case] :as str])
+  (:require [clojure.string :only [replace lower-case] :as str]
+            [interrogativ.views.common :as common])
   (:use [hiccup.core :only [html]]
-        [noir.core :only [defpartial]]
-        [hiccup.page :only [include-js include-css]])
+        [hiccup.page :only [include-js include-css]]
+        [noir.core :only [defpartial]])
   (:refer-clojure :exclude [name id]))
 
 (defpartial body [& content]

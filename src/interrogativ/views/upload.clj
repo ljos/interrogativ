@@ -1,15 +1,15 @@
 (ns interrogativ.views.upload
-  (:require [interrogativ.models.data :as data]
-            [interrogativ.views.spm :as spm]
-            [noir.session :as session]
-            [clojure.string :as str]
-            [clojure.tools.logging :as log])
+  (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
+            [interrogativ.models.spm :as spm]
+            [noir.session :as session])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
 
 (pre-route "/upload" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (defpage [:post "/upload"] data
   (cond (:file data)

@@ -1,10 +1,10 @@
 (ns interrogativ.views.main
-  (:require [interrogativ.views.mobile :as mobile]
-            [interrogativ.models.data :as data]
+  (:require [interrogativ.models.data :as data]
+            [interrogativ.views.mobile :as mobile]
             [noir.cookies :as cookies])
-  (:use [noir.core :only [defpage]]
-        [noir.response :only [redirect]]
-        [hiccup.core :only [html]]))
+  (:use [hiccup.core :only [html]]
+        [noir.core :only [defpage]]
+        [noir.response :only [redirect]]))
 
 (def forside
   (mobile/page

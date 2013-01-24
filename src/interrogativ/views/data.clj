@@ -1,21 +1,21 @@
 (ns interrogativ.views.data
-  (:require [interrogativ.views.common :as common]
-            [interrogativ.models.data :as data]
-            [noir.session :as session]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.java.io :as io]
-            [clojure.tools.logging :as log])
-  (:use [noir.core :only [defpage pre-route]]
-        [noir.response :only [redirect]]
-        [hiccup.page :only [include-js]]))
+            [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
+            [interrogativ.views.common :as common]
+            [noir.session :as session])
+  (:use [hiccup.page :only [include-js]]
+        [noir.core :only [defpage pre-route]]
+        [noir.response :only [redirect]]))
 
 (pre-route "/data" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (pre-route "/data/*" {}
-  (if-not (session/get :admin)
-    (redirect "/login")))
+           (if-not (session/get :admin)
+             (redirect "/login")))
 
 (defpage "/data/" {}
   (redirect "/data"))

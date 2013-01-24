@@ -8,8 +8,8 @@
         [noir.response :only [redirect content-type]]))
 
 (pre-route "/download/*" {}
-  (if-not (session/get :admin)
-    (redirect "login")))
+           (if-not (session/get :admin)
+             (redirect "login")))
 
 (defpage "/download/:file" {:keys [file]}
   (try

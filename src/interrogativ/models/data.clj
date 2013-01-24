@@ -2,8 +2,8 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.tools.logging :as log])
-  (:import [java util.Calendar
-                 text.SimpleDateFormat]))
+  (:import [java text.SimpleDateFormat
+            util.Calendar]))
 
 (def today (.format (SimpleDateFormat. "yyyy-MM-dd")
                     (.getTime (Calendar/getInstance))))
@@ -58,7 +58,7 @@
                 (map :informant
                      (read-string
                       (str "[" (slurp file) "]"))))
-         (sorted-set))))))
+          (sorted-set))))))
 
 (defn store-answer
   ([answer]
@@ -71,7 +71,7 @@
                             (:informant answer))
          (swap! domains
            update-in [page-key :submits]
-             conj (:informant answer))
+           conj (:informant answer))
          (async-append (get-in @domains [page-key :store])
                        (str answer "\n"))))))
 

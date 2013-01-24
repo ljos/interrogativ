@@ -1,10 +1,10 @@
 (ns interrogativ.server
-  (:gen-class)
-  (:require [noir.server :as server]
-            [noir.cljs.core :as client]
+  (:require [cljs.closure :as cljs]
             [clojure.java.io :as io]
-            [cljs.closure :as cljs]
-            [interrogativ.views.spm :as spm]))
+            [interrogativ.models.spm :as spm]
+            [noir.cljs.core :as client]
+            [noir.server :as server])
+  (:gen-class))
 
 (server/load-views-ns 'interrogativ.views)
 

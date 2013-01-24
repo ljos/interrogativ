@@ -1,6 +1,7 @@
 (ns interrogativ.views.qs
   (:require [clojure.tools.logging :as log]
-            [noir.cookies :as cookies])
+            [noir.cookies :as cookies]
+            [interrogativ.models.data :as data])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
 

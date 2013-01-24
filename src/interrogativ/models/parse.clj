@@ -247,10 +247,10 @@
   (let [document (slurp spm)
         title (re-find title document)
         [survey post] (parse-document
-                            (str/replace-first
-                             document
-                             (if (nil? title) "" (first title))
-                             ""))]
+                       (str/replace-first
+                        document
+                        (if (nil? title) "" (first title))
+                        ""))]
     (->Document
      (second title)
      survey

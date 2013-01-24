@@ -1,8 +1,8 @@
 (ns interrogativ.models.spm
-  (:require [interrogativ.models.parse :as parse]
-            [interrogativ.views.mobile :as mobile]
-            [clojure.tools.logging :as log]
-            [interrogativ.models.data :as data])
+  (:require [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
+            [interrogativ.models.parse :as parse]
+            [interrogativ.views.mobile :as mobile])
   (:use [hiccup.core :only [html]]))
 
 (defn create-header [page-id pages header]
@@ -74,12 +74,12 @@
    (create-mobile-content (butlast pages))
    (create-submit-page (last (butlast pages)) (last pages))
    (mobile/page
-     {:id "meny"
-      :header (mobile/header
-               {:content [:h1 "Meny"]})
-      :content [:div {:data-role "content"
-                      :data-theme "c"}
-                [:p {:id "menyp"}]]})])
+    {:id "meny"
+     :header (mobile/header
+              {:content [:h1 "Meny"]})
+     :content [:div {:data-role "content"
+                     :data-theme "c"}
+               [:p {:id "menyp"}]]})])
 
 (defrecord Survey [survey post])
 

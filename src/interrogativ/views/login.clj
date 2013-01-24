@@ -1,10 +1,10 @@
 (ns interrogativ.views.login
-  (:require [interrogativ.views.common :as common]
-            [clojure.tools.logging :as log]
-            [noir.util.crypt :as crypt]
-            [noir.session :as session]
+  (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.java.io :as io])
+            [clojure.tools.logging :as log]
+            [interrogativ.views.common :as common]
+            [noir.session :as session]
+            [noir.util.crypt :as crypt])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
 

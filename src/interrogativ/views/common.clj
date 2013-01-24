@@ -1,6 +1,6 @@
 (ns interrogativ.views.common
-  (:use [noir.core :only [defpartial]]
-        [hiccup.page :only [include-js include-css]]))
+  (:use [hiccup.page :only [include-js include-css]]
+        [noir.core :only [defpartial]]))
 
 (def jquery "http://code.jquery.com/")
 
