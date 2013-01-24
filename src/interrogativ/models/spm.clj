@@ -23,6 +23,7 @@
                              {:link (format "#%s" (:id prev))
                               :id (if (= "ferdig" (:id page))
                                     "tilbakeinnhold")}))
+                 
                  :block-c (cond (= "ferdig" (:id page))
                                 (mobile/submit-button)
                                 
