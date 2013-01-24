@@ -9,6 +9,8 @@
 (defpage "/qs/:page" [{:keys [page]}]
   (get @data/pages (keyword page)))
 
+(defpage "/qs/:page/takk" {:keys [page]}
+  (:post (data/survey-for-name (str "/qs/" page))))
 
 (defpage [:post "/qs/:page/takk"] data
   (let [submitter-id (data/generate-submitter-id)]

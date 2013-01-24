@@ -69,7 +69,7 @@
   (create-mobile-page 0 previous-page (assoc page :id "ferdig") nil))
 
 (defn create-mobile-survey [page-name pages]
-  [:form {:action (str page-name "/takk/page-1")
+  [:form {:action (str page-name "/takk")
           :method "post"}
    (create-mobile-content (butlast pages))
    (create-submit-page (last (butlast pages)) (last pages))
