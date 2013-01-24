@@ -1,9 +1,9 @@
 (ns interrogativ.views.upload
-  (:require [interrogativ.models.data :as data]
-            [interrogativ.views.spm :as spm]
-            [noir.session :as session]
-            [clojure.string :as str]
-            [clojure.tools.logging :as log])
+  (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
+            [interrogativ.models.spm :as spm]
+            [noir.session :as session])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
 
@@ -17,7 +17,7 @@
           (when-let [filename (not-empty (:filename file))]
             (data/upload-file file)
             (log/info (session/get :user) "uploading file " file)
-            (spm/create-page-from (str "qs/" filename)))
+            (spm/create-survey-from (str "qs/" filename)))
           (redirect "/data"))
 
         (:text data)
@@ -26,7 +26,7 @@
               file (str "qs/" page ".spm")]
           (log/info (session/get :user) "uploading revision to " file)
           (spit file text)
-          (spm/create-page-from file)
+          (spm/create-survey-from file)
           (redirect (str "/data/" page)))
 
         :else

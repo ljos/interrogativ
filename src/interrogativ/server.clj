@@ -1,9 +1,9 @@
 (ns interrogativ.server
-  (:require [noir.server :as server]
-            [noir.cljs.core :as client]
+  (:require [cljs.closure :as cljs]
             [clojure.java.io :as io]
-            [cljs.closure :as cljs]
-            [interrogativ.views.spm :as spm])
+            [interrogativ.models.spm :as spm]
+            [noir.cljs.core :as client]
+            [noir.server :as server])
   (:gen-class))
 
 (server/load-views-ns 'interrogativ.views)
@@ -49,5 +49,4 @@
                         :ns 'interrogativ})
     (doseq [file (.listFiles (io/file "qs/"))
             :when (not (.isDirectory file))]
-      (spm/create-page-from (.getPath file)))))
-
+      (spm/create-survey-from (.getPath file)))))

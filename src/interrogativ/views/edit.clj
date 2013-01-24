@@ -1,15 +1,16 @@
 (ns interrogativ.views.edit
-  (:require [interrogativ.views.common :as common]
-            [noir.session :as session]
-            [clojure.tools.logging :as log])
+  (:require [clojure.tools.logging :as log]
+            [interrogativ.views.common :as common]
+            [noir.session :as session])
   (:import [java.io FileNotFoundException])
-  (:use [noir.core :only [defpage pre-route]]
-        [noir.response :only [redirect]]
-        [hiccup.page :only [include-js include-css]]))
+  (:use [hiccup.page :only [include-js include-css]]
+        [noir.core :only [defpage pre-route]]
+        [noir.response :only [redirect]]))
 
 (pre-route "/edit*" {}
-  (if-not (session/get :user)
-    (redirect "/login")))
+           (if-not (session/get :user)
+             (redirect "/login")))
+
 
 (defpage "/edit/:page" {:keys [page]}
   (log/info (session/get :user) "editing page:" page)

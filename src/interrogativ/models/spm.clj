@@ -1,163 +1,111 @@
 (ns interrogativ.models.spm
-  (:require [clojure.string :as str]))
+  (:require [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
+            [interrogativ.models.parse :as parse]
+            [interrogativ.views.mobile :as mobile])
+  (:use [hiccup.core :only [html]]))
 
-(def document #"^(?s).*\z")
-(def title #"=+\s*(.*?)\s*=+\n*")
-(def page #"(?s)#[^#].*?(?=\n#[^#]|\z)")
-(def header #"^#[^#]\s*.*")
-(def heading #"(?m)^##+.*")
-(def paragraph #"(?s).*?(?=\n\n\n|\n#|\n\s*\?:|\z)")
-(def text #"^\s*[^#?+*<-].*")
-(def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n\n|\z)")
-(def question-start #"\s*\?:\s*.*")
-(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[+*<-]|\z)")
-(def choice #"(?s)[\[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
-(def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
-(def textarea #"\s*\[txt:?(.*)?\]\s*")
+(defn create-header [page-id pages header]
+  (mobile/header
+   {:content (list [:h1 (:value header)]
+                   (if-let [page-nb (re-find #"\d+" page-id)]
+                     (mobile/menu-button
+                      {:label (format " %s / %s " page-nb pages)})))}))
 
-(def page-nb (atom 0))
-(def question-nb (atom 0))
-(def submit-page (atom :not-set))
+(defn create-footer [prev page next]
+  (mobile/footer
+   {:id (format "footer-%s" (:id page))
+    :content (if (and (nil? prev) (nil? next))
+               [:h1 " "]
+               (mobile/grid-b
+                {:block-a (if-not (nil? prev)
+                            (mobile/left-button
+                             {:link (format "#%s" (:id prev))
+                              :id (if (= "ferdig" (:id page))
+                                    "tilbakeinnhold")}))
+                 
+                 :block-c (cond (= "ferdig" (:id page))
+                                (mobile/submit-button)
+                                
+                                (not (nil? next))
+                                (mobile/right-button
+                                 {:link (format "#%s" (:id next))
+                                  :id (if (= "ferdig" (:id next))
+                                        "tilferdig")}))}))}))
 
-(defn remove-line [string]
-  (str/replace-first string #".*(\n|\z)" ""))
+(defn create-mobile-page [pages previous-page page next-page]
+  (mobile/page
+   {:id (:id page)
+    :header (create-header (:id page)
+                           pages
+                           (:header page))
+    :content (mobile/content
+              (when (= "ferdig" (:id page))
+                [:div {:class "ikkeferdig"}])
+              (map parse/hiccup (:content page)))
+    :footer (create-footer previous-page
+                           page
+                           next-page)}))
 
-(defn first-line [string]
-  (re-find #".*" string))
+(defn create-mobile-content [mcontent]
+  (loop [content (rest mcontent)
+         page (first mcontent)
+         previous-page nil
+         next-page (first content)
+         pages []]
+    (if (nil? page)
+      (seq pages)
+      (let [html-page (create-mobile-page (count mcontent) 
+                                          previous-page
+                                          page
+                                          next-page)]
+        (recur (rest content)
+               (first content)
+               page
+               (second content)
+               (conj pages html-page))))))
 
-(defn parse-header [header]
-  {:type :header
-   :value (->> header
-               (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)")
-               second
-               str/trim)
-   :options (re-seq #":\w+" header)})
+(defn create-submit-page [previous-page page]
+  (create-mobile-page 0 previous-page (assoc page :id "ferdig") nil))
 
-(defn parse-heading [heading]
-  {:type :heading
-   :h (->> heading
-           str/trimr
-           (re-find #"#+")
-           count
-           (format "h%s")
-           keyword)
-   :value (second (re-find #"#+\s*(.*)" heading))})
+(defn create-mobile-survey [page-name pages]
+  [:form {:action (str page-name "/takk")
+          :method "post"}
+   (create-mobile-content
+    (assoc pages
+      (dec (count pages))
+      (assoc (last pages)
+        :id "ferdig")))
+   (mobile/page
+    {:id "meny"
+     :header (mobile/header
+              {:content [:h1 "Meny"]})
+     :content [:div {:data-role "content"
+                     :data-theme "c"}
+               [:p {:id "menyp"}]]})])
 
-(defn parse-question [question-block]
-  (let [nb (swap! question-nb inc)
-        name (format "spm-%s" nb)
-        question (second (re-find question question-block))
-        label (str nb ". " (-> question
-                               (str/replace #"\n+|:\w+\s*" " ")
-                               str/trim))
-        options (second (re-seq #":\w+" question))
-        choices (map first (re-seq choice question-block))]
-    (cond (empty? choices)
-          {:type :question
-           :question :select
-           :label label
-           :options options
-           :values ["missing values"]}
-          
-          (not-empty (filter (partial re-matches #"^\*.*") choices))
-          {:type :question
-           :question :radio-table
-           :name name
-           :label label
-           :options options
-           :sections (map (comp second (partial re-find choice))
-                          (filter (partial re-matches #"^-.*") choices))
-           :values (map (comp second (partial re-find choice))
-                        (filter (partial re-matches #"^\*.*") choices))}
+(defrecord Survey [survey post])
 
-          (re-matches slider (first choices))
-          (let [slider (re-find slider (first choices))]
-            {:type :question
-             :question :slider
-             :name name
-             :label label
-             :options options
-             :min (nth slider 1)
-             :max (nth slider 2)
-             :value (nth slider 3)})
+(defn create-survey [page-name document]
+  (let [survey (:survey document)
+        post   (:post document)]
+    (->Survey
+     (if (seq post)
+       (mobile/layout
+        {:title (:title document)
+         :body (mobile/body
+                (create-mobile-survey page-name survey))})
+       (do (log/info "Missing submit-page for page:" page-name)
+           (html [:h1 "Missing submit-page"]) :Nothing))
+     (mobile/layout
+      {:title (:title document)
+       :body  (mobile/body
+               (create-mobile-content post))}))))
 
-          (re-matches textarea (first choices))
-          (let [textarea (second (re-find textarea (first choices)))]
-            {:type :question
-             :question :textarea
-             :name name
-             :label label
-             :options options
-             :value textarea})
-
-          (empty? (remove (partial re-matches #"^\+.*") choices))
-          {:type :question
-           :question :select
-           :name name
-           :label label
-           :options options
-           :values (map (comp second (partial re-find choice))
-                        choices)}
-
-          (not-empty (filter (partial re-matches #"^-.*") choices))
-          {:type :question
-           :question :radio-group
-           :name name
-           :label label
-           :options options
-           :groups (map (comp second (partial re-find choice))
-                        choices)})))
-
-(defn parse-paragraph [paragraph]
-  (interpose {:type :br}
-             (map #(str/replace % #"\n" " ")
-                  (str/split paragraph #"\n\n"))))
-
-(defn parse-document [document]
-  (let [line (first-line document)]
-    (cond (str/blank? document)
-          (str/trim document)
-
-          (re-matches header line)
-          (let [page (re-find page document)
-                page-id (swap! page-nb inc)]
-            (cons {:type :page
-                   :id (format "page-%s" page-id)
-                   :header (parse-header line)
-                   :content (parse-document (remove-line page))}
-                  (parse-document
-                   (str/replace-first document page ""))))
-
-          (re-matches heading line)
-          (cons (parse-heading line)
-                (parse-document (remove-line document)))
-
-          (re-matches question-start line)
-          (let [question-block (re-find question-block document)]
-            (cons (parse-question question-block)
-                  (parse-document
-                   (str/replace-first document question-block ""))))
-
-          ;;; should create a match for unordered lists
-          ;;; maybe even ordered lists as well
-          
-          (re-matches text line)
-          (let [paragraph (re-find paragraph document)]
-            (cons {:type :p :content (parse-paragraph paragraph)}
-                  (parse-document
-                   (str/replace-first document paragraph ""))))
-
-          :else
-          (parse-document (remove-line document)))))
-
-(defn parse [spm]
-  (reset! page-nb 0)
-  (reset! question-nb 0)
-  (let [document (slurp spm)
-        title (re-find title document)]
-    {:type :document
-     :title (second title)
-     :body (parse-document
-            (str/replace-first
-             document (if (nil? title)
-                        "" (first title)) ""))}))
+(defn create-survey-from [file]
+  (log/info "Create page from file:" file)
+  (let [page-name (format "/%s" (re-find #".*?(?=\.|\z)" file))
+        document (parse/parse file)
+        survey  (create-survey page-name document)]
+    (data/create-store page-name)
+    (data/store-survey page-name survey)))

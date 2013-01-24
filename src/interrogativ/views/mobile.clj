@@ -1,9 +1,9 @@
 (ns interrogativ.views.mobile
-  (:require [interrogativ.views.common :as common]
-            [clojure.string :only [replace lower-case] :as str])
+  (:require [clojure.string :only [replace lower-case] :as str]
+            [interrogativ.views.common :as common])
   (:use [hiccup.core :only [html]]
-        [noir.core :only [defpartial]]
-        [hiccup.page :only [include-js include-css]])
+        [hiccup.page :only [include-js include-css]]
+        [noir.core :only [defpartial]])
   (:refer-clojure :exclude [name id]))
 
 (defpartial body [& content]
@@ -37,8 +37,8 @@
     }"]]
   body)
 
-(defpartial left-button [{:keys [id link label inline data-ajax]
-                          :or [inline "true" id ""]}]
+(defpartial left-button [{:keys [id link label inline]
+                          :or {label "Tilbake" inline "false" id nil}}]
   [:a {:href link
        :id id
        :data-role "button"
@@ -46,8 +46,8 @@
        :data-inline inline}
    label])
 
-(defpartial right-button [{:keys [link label inline id]
-                           :or {inline "true" id ""}}]
+(defpartial right-button [{:keys [id link label inline]
+                           :or {label "Neste" inline "false" id nil}}]
   [:a {:href link
        :data-role "button"
        :id id
@@ -55,6 +55,14 @@
        :data-iconpos "right"
        :data-inline inline}
    label])
+
+(defpartial submit-button []
+  [:input {:data-icon "arrow-r"
+           :data-iconpos "right"
+           :data-inline "false"
+           :type "submit"
+           :name "submitter"
+           :value "Levér"}])
 
 (defpartial menu-button [{:keys [label]}]
   [:a {:class "ui-btn-right"
@@ -94,19 +102,19 @@
          [:div {:class "ui-block-c"} block-c])])))
 
 (defpartial header [{:keys [data-position content data-theme]
-                     :or {data-position "" data-theme "a"}}]
+                     :or {data-position nil data-theme "a"}}]
   [:div {:data-role "header"
          :data-position data-position
          :data-theme data-theme}
    content])
 
 (defpartial footer [{:keys [data-position content id]
-                     :or {data-position "" id ""}}]
+                     :or {data-position nil id nil}}]
   [:div {:id id :data-role "footer" :data-position data-position}
    content])
 
 (defpartial page [{:keys [id header content footer data-title data-theme]
-                   :or {id "" header "" footer "" data-title "" data-theme ""}}]
+                   :or {id nil header nil footer nil data-title nil data-theme nil}}]
   [:div {:data-role "page"
          :id id
          :data-title data-title
@@ -126,7 +134,7 @@
        second))
 
 (defpartial radio-group [{:keys [name label groups type]
-                          :or {type "" id name}}]
+                          :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:div {:id name
           :title (title label)
