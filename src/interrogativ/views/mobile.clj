@@ -20,7 +20,6 @@
     (str common/jquery "jquery-1.8.2.min.js"))
    (include-js
     (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
-   (include-js "/js/interrogativ.js")
    (include-js "/cljs/mobile.js")
    [:style {:type "text/css"}
     ".ui-header .ui-title, .ui-footer .ui-title {

@@ -97,13 +97,13 @@
                    " data-rel=\"back\""
                    " data-role=\"button\""
                    " data-theme=\"a\">"
-                   "Tilbake</a>")))
-  (jq/trigger $menyp "create")
-  (jq/bind ($ :#avslutt) :click (fn []
-    (jq/fade-out $menyp "fast" (fn []
-      (jq/inner $menyp
-                (str "<h4>Er du sikker på at du vil avslutte?</h4>"
-                     "<a href=\"#ferdig\" data-role=\"button\">Ja</a>"
-                     "<a href=\"#\" data-rel=\"back\" data-role=\"button\">Nei</a>"))
-      (jq/trigger $menyp :create)
-      (jq/fade-in $menyp "slow")))))))
+                   "Tilbake</a>"))
+    (jq/trigger $menyp "create")
+    (jq/bind ($ :#avslutt) :click (fn []
+      (jq/fade-out $menyp "fast" (fn []
+        (jq/inner $menyp
+                  (str "<h4>Er du sikker på at du vil avslutte?</h4>"
+                       "<a href=\"#ferdig\" data-role=\"button\">Ja</a>"
+                       "<a href=\"#\" data-rel=\"back\" data-role=\"button\">Nei</a>"))
+        (jq/trigger $menyp :create)
+        (jq/fade-in $menyp "slow"))))))))

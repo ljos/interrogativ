@@ -2,9 +2,27 @@
   :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
-                 [noir-cljs "0.3.7"]
                  [org.clojure/clojure "1.4.0"]
-                 [org.clojure/clojurescript "0.0-1450"]
                  [org.clojure/tools.logging "0.2.3"]]
-  :exclusions [org.clojure/clojure]
-  :main ^{:skip-aot true} interrogativ.server)
+  :plugins [[lein-cljsbuild "0.3.0"]]
+  :hools [leiningen.cljsbuild]
+  :cljsbuild
+  {:builds [{:source-paths ["cljs-src/editor"]
+             :compiler
+             {:output-to "resources/public/cljs/editor.js"
+              :optimization :whitespace
+              :pretty-print true
+              :externs ["externs/jquery-1.8.js"]}}
+            {:source-paths ["cljs-src/mobile"]
+             :compiler
+             {:output-to "resources/public/cljs/mobile.js"
+              :optimization :whitespace
+              :pretty-print true
+              :externs ["externs/jquery-1.8.js"]}}
+            {:source-paths ["cljs-src/upload"]
+             :compiler
+             {:output-to "resources/public/cljs/upload.js"
+              :optimization :whitespace
+              :pretty-print true
+              :externs ["externs/jquery-1.8.js"]}}]}
+  :main interrogativ.server)
