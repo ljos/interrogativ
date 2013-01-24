@@ -37,8 +37,8 @@
     }"]]
   body)
 
-(defpartial left-button [{:keys [id link label inline data-ajax]
-                          :or [label "Tilbake" inline "false" id ""]}]
+(defpartial left-button [{:keys [id link label inline]
+                          :or {label "Tilbake" inline "false" id nil}}]
   [:a {:href link
        :id id
        :data-role "button"
