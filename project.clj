@@ -5,7 +5,7 @@
                  [org.clojure/clojure "1.4.0"]
                  [org.clojure/tools.logging "0.2.3"]]
   :plugins [[lein-cljsbuild "0.3.0"]]
-  :hools [leiningen.cljsbuild]
+  :hooks [leiningen.cljsbuild]
   :cljsbuild
   {:builds [{:source-paths ["cljs-src/editor"]
              :compiler
