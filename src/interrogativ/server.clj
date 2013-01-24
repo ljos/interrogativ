@@ -48,5 +48,5 @@
                         :ns 'interrogativ})
     (doseq [file (.listFiles (io/file "qs/"))
             :when (not (.isDirectory file))]
-      (spm/create-page-from (.getPath file)))))
+      (spm/create-survey-from (.getPath file)))))
 

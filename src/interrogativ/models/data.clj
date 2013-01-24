@@ -60,6 +60,14 @@
                       (str "[" (slurp file) "]"))))
           (sorted-set))))))
 
+(def surveys (atom {}))
+
+(defn store-survey [page-name survey]
+  (swap! surveys assoc (keyword page-name) survey))
+
+(defn survey-for-name [name]
+  (get @surveys (keyword name)))
+
 (defn store-answer
   ([answer]
      (when-not (contains? submitters (:informant answer))

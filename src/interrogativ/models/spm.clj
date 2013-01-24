@@ -108,5 +108,4 @@
         document (parse/parse file)
         survey  (create-survey page-name document)]
     (data/create-store page-name)
-    survey))
-
+    (data/store-survey page-name survey)))
