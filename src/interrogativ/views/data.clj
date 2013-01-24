@@ -10,24 +10,19 @@
         [noir.response :only [redirect]]))
 
 (pre-route "/data" {}
-<<<<<<< HEAD
-  (if-not (session/get :user)
-    (redirect "/login")))
-=======
-           (if-not (session/get :admin)
+           (if-not (session/get :user)
              (redirect "/login")))
 
 (pre-route "/data/*" {}
-           (if-not (session/get :admin)
+           (if-not (session/get :user)
              (redirect "/login")))
->>>>>>> move-to-records
 
 (defpage "/data/" {}
   (redirect "/data"))
 
 (pre-route "/data/*" {}
-  (if-not (session/get :user)
-    (redirect "/login")))
+           (if-not (session/get :user)
+             (redirect "/login")))
 
 (defn directory-to-links [dir]
   (for [f (.listFiles (io/file (str "db/" dir)))
