@@ -1,4 +1,4 @@
-(defproject interrogativ "0.3.5"
+(defproject interrogativ "0.4.0"
   :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
