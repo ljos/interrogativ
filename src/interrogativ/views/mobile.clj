@@ -46,8 +46,8 @@
        :data-inline inline}
    label])
 
-(defpartial right-button [{:keys [link label inline id]
-                           :or {label "Neste" inline "false" id ""}}]
+(defpartial right-button [{:keys [id link label inline]
+                           :or {label "Neste" inline "false" id nil}}]
   [:a {:href link
        :data-role "button"
        :id id
@@ -102,19 +102,19 @@
          [:div {:class "ui-block-c"} block-c])])))
 
 (defpartial header [{:keys [data-position content data-theme]
-                     :or {data-position "" data-theme "a"}}]
+                     :or {data-position nil data-theme "a"}}]
   [:div {:data-role "header"
          :data-position data-position
          :data-theme data-theme}
    content])
 
 (defpartial footer [{:keys [data-position content id]
-                     :or {data-position "" id ""}}]
+                     :or {data-position nil id nil}}]
   [:div {:id id :data-role "footer" :data-position data-position}
    content])
 
 (defpartial page [{:keys [id header content footer data-title data-theme]
-                   :or {id "" header "" footer "" data-title "" data-theme ""}}]
+                   :or {id nil header nil footer nil data-title nil data-theme nil}}]
   [:div {:data-role "page"
          :id id
          :data-title data-title
@@ -134,7 +134,7 @@
        second))
 
 (defpartial radio-group [{:keys [name label groups type]
-                          :or {type "" id name}}]
+                          :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:div {:id name
           :title (title label)
