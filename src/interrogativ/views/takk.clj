@@ -7,7 +7,7 @@
 
 (defpage [:post "/takk"] data
   (let [submitter-id (data/generate-submitter-id)]
-    (cookies/put! :tracker {:value submitter-id :path "/" :expires 1 :max-age 86400})
+    (cookies/put! :tracker {:value submitter-id :path "/" :max-age 86400})
     (data/store-answer (assoc (dissoc data :submitter)
                          :informant submitter-id))
     (redirect "/takk")))
