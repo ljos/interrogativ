@@ -23,6 +23,11 @@
   Hiccup
   (hiccup [this] nil))
 
+(extend-type String
+  Hiccup
+  (hiccup [this]
+    this))
+
 (defrecord Heading [size value]
   Hiccup
   (hiccup [this]
@@ -32,11 +37,6 @@
   Hiccup
   (hiccup [this]
     [:br]))
-
-(extend-type String
-  Hiccup
-  (hiccup [this]
-    this))
 
 (defrecord Paragraph [content]
   Hiccup
