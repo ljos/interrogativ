@@ -73,10 +73,8 @@
   [:form {:action (str page-name "/takk")
           :method "post"}
    (create-mobile-content
-    (assoc pages
-      (dec (count pages))
-      (assoc (last pages)
-        :id "ferdig")))
+    (assoc-in pages [(dec (count pages)) :id]
+      "ferdig"))
    (mobile/page
     {:id "meny"
      :header (mobile/header
