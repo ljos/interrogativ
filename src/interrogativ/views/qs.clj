@@ -6,18 +6,19 @@
         [noir.response :only [redirect]]))
 
 (defpage "/qs/:page" {:keys [page]}
-  (:survey (data/survey-for-name (str "/qs/" page))))
+  (let [page (str "/qs/" page)]
+    (log/info "getting cookie: " (cookies/get :tracker))
+    (if (cookies/get :tracker)
+      (redirect (str page "/takk"))
+      (:survey (data/survey-for-name page)))))
 
-(defpage "/qs/:page/takk" {:keys [page]}
-  (:post (data/survey-for-name (str "/qs/" page))))
-
-(defpage [:post "/qs/:page/takk"] data
-  (let [submitter-id (data/generate-submitter-id)
-        page (str "/qs/" (:page data))]
-    (cookies/put! :tracker {:value submitter-id
-                            :path page
-                            :expires 1
-                            :max-age 86400})
+(defpage [:post "/qs/:page"] data
+  (let [page (str "/qs/" (:page data))
+        submitter-id (data/generate-submitter-id page)]
+    (cookies/put! :tracker
+      {:value submitter-id
+       :path page
+       :max-age 86400})
     (data/store-answer
      (-> data
          (dissoc :page)
@@ -25,3 +26,6 @@
          (assoc :informant submitter-id))
      page)
     (redirect (str page "/takk"))))
+
+(defpage "/qs/:page/takk" {:keys [page]}
+  (:post (data/survey-for-name (str "/qs/" page))))
