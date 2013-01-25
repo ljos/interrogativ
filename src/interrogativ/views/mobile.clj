@@ -21,7 +21,7 @@
    (include-js
     (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
    (include-js "/cljs/mobile.js")
-   (include-css "css/mobile.css")]
+   (include-css "/css/mobile.css")]
   body)
 
 (defpartial left-button [{:keys [id link label inline]
