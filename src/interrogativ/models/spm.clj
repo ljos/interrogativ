@@ -87,17 +87,19 @@
   (let [survey (:survey document)
         post   (:post document)]
     (->Survey
-     (if (seq post)
+     (if (parse/submit-page? (last survey))
        (mobile/layout
         {:title (:title document)
          :body (mobile/body
                 (create-mobile-survey page-name survey))})
        (do (log/info "Missing submit-page for page:" page-name)
-           (html [:h1 "Missing submit-page"]) :Nothing))
+           (html [:h1 "Missing submit-page"])))
      (mobile/layout
       {:title (:title document)
        :body  (mobile/body
-               (create-mobile-content post))}))))
+               (if (seq post)
+                 (create-mobile-content post)
+                 [:h1 "Takk!"]))}))))
 
 (defn create-survey-from [file]
   (log/info "Create page from file:" file)
