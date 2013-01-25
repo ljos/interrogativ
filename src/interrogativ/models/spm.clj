@@ -15,7 +15,9 @@
 (defn create-footer [prev page next]
   (mobile/footer
    {:id (format "footer-%s" (:id page))
-    :content (if (and (nil? prev) (nil? next))
+    :content (if (and (nil? prev)
+                      (not (parse/submit-page? page))
+                      (nil? next))
                [:h1 " "]
                (mobile/grid-b
                 {:block-a (if-not (nil? prev)
