@@ -11,7 +11,6 @@
   (if-not (session/get :user)
     (redirect "login")))
 
-
 (defpage "/download/:file" {:keys [file]}
   (let [user (session/get :user)]
     (try
@@ -38,4 +37,3 @@
       (catch FileNotFoundException _
         (log/error user "requested file:" file ".File not found.")
         (redirect "/data")))))
-
