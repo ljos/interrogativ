@@ -19,6 +19,10 @@
 (defprotocol Hiccup
   (hiccup [this]))
 
+(extend-type nil
+  Hiccup
+  (hiccup [this] nil))
+
 (defrecord Heading [size value]
   Hiccup
   (hiccup [this]
