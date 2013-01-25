@@ -18,3 +18,11 @@ input[type=text] {
 input[type=password] {
     height:inherit;
 }
+
+#upload-span {
+    width:259px;
+}
+
+#add-span {
+    245px;
+}

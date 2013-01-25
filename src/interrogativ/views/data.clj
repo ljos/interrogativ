@@ -110,6 +110,7 @@
                         :type "button"}
                "Upload "]
               [:span {:class "input-xlarge uneditable-input"
+                      :id "upload-span"
                       :type "text"}]]
              [:div {:class "input-prepend"
                     :id "uc-btn"}
@@ -122,6 +123,7 @@
                         :type "submit"}
                "Add"]
               [:span {:class "input-xlarge uneditable-input"
+                      :id "add-span"
                       :type "text"
                       :id "text"}]]]]
            (include-js "/cljs/upload.js"))}))
