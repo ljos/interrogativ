@@ -5,6 +5,8 @@
             [interrogativ.views.mobile :as mobile])
   (:use [hiccup.core :only [html]]))
 
+(def default-takk (first (parse/parse-page 1 0 "# Takk\n##Takk!")))
+
 (defn create-header [page-id pages header]
   (mobile/header
    {:content (list [:h1 (:value header)]
@@ -99,9 +101,8 @@
      (mobile/layout
       {:title (:title document)
        :body  (mobile/body
-               (if (seq post)
-                 (create-mobile-content post)
-                 [:h1 "Takk!"]))}))))
+               (if-let [post (if (seq post) post [default-takk])]
+                 (create-mobile-content post)))}))))
 
 (defn create-survey-from [file]
   (log/info "Create page from file:" file)
