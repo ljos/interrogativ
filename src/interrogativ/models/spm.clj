@@ -65,9 +65,6 @@
                (second content)
                (conj pages html-page))))))
 
-(defn create-submit-page [previous-page page]
-  (create-mobile-page 0 previous-page (assoc page :id "ferdig") nil))
-
 (defn create-mobile-survey [page-name pages]
   [:form {:action (str page-name "/takk")
           :method "post"}
