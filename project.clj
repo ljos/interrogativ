@@ -2,6 +2,7 @@
   :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
+                 [prismatic/dommy "0.0.2-SNAPSHOT"]
                  [org.clojure/clojure "1.4.0"]
                  [org.clojure/tools.logging "0.2.3"]]
   :plugins [[lein-cljsbuild "0.3.0"]]
