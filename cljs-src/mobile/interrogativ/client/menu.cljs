@@ -24,7 +24,7 @@
                       :data-role "button"
                       :data-theme "c"}
                   "Avslutt"]
-                 [a {:href "#"
+                 [:a {:href "#"
                      :data-rel "back"
                      :data-role "button"
                      :data-theme "a"}
