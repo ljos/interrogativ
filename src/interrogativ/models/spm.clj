@@ -70,7 +70,7 @@
                (conj pages html-page))))))
 
 (defn create-mobile-survey [page-name pages]
-  [:form {:action (str page-name "/takk")
+  [:form {:action page-name 
           :method "post"}
    (create-mobile-content
     (assoc-in pages [(dec (count pages)) :id]
