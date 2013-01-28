@@ -123,7 +123,7 @@
                         :type "submit"}
                "Add"]
               [:span {:class "input-xlarge uneditable-input"
-                      :id "add-span"
+
                       :type "text"
                       :id "text"}]]]]
            (include-js "/cljs/upload.js"))}))
