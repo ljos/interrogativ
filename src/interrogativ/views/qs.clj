@@ -8,9 +8,11 @@
 (defpage "/qs/:page" {:keys [page]}
   (let [page (str "/qs/" page)]
     (log/info "getting cookie: " (cookies/get :tracker))
-    (if (cookies/get :tracker)
-      (redirect (str page "/takk"))
-      (:survey (data/survey-for-name page)))))
+    ;; (if (cookies/get :tracker)
+    ;;   (redirect (str page "/takk"))
+    (:survey (data/survey-for-name page))      
+    ;; )
+    ))
 
 (defpage [:post "/qs/:page"] data
   (let [page (str "/qs/" (:page data))
