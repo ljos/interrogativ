@@ -23,7 +23,7 @@
   nil
   (hiccup [_] nil)
   String
-  [hiccup [this] this])
+  (hiccup [this] this))
 
 (defrecord Heading [size value]
   Hiccup
