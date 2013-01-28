@@ -196,31 +196,30 @@
                            [:label {:for id} value]])))
                 values)])
 
-(defpartial radio-table [{:keys [name label sections values]}]
-  [:p label]
+(defpartial radio-table [{:keys [name label value-names sections values]}]
   [:div {:data-role "fieldcontain"}
-   (for [section sections]
-     [:div {:class "ui-grid-a"}
-      [:div {:class "ui-block-a" :style "width:40%"}
-       [:div {:style "position:relative;top:6px"} section]]
-      [:div {:class "ui-block-b" :style "width:60%"}
-       [:fieldset {:data-role "controlgroup"
-                   :data-type "horizontal"}
-        (let [name (-> (format "%sC%s" name section)
-                       (str/replace #"(?iu)[øåæé,/]" "")
-                       (str/replace #"\s+" "-"))]
-          [:div {:style "text-align:right"
-                 :id name
-                 :title (str section ": " (title label))
-                 :class "name-holder"}
-           (map-indexed
-            (fn [value label]
-              (let [id (format "%sC%s"
-                               (str/replace section #"\s+" "")
-                               value)]
-                (html [:input {:type "radio"
-                               :name name
-                               :id id
-                               :value value}]
-                      [:label {:for id} label])))
-            values)])]]])])
+   [:fieldset {:data-role "controlgroup"
+               :data-type "horizontal"}
+   [:p [:legend label]]
+    [:table
+     [:tr
+      [:th ""]
+      (for [value-name value-names]
+        [:th value-name])]
+     (for [section sections
+           :let [name (-> (format "%sC%s" name section)
+                          (str/replace #"\s+" "-"))]]
+       [:tr
+        [:td section]
+        (map-indexed
+         (fn [value label]
+           (let [id (format "%sC%s"
+                            (str/replace section #"\s+" "")
+                            value)]
+             [:td
+              [:input {:type "radio"
+                       :name name
+                       :id id
+                       :value value}]
+              [:label {:for id} label]]))
+         values)])]]])

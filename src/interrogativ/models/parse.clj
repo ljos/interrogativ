@@ -11,8 +11,8 @@
 (def text #"^\s*[^#?+*<-].*")
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n\n|\z)")
 (def question-start #"\s*\?:\s*.*")
-(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[+*<-]|\z)")
-(def choice #"(?s)[\[+*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
+(def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[&+*<-]|\z)")
+(def choice #"(?s)[\[+&*<-]\.?\s*(.*?)(?=\s*\n|\s*\z)")
 (def slider #"<(\d+)\s*-\s*(\d+)>\s*:(\d+)")
 (def textarea #"\s*\[txt:?(.*)?\]\s*")
 
@@ -67,11 +67,13 @@
       :value value})))
 
 (defrecord RadioTableQuestion [name label options sections values]
+(defrecord RadioTableQuestion [name label value-names sections values options]
   Hiccup
   (hiccup [this]
     (mobile/radio-table
      {:name name
       :label [:h4 label]
+      :value-names value-names
       :sections sections
       :values values})))
 

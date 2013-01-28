@@ -12,3 +12,21 @@
 .ui-content {
     margin-bottom: 1cm;
 }
+
+tr td:first-child + td label {
+    -moz-border-radius-topleft: .6em;
+    -webkit-border-top-left-radius: .6em;
+    border-top-left-radius: .6em;
+    -moz-border-radius-bottomleft: .6em;
+    -webkit-border-bottom-left-radius: .6em;
+    border-bottom-left-radius: .6em;
+}
+
+tr td:last-child label {
+    -moz-border-radius-topright: .6em;
+    -webkit-border-top-right-radius: .6em;
+    border-top-right-radius: .6em;
+    -moz-border-radius-bottomright: .6em;
+    -webkit-border-bottom-right-radius: .6em;
+    border-bottom-right-radius: .6em;
+}
