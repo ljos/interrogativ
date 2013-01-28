@@ -1,4 +1,4 @@
-(defproject interrogativ "0.4.0-SNAPSHOT"
+(defproject interrogativ "0.5.1-SNAPSHOT"
   :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
