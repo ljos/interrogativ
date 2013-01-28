@@ -23,6 +23,12 @@
      (-> data
          (dissoc :page)
          (dissoc :submitter)
+         (#(reduce (fn [dat k]
+                     (assoc dat
+                       (if (string? k) k (name k))
+                       (get % k)))
+                   {}
+                   (keys %)))
          (assoc :informant submitter-id))
      page)
     (redirect (str page "/takk"))))

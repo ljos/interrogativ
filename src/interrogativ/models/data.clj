@@ -105,12 +105,19 @@
              submitter-id)))))
 
 (defn create-csv-from-file [file-name]
-  (let [submissions (read-string
-                     (str "[" (slurp file-name) "]"))
+  (let [submissions (map #(reduce (fn [dat key]
+                                    (assoc dat (if (string? key)
+                                                 key
+                                                 (name key))
+                                           (get % key)))
+                                  {}
+                                  (keys %))
+                         (read-string
+                          (str "[" (slurp file-name) "]")))
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv from file: " file-name)
     (with-out-str 
-      (println (str/join "," (map name keys)))
+      (println (str/join "," (map (partial format "\"%s\"") keys)))
       (doseq [submission submissions]
         (println (str/join ","
                            (map (partial format "\"%s\"")
