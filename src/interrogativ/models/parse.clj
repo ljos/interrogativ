@@ -40,7 +40,7 @@
   (hiccup [this]
     [:p (map hiccup content)]))
 
-(defrecord TextareaQuestion [name label options textarea]
+(defrecord TextareaQuestion [name label textarea options]
   Hiccup
   (hiccup [this]
     (mobile/textarea
@@ -48,7 +48,7 @@
       :label label
       :value textarea})))
 
-(defrecord SelectQuestion [name label options values]
+(defrecord SelectQuestion [name label values options]
   Hiccup
   (hiccup [this]
     (mobile/select
@@ -56,7 +56,7 @@
       :label [:h4 label]
       :values values})))
 
-(defrecord SliderQuestion [name label options min max value]
+(defrecord SliderQuestion [name label min max value options]
   Hiccup
   (hiccup [this]
     (mobile/slider
@@ -76,7 +76,7 @@
       :values values})))
 
 
-(defrecord RadioGroupQuestion [name label options groups]
+(defrecord RadioGroupQuestion [name label groups options]
   Hiccup
   (hiccup [this]
     (mobile/radio-group
@@ -127,52 +127,54 @@
           (->SelectQuestion
            name
            label
-           options
-           ["missing values"])
+           ["missing values"]
+           options)
           
           (not-empty (filter (partial re-matches #"^\*.*") choices))
           (->RadioTableQuestion
            name
            label
-           options
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^\+.*") choices))
            (map (comp second (partial re-find choice))
                 (filter (partial re-matches #"^-.*") choices))
            (map (comp second (partial re-find choice))
-                (filter (partial re-matches #"^\*.*") choices)))
+                (filter (partial re-matches #"^\*.*") choices))
+           options)
 
           (re-matches slider (first choices))
           (let [slider (re-find slider (first choices))]
             (->SliderQuestion
              name
              label
-             options
              (nth slider 1)
              (nth slider 2)
-             (nth slider 3)))
+             (nth slider 3)
+             options))
 
           (re-matches textarea (first choices))
           (let [textarea (second (re-find textarea (first choices)))]
             (->TextareaQuestion
              name
              label
-             options
-             textarea))
+             textarea
+             options))
 
           (empty? (remove (partial re-matches #"^\+.*") choices))
           (->SelectQuestion
            name
            label
-           options
            (map (comp second (partial re-find choice))
-                choices))
+                choices)
+           options)
 
           (not-empty (filter (partial re-matches #"^-.*") choices))
           (->RadioGroupQuestion
            name
            label
-           options
            (map (comp second (partial re-find choice))
-                choices)))))
+                choices)
+           options)
 
 (defn parse-paragraph [paragraph]
   (->Paragraph
