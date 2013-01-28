@@ -66,7 +66,6 @@
       :min min
       :value value})))
 
-(defrecord RadioTableQuestion [name label options sections values]
 (defrecord RadioTableQuestion [name label value-names sections values options]
   Hiccup
   (hiccup [this]
@@ -75,6 +74,14 @@
       :label [:h4 label]
       :value-names value-names
       :sections sections
+      :values values})))
+
+(defrecord CheckboxListQuestion [name label values options]
+  Hiccup
+  (hiccup [this]
+    (mobile/checkbox-list
+     {:name name
+      :label [:h4 label]
       :values values})))
 
 
@@ -177,6 +184,14 @@
            (map (comp second (partial re-find choice))
                 choices)
            options)
+
+          (not-empty (filter (partial re-matches #"^&.*") choices))
+          (->CheckboxListQuestion
+           name
+           label
+           (map (comp second (partial re-find choice))
+                choices)
+           options))))
 
 (defn parse-paragraph [paragraph]
   (->Paragraph
