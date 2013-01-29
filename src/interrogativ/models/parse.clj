@@ -66,21 +66,17 @@
       :min min
       :value value})))
 
-(defrecord RadioTableQuestion [name label value-names sections values options]
-  Hiccup
-  (hiccup [this]
-    (mobile/radio-table
-     {:name name
-      :label [:h4 label]
-      :value-names value-names
-      :sections sections
-      :values values})))
-
 (defrecord CheckboxListQuestion [name label values options]
-(defrecord CheckboxTableQuestion [name label columns rows values options]
   Hiccup
   (hiccup [this]
     (mobile/checkbox-list
+     {:name name
+      :label [:h4 label]
+      :values values})))
+
+(defrecord CheckboxTableQuestion [name label columns rows values options]
+  Hiccup
+  (hiccup [this]
     (mobile/checkbox-table
      {:name name
       :label [:h4 label]
@@ -98,6 +94,16 @@
       :groups groups
       :type (if (contains? options ":horizontal")
               "horizontal")})))
+
+(defrecord RadioTableQuestion [name label columns rows values options]
+  Hiccup
+  (hiccup [this]
+    (mobile/radio-table
+     {:name name
+      :label [:h4 label]
+      :columns columns
+      :rows rows
+      :values values})))
 
 
 (defrecord Header [value options])
