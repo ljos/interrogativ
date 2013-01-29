@@ -196,30 +196,38 @@
                            [:label {:for id} value]])))
                 values)])
 
-(defpartial radio-table [{:keys [name label value-names sections values]}]
+(defpartial table [{:keys [name type label columns rows values]}]
   [:div {:data-role "fieldcontain"}
    [:fieldset {:data-role "controlgroup"
                :data-type "horizontal"}
-   [:p [:legend label]]
+    [:p [:legend label]]
     [:table
      [:tr
       [:th ""]
-      (for [value-name value-names]
-        [:th value-name])]
-     (for [section sections
-           :let [name (-> (format "%sC%s" name section)
+      (for [column columns]
+        [:th column])]
+     (for [row rows
+           :let [name (-> (format "%sC%s" name row)
                           (str/replace #"\s+" "-"))]]
        [:tr
-        [:td section]
+        [:td row]
         (map-indexed
          (fn [value label]
            (let [id (format "%sC%s"
-                            (str/replace section #"\s+" "")
+                            (str/replace row #"\s+" "")
                             value)]
              [:td
-              [:input {:type "radio"
+              [:input {:type type
                        :name name
                        :id id
                        :value value}]
               [:label {:for id} label]]))
          values)])]]])
+(defpartial radio-table [{:keys [name label columns rows values]}]
+  (table
+   {:name name
+    :type "radio"
+    :label label
+    :columns columns
+    :rows rows
+    :values values}))
