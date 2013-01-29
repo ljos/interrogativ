@@ -161,7 +161,8 @@
                 (filter (partial re-matches #"^\*.*") choices))
            options)
 
-          (not-empty (filter (partial re-matches #"^&.*") choices))
+          (and (not-empty (filter (partial re-matches #"^-.*") choices))
+               (not-empty (filter (partial re-matches #"^&.*") choices)))
           (->CheckboxTableQuestion
            name
            label
