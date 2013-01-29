@@ -16,4 +16,3 @@
     (include-js (str jquery "jquery-1.8.2.js"))
     (include-js "/bootstrap/js/bootstrap.min.js")]]
   body)
-

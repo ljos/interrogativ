@@ -10,18 +10,19 @@
     (log/info "getting cookie: " (cookies/get :tracker))
     ;; (if (cookies/get :tracker)
     ;;   (redirect (str page "/takk"))
-    (:survey (data/survey-for-name page))      
+    (data/survey-for-name page)      
     ;; )
     ))
 
 (defpage [:post "/qs/:page"] data
   (let [page (str "/qs/" (:page data))
-        submitter-id (data/generate-submitter-id page)]
+        submitter-id (data/new-submitter-id!)]
     (cookies/put! :tracker
       {:value submitter-id
        :path page
        :max-age 86400})
     (data/store-answer
+     page
      (-> data
          (dissoc :page)
          (dissoc :submitter)
@@ -31,9 +32,8 @@
                        (get % k)))
                    {}
                    (keys %)))
-         (assoc :informant submitter-id))
-     page)
+         (assoc :informant submitter-id)))
     (redirect (str page "/takk"))))
 
 (defpage "/qs/:page/takk" {:keys [page]}
-  (:post (data/survey-for-name (str "/qs/" page))))
+  (data/thankyou-for-name page))

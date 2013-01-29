@@ -4,7 +4,7 @@
             [clojure.tools.logging :as log]
             [interrogativ.views.common :as common]
             [noir.session :as session]
-            [noir.util.crypt :as crypt])
+            [interrogativ.db.connection :as db])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
 
@@ -34,26 +34,11 @@
                        :value "login"
                        :data-role "none"}]]]])}))
 
-(defn passwd-for [user]
-  (with-open [rdr (io/reader "passwd")]
-    (loop [lines (line-seq rdr)]
-      (cond (empty? lines)
-            ""
-
-            (re-matches (re-pattern (format "^%s:.*" user))
-                        (first lines))
-            (-> (first lines)
-                (str/replace #"^.*?:" ""))
-
-            :else
-            (recur (rest lines))))))
-
 (defpage [:post "/login"] {:keys [uname pword]}
-  (let [encrypted (passwd-for uname)]
-    (if (and (not (str/blank? encrypted))
-             (crypt/compare pword encrypted))
-      (do (session/put! :user uname)
-          (log/info uname "logged in.")
-          (redirect "/data"))
-      (redirect "/login"))))
+  (if (db/valid-user? uname pword)
+    (do
+      (session/put! :user uname)
+      (log/info uname "logged in.")
+      (redirect "/data"))
+    (redirect "/login")))
 

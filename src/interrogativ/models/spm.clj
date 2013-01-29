@@ -1,7 +1,7 @@
 (ns interrogativ.models.spm
   (:require [clojure.tools.logging :as log]
-            [interrogativ.models.data :as data]
             [interrogativ.models.parse :as parse]
+            [noir.session :as session]
             [interrogativ.views.mobile :as mobile])
   (:use [hiccup.core :only [html]]))
 
@@ -102,10 +102,5 @@
                (if-let [post (if (seq post) post [default-takk])]
                  (create-mobile-content post)))}))))
 
-(defn create-survey-from [file]
-  (log/info "Create page from file:" file)
-  (let [page-name (format "/%s" (re-find #".*?(?=\.|\z)" file))
-        document (parse/parse file)
-        survey  (create-survey page-name document)]
-    (data/create-store page-name)
-    (data/store-survey page-name survey)))
+(defn create-survey-from [page-name markdown]
+  (create-survey page-name markdown))

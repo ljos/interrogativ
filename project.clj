@@ -3,6 +3,8 @@
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
                  [prismatic/dommy "0.0.2-SNAPSHOT"]
+                 [korma "0.3.0-RC2"]
+                 [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/clojure "1.4.0"]
                  [org.clojure/tools.logging "0.2.3"]]
   :plugins [[lein-cljsbuild "0.3.0"]]

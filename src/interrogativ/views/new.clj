@@ -3,6 +3,7 @@
             [noir.session :as session]
             [clojure.tools.logging :as log]
             [interrogativ.models.spm :as spm]
+            [interrogativ.db.connection :as db]
             [interrogativ.views.common :as common])
   (:use [noir.response :only [redirect]]
         [noir.core :only [defpage pre-route]]))
@@ -14,9 +15,9 @@
 (defpage [:post "/new"] {:keys [new]}
   (if (str/blank? new)
     (redirect "/data")
-    (let [file (str "qs/" (str/trim new)  ".spm")
-          user (session/get :user)]
-      (log/info user "created new survey:" file)
-      (spit file "")
-      (spm/create-survey-from file)
+    (let []
+      (log/info (session/get :user)
+                "created new survey:"
+                new)
+      (db/insert-survey new "")
       (redirect (str "/data/" new)))))

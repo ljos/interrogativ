@@ -1,8 +1,8 @@
 (ns interrogativ.views.edit
   (:require [clojure.tools.logging :as log]
             [interrogativ.views.common :as common]
-            [noir.session :as session])
-  (:import [java.io FileNotFoundException])
+            [noir.session :as session]
+            [interrogativ.models.data :as data])
   (:use [hiccup.page :only [include-js include-css]]
         [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
@@ -51,11 +51,7 @@
                      :name "page"
                      :value page}]
             [:div {:id "editor"}
-             (try
-               (slurp (str "qs/" page ".spm"))
-               (catch FileNotFoundException _
-                 (log/info "File not found: "
-                           (str "qs/" page ".spm"))))]]
+             (data/markdown-for-page page)]]
            (include-js "/ace/ace.js")
            (include-js "/cljs/editor.js"))}))
 

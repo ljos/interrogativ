@@ -10,7 +10,4 @@
   (let [mode (keyword (or (first m) :dev))
         port (Integer. (get (System/getenv) "PORT" "8080"))]
     (server/start port {:mode mode
-                        :ns 'interrogativ})
-    (doseq [file (.listFiles (io/file "qs/"))
-            :when (not (.isDirectory file))]
-      (spm/create-survey-from (.getPath file)))))
+                        :ns 'interrogativ})))

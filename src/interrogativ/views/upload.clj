@@ -3,7 +3,8 @@
             [clojure.tools.logging :as log]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
-            [noir.session :as session])
+            [noir.session :as session]
+            [interrogativ.db.connection :as db])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
 
@@ -16,17 +17,14 @@
         (let [file (:file data)]
           (when-let [filename (not-empty (:filename file))]
             (data/upload-file file)
-            (log/info (session/get :user) "uploading file " file)
-            (spm/create-survey-from (str "qs/" filename)))
+            (log/info (session/get :user) "uploading file " file))
           (redirect "/data"))
 
         (:text data)
         (let [page (:page data)
-              text (str/replace (:text data) "\r" "")
-              file (str "qs/" page ".spm")]
-          (log/info (session/get :user) "uploading revision to " file)
-          (spit file text)
-          (spm/create-survey-from file)
+              text (str/replace (:text data) "\r" "")]
+          (log/info (session/get :user) "uploading revision to " page)
+          (db/update-survey page text)
           (redirect (str "/data/" page)))
 
         :else
