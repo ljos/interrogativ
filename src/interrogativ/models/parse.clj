@@ -77,11 +77,15 @@
       :values values})))
 
 (defrecord CheckboxListQuestion [name label values options]
+(defrecord CheckboxTableQuestion [name label columns rows values options]
   Hiccup
   (hiccup [this]
     (mobile/checkbox-list
+    (mobile/checkbox-table
      {:name name
       :label [:h4 label]
+      :columns columns
+      :rows rows
       :values values})))
 
 
@@ -149,6 +153,18 @@
                 (filter (partial re-matches #"^-.*") choices))
            (map (comp second (partial re-find choice))
                 (filter (partial re-matches #"^\*.*") choices))
+           options)
+
+          (not-empty (filter (partial re-matches #"^&.*") choices))
+          (->CheckboxTableQuestion
+           name
+           label
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^\+.*") choices))
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^-.*") choices))
+           (map (comp second (partial re-find choice))
+                (filter (partial re-matches #"^&.*") choices))
            options)
 
           (re-matches slider (first choices))

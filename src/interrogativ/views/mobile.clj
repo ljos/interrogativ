@@ -223,6 +223,16 @@
                        :value value}]
               [:label {:for id} label]]))
          values)])]]])
+
+(defpartial checkbox-table [{:keys [name label columns rows values]}]
+  (table
+   {:name name
+    :type "checkbox"
+    :label label
+    :columns columns
+    :rows rows
+    :values values}))
+
 (defpartial radio-table [{:keys [name label columns rows values]}]
   (table
    {:name name
