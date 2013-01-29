@@ -3,8 +3,10 @@
             [dommy.template :as template])
   (:use [jayq.core :only [$]]))
 
-(defn html [& hiccup]
-  (.-outerHTML (apply template/node hiccup)))
+(defn html [& nodes]
+  (apply str
+         (map #(.-outerHTML (template/node %))
+              nodes)))
 
 (defn live [$elem events handler]
   (.live $elem (jq/->event events) handler))
