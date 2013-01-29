@@ -27,9 +27,9 @@
                       :data-theme "c"}
                   "Avslutt"]
                  [:a {:href "#"
-                     :data-rel "back"
-                     :data-role "button"
-                     :data-theme "a"}
+                      :data-rel "back"
+                      :data-role "button"
+                      :data-theme "a"}
                   "Tilbake"]))
       (jq/trigger $menyp "create")
       (jq/bind ($ :#avslutt) :click
@@ -37,14 +37,15 @@
           (jq/fade-out $menyp "fast"
             (fn []
               (jq/inner $menyp
-                        (html [:h4 "Er du sikker på at du vil avslutte?"]
-                              [:a {:href "#ferdig"
-                                   :data-role "button"}
-                               "Ja"]
-                              [:a {:href "#"
-                                   :data-rel "back"
-                                   :data-role "button"}
-                               "Nei"]))
+                        (html
+                         [:h4 "Er du sikker på at du vil avslutte?"]
+                         [:a {:href "#ferdig"
+                              :data-role "button"}
+                          "Ja"]
+                         [:a {:href "#"
+                              :data-rel "back"
+                              :data-role "button"}
+                          "Nei"]))
               (jq/trigger $menyp :create)
               (jq/fade-in $menyp "slow"))))))))
 
