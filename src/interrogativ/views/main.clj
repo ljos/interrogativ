@@ -118,31 +118,31 @@
               (mobile/radio-table
                {:name "P02Q05"
                 :label [:h4 "5. Hvilke medieplatformer liker du best?"]
-                :sections ["Mobil"
-                           "Bærbar datamaskin"
-                           "Spillmaskiner"
-                           "Lesebrett"
-                           "TV"
-                           "Musikkspiller"
-                           "Radio"
-                           "Papir"]
+                :rows ["Mobil"
+                       "Bærbar datamaskin"
+                       "Spillmaskiner"
+                       "Lesebrett"
+                       "TV"
+                       "Musikkspiller"
+                       "Radio"
+                       "Papir"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P02Q06"
                 :label [:h4 "6. Hvordan vil du helst skrive?"]
-                :sections ["Tastatur"
-                           "Touchskjerm"
-                           "Håndskrift"]
+                :rows ["Tastatur"
+                       "Touchskjerm"
+                       "Håndskrift"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P02Q07"
                 :label [:h4 "7. Hvordan vil du helst se levende bilder?"]
-                :sections ["Kino"
-                           "Hjemmekino"
-                           "Flatskjerm-TV"
-                           "Dataskjerm"
-                           "iPad/Lesebrett"
-                           "Mobilskjerm"]
+                :rows ["Kino"
+                       "Hjemmekino"
+                       "Flatskjerm-TV"
+                       "Dataskjerm"
+                       "iPad/Lesebrett"
+                       "Mobilskjerm"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-list
                {:name "P02Q08"
@@ -154,18 +154,18 @@
               (mobile/radio-table
                {:name "P02Q09"
                 :label [:h4 "9. Hvordan vil du helst høre lyd?"]
-                :sections ["Uten forsterkning"
-                           "Ørepropper i mobil"
-                           "Store øreklokker i mobil"
-                           "Høytalere i rommet"]
+                :rows ["Uten forsterkning"
+                       "Ørepropper i mobil"
+                       "Store øreklokker i mobil"
+                       "Høytalere i rommet"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P02Q10"
                 :label [:h4 "10. Hvordan vil du helst snakke?"]
-                :sections ["Mobiltelefon"
-                           "Mikrofon i videokamera"
-                           "Mygg-mikrofon"
-                           "Studiomikrofon"]
+                :rows ["Mobiltelefon"
+                       "Mikrofon i videokamera"
+                       "Mygg-mikrofon"
+                       "Studiomikrofon"]
                 :values ["&#x2b;" "&bull;" "&minus;"]}))
     :footer (mobile/footer
              {:id "teknologi-footer"
@@ -196,55 +196,55 @@
                {:name "P03Q11"
                 :label [:h4 (str "11. Hvilket geografisk område er du mest interessert i at "
                                  "skal bli dekket av mediene?")]
-                :sections ["Skolen"
-                           "Nærområde"
-                           "Bergen"
-                           "Hordaland"
-                           "Norge"
-                           "Verden"]
+                :rows ["Skolen"
+                       "Nærområde"
+                       "Bergen"
+                       "Hordaland"
+                       "Norge"
+                       "Verden"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P03Q12"
                 :label [:h4 "12. Hvilken type informasjon synes du er viktigst?"]
-                :sections ["Nyheter"
-                           "Musikk"
-                           "Fakta"
-                           "Fiksjon"
-                           "Underholdning"]
+                :rows ["Nyheter"
+                       "Musikk"
+                       "Fakta"
+                       "Fiksjon"
+                       "Underholdning"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P03Q13"
                 :label [:h4 (str "13. Hvilken kanal vil du foretrekke til nyheter og andre "
                                  "offentlige saker?")]
-                :sections ["Mobil"
-                           "Webmedier"
-                           "Fjernsyn"
-                           "Papiravis"
-                           "Radio"]
+                :rows ["Mobil"
+                       "Webmedier"
+                       "Fjernsyn"
+                       "Papiravis"
+                       "Radio"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P03Q14"
                 :label [:h4 (str "14. Hvor vil du helst være mens du bruker nyheter og "
                                  "annen journalistikk?")]
-                :sections ["Hjemme"
-                           "Reise"
-                           "Skolen"
-                           "Café/Klubb"
-                           "Trening, tur"
-                           "Stedet betyr ingenting"]
+                :rows ["Hjemme"
+                       "Reise"
+                       "Skolen"
+                       "Café/Klubb"
+                       "Trening, tur"
+                       "Stedet betyr ingenting"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P03Q15"
                 :label [:h4 (str "15. Hvilke personer synes du bør være fremtredende "
                                  "i offentligheten?")]
-                :sections ["Kjendiser"
-                           "Journalister"
-                           "Politikere"
-                           "Forskere"
-                           "Forretningsfolk"
-                           "Lærere"
-                           "Vanlige voksne"
-                           "Ungdom"]
+                :rows ["Kjendiser"
+                       "Journalister"
+                       "Politikere"
+                       "Forskere"
+                       "Forretningsfolk"
+                       "Lærere"
+                       "Vanlige voksne"
+                       "Ungdom"]
                 :values ["&#x2b;" "&bull;" "&minus;"]}))
     :footer (mobile/footer
              {:id "innhold-footer"
@@ -274,12 +274,12 @@
               (mobile/radio-table
                {:name "P04Q16"
                 :label [:h4 "16. Hvilken type medieproduksjon ønsker du selv å bruke tid på?"]
-                :sections ["Snakke selv"
-                           "Skrive og lese"
-                           "Ta bilder"
-                           "Filme video"
-                           "Lage musikk"
-                           "Programmere datamaskiner"]
+                :rows ["Snakke selv"
+                       "Skrive og lese"
+                       "Ta bilder"
+                       "Filme video"
+                       "Lage musikk"
+                       "Programmere datamaskiner"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-list
                {:name "P04Q17"
@@ -292,26 +292,26 @@
                {:name "P04Q18"
                 :label [:h4 (str "18. Hvilken mediekanal vil du sannsynligvis bruke hvis "
                                  "du skal bidra med et innspill til offentligheten?")]
-                :sections ["Papirbrev"
-                           "Telefonsamtale"
-                           "SMS"
-                           "Epost"
-                           "Video"
-                           "Kommentar i nettaviser"
-                           "Blogg"
-                           "Sosialt medium"]
+                :rows ["Papirbrev"
+                       "Telefonsamtale"
+                       "SMS"
+                       "Epost"
+                       "Video"
+                       "Kommentar i nettaviser"
+                       "Blogg"
+                       "Sosialt medium"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/radio-table
                {:name "P04Q19"
                 :label [:h4 (str "19. Hvilke typer personlig informasjon er du villig "
                                  "til å dele med journalistiske offentligheten gjennom "
                                  "mobilen?")]
-                :sections ["Dine bilder"
-                           "Dine videoer"
-                           "Din posisjon"
-                           "Økonomiske forhold"
-                           "Medisinsk informasjon"
-                           "Sivilstatus"]
+                :rows ["Dine bilder"
+                       "Dine videoer"
+                       "Din posisjon"
+                       "Økonomiske forhold"
+                       "Medisinsk informasjon"
+                       "Sivilstatus"]
                 :values ["&#x2b;" "&bull;" "&minus;"]})
               (mobile/textarea
                {:name "P04Q20"
