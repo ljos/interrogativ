@@ -45,7 +45,7 @@
   (hiccup [this]
     (mobile/textarea
      {:name name
-      :label label
+      :label [:h4 label]
       :value textarea})))
 
 (defrecord SelectQuestion [name label values options]
