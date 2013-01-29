@@ -206,7 +206,6 @@
       [:th ""]
       (for [column columns]
         [:th column])]
-                       :name name
      (map-indexed
       (fn [idx row]
         (let [name (-> (format "%sR%s" name idx))]
@@ -217,6 +216,7 @@
               (let [id (format "%sC%s" name value)]
                 [:td
                  [:input {:type type
+                          :name (if (= type "checkbox") id name)
                           :id id
                           :value value}]
                  [:label {:for id} label]]))
