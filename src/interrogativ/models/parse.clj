@@ -135,7 +135,7 @@
    (second (re-find #"#+\s*(.*)" heading))))
 
 (defn parse-question [nb question-block]
-  (let [name (format "spm-%s" nb)
+  (let [name (str "Q" nb)
         question (second (re-find question question-block))
         label (str nb ". " (-> question
                                (str/replace #"\n+|:\w+\s*" " ")
@@ -283,7 +283,6 @@
                  question-id
                  submit?
                  [survey post]))))))
-
 
 (defn parse [spm]
   (let [document (slurp spm)

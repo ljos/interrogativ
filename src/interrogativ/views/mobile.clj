@@ -128,7 +128,7 @@
           :class "name-holder"}
     [:legend label]
     (map-indexed (fn [idx group]
-                   (let [id (format "%s-v%s" name idx)]
+                   (let [id (format "%sC%s" name idx)]
                      (html
                       [:input {:type "radio"
                                :name name
@@ -184,7 +184,7 @@
    [:legend label]
    (map-indexed (fn [idx value]
                   (let [id (format "%sC%s" name idx)
-                        name (-> (format "%sC%s" name value)
+                        name (-> (format "%sC%s" name idx)
                                  (str/replace #"\s+" "-"))]
                     (html [:div {:id name
                                  :class "name-holder"
@@ -206,23 +206,22 @@
       [:th ""]
       (for [column columns]
         [:th column])]
-     (for [row rows
-           :let [name (-> (format "%sC%s" name row)
-                          (str/replace #"\s+" "-"))]]
-       [:tr
-        [:td row]
-        (map-indexed
-         (fn [value label]
-           (let [id (format "%sC%s"
-                            (str/replace row #"\s+" "")
-                            value)]
-             [:td
-              [:input {:type type
                        :name name
-                       :id id
-                       :value value}]
-              [:label {:for id} label]]))
-         values)])]]])
+     (map-indexed
+      (fn [idx row]
+        (let [name (-> (format "%sR%s" name idx))]
+          [:tr
+           [:td row]
+           (map-indexed
+            (fn [value label]
+              (let [id (format "%sC%s" name value)]
+                [:td
+                 [:input {:type type
+                          :id id
+                          :value value}]
+                 [:label {:for id} label]]))
+            values)]))
+      rows)]]])
 
 (defpartial checkbox-table [{:keys [name label columns rows values]}]
   (table
