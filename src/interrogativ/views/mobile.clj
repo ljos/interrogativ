@@ -123,19 +123,16 @@
 (defpartial radio-group [{:keys [name label groups type]
                           :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
-   [:div {:id name
-          :title (title label)
-          :class "name-holder"}
-    [:legend label]
-    (map-indexed (fn [idx group]
-                   (let [id (format "%sC%s" name idx)]
-                     (html
-                      [:input {:type "radio"
-                               :name name
-                               :id id
-                               :value idx}]
-                      [:label {:for id} group])))
-                 groups)]])
+   [:legend label]
+   (map-indexed (fn [idx group]
+                  (let [id (format "%sC%s" name idx)]
+                    (html
+                     [:input {:type "radio"
+                              :name name
+                              :id id
+                              :value idx}]
+                     [:label {:for id} group])))
+                groups)])
 
 ;; For some reason it wants to evaluate name in this instance if
 ;; put in the :or part of the input.
@@ -150,14 +147,11 @@
            :max max}])
 
 (defpartial select [{:keys [id name label values] :or {id name}}]
-  [:div {:id name
-         :title (title label)
-         :class "name-holder"}
-   [:label {:for name :class "select"} label]
-   [:select {:name name :id id}
-    (map-indexed (fn [idx value]
-                   [:option {:value idx} value])
-                 values)]])
+  [:label {:for name :class "select"} label]
+  [:select {:name name :id id}
+   (map-indexed (fn [idx value]
+                  [:option {:value idx} value])
+                values)])
 
 (defpartial textarea [{:keys [id name label value]
                        :or {id name value ""}}]
@@ -166,18 +160,15 @@
 
 (defpartial radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
-   [:div {:id name
-          :title (title label)
-          :class "name-holder"}
-    [:legend label]
-    (map-indexed (fn [idx value]
-                   (let [id (format "%sC%s" name idx)]
-                     (html [:input {:type "radio"
-                                    :name name
-                                    :id id
-                                    :value idx}]
-                           [:label {:for id} value])))
-                 values)]])
+   [:legend label]
+   (map-indexed (fn [idx value]
+                  (let [id (format "%sC%s" name idx)]
+                    (list [:input {:type "radio"
+                                   :name name
+                                   :id id
+                                   :value idx}]
+                          [:label {:for id} value])))
+                values)])
 
 (defpartial checkbox-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
@@ -186,14 +177,11 @@
                   (let [id (format "%sC%s" name idx)
                         name (-> (format "%sC%s" name idx)
                                  (str/replace #"\s+" "-"))]
-                    (html [:div {:id name
-                                 :class "name-holder"
-                                 :title (title label)}
-                           [:input {:type "checkbox"
-                                    :name name
-                                    :id id
-                                    :value idx}]
-                           [:label {:for id} value]])))
+                    (list [:input {:type "checkbox"
+                                   :name name
+                                   :id id
+                                   :value idx}]
+                          [:label {:for id} value])))
                 values)])
 
 (defpartial table [{:keys [name type label columns rows values]}]
