@@ -83,11 +83,12 @@
                      :data-theme "c"}
                [:p {:id "menyp"}]]})])
 
-(defrecord Survey [survey post])
+(defrecord Survey [survey thankyou])
 
 (defn create-survey [page-name document]
-  (let [survey (:survey document)
-        post   (:post document)]
+  (let [document (parse/parse document)
+        survey (:survey document)
+        thankyou   (:thankyou document)]
     (->Survey
      (if (parse/submit-page? (last survey))
        (mobile/layout
@@ -99,7 +100,7 @@
      (mobile/layout
       {:title (:title document)
        :body  (mobile/body
-               (if-let [post (if (seq post) post [default-takk])]
+               (if-let [post (if (seq thankyou) thankyou [default-takk])]
                  (create-mobile-content post)))}))))
 
 (defn create-survey-from [page-name markdown]

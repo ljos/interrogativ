@@ -108,7 +108,7 @@
 
 (defrecord Header [value options])
 (defrecord Page [id header content])
-(defrecord Document [title survey post])
+(defrecord Document [title survey thankyou])
 
 (defn remove-line [string]
   (str/replace-first string #".*(\n|\z)" ""))
@@ -285,15 +285,15 @@
                  submit?
                  [survey post]))))))
 
-(defn parse [spm]
-  (let [document (slurp spm)
-        title (re-find title document)
-        [survey post] (parse-document
-                       (str/replace-first
-                        document
-                        (if (nil? title) "" (first title))
-                        ""))]
+(defn parse [document]
+  (let [title (re-find title document)
+        [survey thankyou]
+        (parse-document
+         (str/replace-first
+          document
+          (if (nil? title) "" (first title))
+          ""))]
     (->Document
      (second title)
      survey
-     post)))
+     thankyou)))
