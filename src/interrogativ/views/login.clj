@@ -2,9 +2,9 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
             [clojure.tools.logging :as log]
+            [interrogativ.models.data :as data]
             [interrogativ.views.common :as common]
-            [noir.session :as session]
-            [interrogativ.db.connection :as db])
+            [noir.session :as session])
   (:use [noir.core :only [defpage]]
         [noir.response :only [redirect]]))
 
@@ -35,7 +35,7 @@
                        :data-role "none"}]]]])}))
 
 (defpage [:post "/login"] {:keys [uname pword]}
-  (if (db/valid-user? uname pword)
+  (if (data/valid-user? uname pword)
     (do
       (session/put! :user uname)
       (log/info uname "logged in.")

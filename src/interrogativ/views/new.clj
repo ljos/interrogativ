@@ -3,7 +3,7 @@
             [noir.session :as session]
             [clojure.tools.logging :as log]
             [interrogativ.models.spm :as spm]
-            [interrogativ.db.connection :as db]
+            [interrogativ.models.data :as data]
             [interrogativ.views.common :as common])
   (:use [noir.response :only [redirect]]
         [noir.core :only [defpage pre-route]]))
@@ -19,5 +19,5 @@
       (log/info (session/get :user)
                 "created new survey:"
                 new)
-      (db/insert-survey new "")
+      (data/insert-survey new "")
       (redirect (str "/data/" new)))))

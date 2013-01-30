@@ -48,7 +48,7 @@
                      :survey (:survey survey)
                      :thankyou (:thankyou survey)}))))
 
-(defn html-for-survey
+(defn survey
   "get the html for the survey."
   [page]
   (log/info "html for survey" page)
@@ -57,7 +57,7 @@
     (select surveys
             (where {:url page})))))
 
-(defn thankyou-for-survey
+(defn thankyou
   "get the html for the survey."
   [survey]
   (:thankyou
@@ -65,7 +65,7 @@
     (select surveys
             (where {:url survey})))))
 
-(defn markdown-for-survey
+(defn markdown
   "get the markdown for the survey"
   [survey]
   (let [user (session/get :user)]
@@ -86,27 +86,17 @@
             (where {:url survey
                     :owner user}))))
 
-
-(defn answers-for-page 
-  "retrieve all answers for the given page"
+(defn submissions
+  "retrieve all submissions for the given page"
   [page]
   (let [user (session/get :user)]
-    (map (comp read-string :answer)
+    (map #(merge {:informant (Long/toString (+ 100000 (:id %)) 16)}
+                 (read-string (:answer %)))
          (select answers
            (where {:survey page})
            (join surveys (= :answers.survey :surveys.url))
            (where {:surveys.owner [= user]})))))
 
-(defn select-all-pages 
-  "get all pages from database"
-  []
-  (let [user (session/get :user)]
-    (map :url (select surveys
-                      (where {:owner [= user]})))))
-
-
-(defn survey-for-name [name]
-  (html-for-survey name))
 (defn insert-answer
   "insert new answers to database."
   [survey answer]
@@ -114,8 +104,6 @@
     (values {:survey survey
              :answer (str answer)})))
 
-(defn thankyou-for-name [name]
-  (thankyou-for-survey name))
 
 (defn store-answer
   "store the answer given to the survey"
@@ -125,12 +113,18 @@
        first
        (+ 100000)
        (Long/toString 16)))
-  []
 
-(defn create-csv-for-page 
+(defn pages
+  "get all pages from database that belongs to the current user."
+  []
+  (let [user (session/get :user)]
+    (map :url (select surveys
+                      (where {:owner [= user]})))))
+
+(defn create-csv
   "creates a csv for the answers given to survey on page"
   [page]
-  (let [submissions (answers-for-page page)
+  (let [submissions (submissions page)
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv for page: " page)
     (with-out-str 
@@ -141,18 +135,10 @@
                                 (for [key keys]
                                   (get submission key -1)))))))))
 
-(defn markdown-for-page 
-  "retrives the markdown from the database"
-  [page]
-  (markdown-for-survey page))
-
 (defn upload-file [{:keys [filename tempfile]}]
   (log/info (format "Storing file qs/%s" filename))
   (insert-survey (str/replace filename #"\..*$" "")
                     (slurp tempfile)))
-
-(defn pages []
-  (select-all-pages))
 
 (defn owner? 
   "Checks if the current session is the owner of the page."

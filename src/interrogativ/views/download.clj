@@ -18,13 +18,13 @@
             (do
               (log/info  user "downloading CSV file:" file)
               (content-type "text/csv"
-                            (data/create-csv-for-page
+                            (data/create-csv
                              (str/replace file #".csv" ""))))
             
             (re-find #".spm" file)
             (do
               (log/info user "downloading spm file:" file)
-              (content-type "text/plain" (data/markdown-for-page
+              (content-type "text/plain" (data/markdown
                                           (str/replace file #".spm" ""))))
             
             :else

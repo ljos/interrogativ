@@ -52,7 +52,7 @@
                        :name "page"
                        :value page}]
               [:div {:id "editor"}
-               (data/markdown-for-page page)]]
+               (data/markdown page)]]
              (include-js "/ace/ace.js")
              (include-js "/cljs/editor.js"))})
     (redirect "/data")))
