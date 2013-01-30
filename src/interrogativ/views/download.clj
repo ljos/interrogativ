@@ -17,15 +17,16 @@
       (cond (re-find #".csv" file)
             (do
               (log/info  user "downloading CSV file:" file)
-              (content-type "text/csv"
+              (content-type "text/csv;charset=utf-8"
                             (data/create-csv
                              (str/replace file #".csv" ""))))
             
             (re-find #".spm" file)
             (do
               (log/info user "downloading spm file:" file)
-              (content-type "text/plain" (data/markdown
-                                          (str/replace file #".spm" ""))))
+              (content-type "text/plain;charset=utf-8"
+                            (data/markdown
+                             (str/replace file #".spm" ""))))
             
             :else
             (throw (FileNotFoundException.)))
