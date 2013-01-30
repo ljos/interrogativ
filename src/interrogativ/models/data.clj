@@ -86,13 +86,6 @@
             (where {:url survey
                     :owner user}))))
 
-(defn insert-answer
-  "insert new answers to database."
-  [informant survey answer]
-  (insert answers
-    (values {:informant informant
-             :survey survey
-             :answer (str answer)})))
 
 (defn answers-for-page 
   "retrieve all answers for the given page"
@@ -114,6 +107,12 @@
 
 (defn survey-for-name [name]
   (html-for-survey name))
+(defn insert-answer
+  "insert new answers to database."
+  [survey answer]
+  (insert answers
+    (values {:survey survey
+             :answer (str answer)})))
 
 (defn thankyou-for-name [name]
   (thankyou-for-survey name))
@@ -121,13 +120,12 @@
 (defn store-answer
   "store the answer given to the survey"
   [page answer]
-  (insert-answer (:informant answer) page answer))
-
-(def submitter-id (atom 10000))
-(defn new-submitter-id!
-  "returns a new submitter-id"
+  (-> (insert-answer page answer)
+       vals
+       first
+       (+ 100000)
+       (Long/toString 16)))
   []
-  (Long/toString (swap! submitter-id inc)))
 
 (defn create-csv-for-page 
   "creates a csv for the answers given to survey on page"

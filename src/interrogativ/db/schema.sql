@@ -20,10 +20,8 @@ CREATE TABLE surveys (
 
 CREATE TABLE answers (
        id INTEGER PRIMARY KEY ASC,
-       informant TEXT,
        survey TEXT,
        answer TEXT,
        answered TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-       UNIQUE(informant, survey),
        FOREIGN KEY(survey) REFERENCES survey(url)
 );
