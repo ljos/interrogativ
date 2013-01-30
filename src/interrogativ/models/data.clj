@@ -36,6 +36,15 @@
     (crypt/compare password
                    encrypted)))
 
+(defn survey
+  "get the html for the survey."
+  [page]
+  (log/info "html for survey" page)
+  (:survey
+   (first
+    (select surveys
+            (where {:url page})))))
+
 (defn insert-survey 
   "insert new survey to database."
   [page text]
@@ -48,14 +57,17 @@
                      :survey (:survey survey)
                      :thankyou (:thankyou survey)}))))
 
-(defn survey
-  "get the html for the survey."
-  [page]
-  (log/info "html for survey" page)
-  (:survey
-   (first
-    (select surveys
-            (where {:url page})))))
+(defn update-survey
+  "update the markdown adn html for the survey."
+  [survey markdown]
+  (let [user (session/get :user)
+        page (spm/create-survey (str "/qs/" survey) markdown)]
+    (update surveys
+            (set-fields {:markdown markdown
+                         :survey (:survey page)
+                         :thankyou (:thankyou page)})
+            (where {:url survey
+                    :owner user}))))
 
 (defn thankyou
   "get the html for the survey."
@@ -73,18 +85,6 @@
      (select surveys
              (where {:url survey
                      :owner user})))))
-
-(defn update-survey
-  "update the markdown adn html for the survey."
-  [survey markdown]
-  (let [user (session/get :user)
-        page (spm/create-survey (str "/qs/" survey) markdown)]
-    (update surveys
-            (set-fields {:markdown markdown
-                         :survey (:survey page)
-                         :thankyou (:thankyou page)})
-            (where {:url survey
-                    :owner user}))))
 
 (defn submissions
   "retrieve all submissions for the given page"
