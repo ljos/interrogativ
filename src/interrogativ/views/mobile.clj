@@ -196,7 +196,7 @@
         [:th column])]
      (map-indexed
       (fn [idx row]
-        (let [name (-> (format "%sR%s" name idx))]
+        (let [name (format "%sR%s" name idx)]
           [:tr
            [:td row]
            (map-indexed
