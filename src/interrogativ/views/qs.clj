@@ -6,16 +6,16 @@
         [noir.response :only [redirect]]))
 
 (defpage "/qs/:page" {:keys [page]}
-  (let [page (str "/qs/" page)]
-    (log/info "getting cookie: " (cookies/get :tracker))
-    ;; (if (cookies/get :tracker)
-    ;;   (redirect (str page "/takk"))
-    (data/survey-for-name page)      
-    ;; )
-    ))
+  (log/info "Serving page" page)
+  (log/info "getting cookie: " (cookies/get :tracker))
+  ;; (if (cookies/get :tracker)
+  ;;   (redirect (str page "/takk"))
+  (data/survey-for-name page)
+  ;; )
+  )
 
 (defpage [:post "/qs/:page"] data
-  (let [page (str "/qs/" (:page data))
+  (let [page (:page data)
         submitter-id (data/new-submitter-id!)]
     (cookies/put! :tracker
       {:value submitter-id
@@ -26,12 +26,6 @@
      (-> data
          (dissoc :page)
          (dissoc :submitter)
-         (#(reduce (fn [dat k]
-                     (assoc dat
-                       (if (string? k) k (name k))
-                       (get % k)))
-                   {}
-                   (keys %)))
          (assoc :informant submitter-id)))
     (redirect (str page "/takk"))))
 
