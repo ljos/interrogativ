@@ -25,33 +25,35 @@
              (redirect "/login")))
 
 (defpage "/data/:page" {:keys [page]}
-  (common/layout
-   {:title page
-    :body (common/body
-           [:ul {:class "breadcrumb"}
-            [:li
-             [:a {:href "/data"} "Pages"]
-             [:span {:class "divider"} "/"]]
-            [:li {:class "active"}
-             page]]
-           [:ul {:class "nav nav-pills"}
-            [:li {:class "disabled"}
-             [:a "Data"
-              [:span {:class "divider"} " : "]]]
-            [:li
-             [:a {:href (str "/qs/" page)}
-              "page"]]           
-            [:li
-             [:a {:href (str "/edit/" page)}
-              "edit"]]
-            [:li
-             [:a {:href (str "/download/" page ".spm" )}
-              "download"]]]
-           [:div {:class "links"}
-            [:hr {:style "margin-top:-1em;"}]
-            [:a {:href (str "/download/" page ".csv")}
-             "Download csv"]
-            [:br]])}))
+  (if (data/owner? page)
+    (common/layout
+     {:title page
+      :body (common/body
+             [:ul {:class "breadcrumb"}
+              [:li
+               [:a {:href "/data"} "Pages"]
+               [:span {:class "divider"} "/"]]
+              [:li {:class "active"}
+               page]]
+             [:ul {:class "nav nav-pills"}
+              [:li {:class "disabled"}
+               [:a "Data"
+                [:span {:class "divider"} " : "]]]
+              [:li
+               [:a {:href (str "/qs/" page)}
+                "page"]]           
+              [:li
+               [:a {:href (str "/edit/" page)}
+                "edit"]]
+              [:li
+               [:a {:href (str "/download/" page ".spm" )}
+                "download"]]]
+             [:div {:class "links"}
+              [:hr {:style "margin-top:-1em;"}]
+              [:a {:href (str "/download/" page ".csv")}
+               "Download CSV file"]
+              [:br]])})
+    (redirect "/data")))
 
 (defpage "/data" {}
   (common/layout
