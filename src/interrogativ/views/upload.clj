@@ -3,8 +3,7 @@
             [clojure.tools.logging :as log]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
-            [noir.session :as session]
-            [interrogativ.db.connection :as db])
+            [noir.session :as session])
   (:use [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
 
@@ -24,7 +23,7 @@
         (let [page (:page data)
               text (str/replace (:text data) "\r" "")]
           (log/info (session/get :user) "uploading revision to " page)
-          (db/update-survey page text)
+          (data/update-survey page text)
           (redirect (str "/data/" page)))
 
         :else
