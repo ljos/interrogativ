@@ -92,7 +92,7 @@
      {:name name
       :label [:h4 label]
       :groups groups
-      :type (if (contains? options ":horizontal")
+      :type (if (some (partial = ":horizontal") options)
               "horizontal")})))
 
 (defrecord RadioTableQuestion [name label columns rows values options]
