@@ -141,7 +141,7 @@
                                (str/replace #"\n+|:\w+\s*" " ")
                                (str/replace #"\s+" " ")
                                str/trim))
-        options (second (re-seq #":\w+" question))
+        options (re-seq #":\w+" question)
         choices (map first (re-seq choice question-block))]
     (cond (empty? choices)
           (->SelectQuestion
