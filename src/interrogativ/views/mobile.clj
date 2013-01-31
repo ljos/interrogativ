@@ -125,7 +125,7 @@
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:legend label]
    (map-indexed (fn [idx group]
-                  (let [id (format "%sC%s" name idx)]
+                  (let [id (format "%sC%02d" name idx)]
                     (html
                      [:input {:type "radio"
                               :name name
@@ -162,7 +162,7 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%sC%s" name idx)]
+                  (let [id (format "%sC%02d" name idx)]
                     (list [:input {:type "radio"
                                    :name name
                                    :id id
@@ -174,8 +174,8 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%sC%s" name idx)
-                        name (-> (format "%sC%s" name idx)
+                  (let [id (format "%sC%02d" name idx)
+                        name (-> (format "%sC%02d" name idx)
                                  (str/replace #"\s+" "-"))]
                     (list [:input {:type "checkbox"
                                    :name name
@@ -196,12 +196,12 @@
         [:th column])]
      (map-indexed
       (fn [idx row]
-        (let [name (format "%sR%s" name idx)]
+        (let [name (format "%sR%02d" name idx)]
           [:tr
            [:td row]
            (map-indexed
             (fn [value label]
-              (let [id (format "%sC%s" name value)]
+              (let [id (format "%sC%02d" name value)]
                 [:td
                  [:input {:type type
                           :name (if (= type "checkbox") id name)

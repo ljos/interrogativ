@@ -135,7 +135,7 @@
    (second (re-find #"#+\s*(.*)" heading))))
 
 (defn parse-question [nb question-block]
-  (let [name (str "Q" nb)
+  (let [name (format "Q%02d" nb)
         question (second (re-find question question-block))
         label (str nb ". " (-> question
                                (str/replace #"\n+|:\w+\s*" " ")
