@@ -1,10 +1,10 @@
 (ns interrogativ.views.main
-  (:require [interrogativ.views.common :as common])
-  (:use [hiccup.core :only [html]]
-        [noir.core :only [defpage]]))
+  (:require [interrogativ.views.common :as common]
+            [compojure.core :refer [defroutes GET]])
+  (:use [hiccup.core :only [html]]))
 
-(defpage "/" []
-  (common/layout
-   {:title "Interrogativ&#8253;"
-    :body (common/body
-           [:h1 "Interrogativ&#8253;"])}))
+(defroutes main-routes
+  (GET "/" [] (common/layout
+               {:title "Interrogativ&#8253;"
+                :body (common/body
+                       [:h1 "Interrogativ&#8253;"])})))

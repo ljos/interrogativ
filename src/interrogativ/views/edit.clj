@@ -2,17 +2,13 @@
   (:require [clojure.tools.logging :as log]
             [interrogativ.views.common :as common]
             [noir.session :as session]
-            [interrogativ.models.data :as data])
+            [interrogativ.models.data :as data]
+            [compojure.core :refer [defroutes GET]]
+            [interrogativ.util :as util])
   (:use [hiccup.page :only [include-js include-css]]
-        [noir.core :only [defpage pre-route]]
         [noir.response :only [redirect]]))
 
-(pre-route "/edit*" {}
-           (if-not (session/get :user)
-             (redirect "/login")))
-
-
-(defpage "/edit/:page" {:keys [page]}
+(defn edit [page]
   (log/info (session/get :user) "editing page:" page)
   (if (data/owner? page)
     (common/layout
@@ -21,7 +17,7 @@
              (include-css "/css/editor.css")
              [:form {:name "editor"
                      :action "/upload"
-                     :method "post"}
+                     :method "POST"}
               [:ul {:class "breadcrumb"}
                [:li
                 [:a {:href "/data"} "Pages"]
@@ -56,3 +52,6 @@
              (include-js "/ace/ace.js")
              (include-js "/cljs/editor.js"))})
     (redirect "/data")))
+
+(defroutes edit-routes
+  (GET "/edit/:page" [page] (util/private (edit page))))

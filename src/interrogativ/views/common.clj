@@ -1,18 +1,19 @@
 (ns interrogativ.views.common
-  (:use [hiccup.page :only [include-js include-css]]
-        [noir.core :only [defpartial]]))
+  (:require [hiccup.page :refer [include-js include-css]]
+            [hiccup.core :refer [html]]))
 
 (def jquery "http://code.jquery.com/")
 
-(defpartial body [& content]
+(defn body [& content]
   [:body content])
 
-(defpartial layout [{:keys [title body]}]
-  [:head
-   [:title title]
-   [:meta
-    (include-css "/bootstrap/css/bootstrap.min.css")
-    (include-css "/css/common.css")
-    (include-js (str jquery "jquery-1.8.2.js"))
-    (include-js "/bootstrap/js/bootstrap.min.js")]]
-  body)
+(defn layout [{:keys [title body]}]
+  (html
+   [:head
+    [:title title]
+    [:meta
+     (include-css "/bootstrap/css/bootstrap.min.css")
+     (include-css "/css/common.css")
+     (include-js (str jquery "jquery-1.8.2.js"))
+     (include-js "/bootstrap/js/bootstrap.min.js")]]
+   body))

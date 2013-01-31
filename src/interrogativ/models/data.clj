@@ -90,7 +90,7 @@
   "retrieve all submissions for the given page"
   [page]
   (let [user (session/get :user)]
-    (map #(merge {:informant (Long/toString (+ 100000 (:id %)) 16)}
+    (map #(merge {"informant" (Long/toString (+ 100000 (:id %)) 16)}
                  (read-string (:answer %)))
          (select answers
            (where {:survey page})
@@ -128,7 +128,7 @@
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv for page: " page)
     (with-out-str 
-      (println (str/join "," (map name keys)))
+      (println (str/join "," keys))
       (doseq [submission submissions]
         (println (str/join ","
                            (map (partial format "\"%s\"")

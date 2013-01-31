@@ -3,15 +3,14 @@
             [clojure.tools.logging :as log]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
-            [noir.session :as session])
-  (:use [noir.core :only [defpage pre-route]]
-        [noir.response :only [redirect]]))
+            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
+            [compojure.core :refer [defroutes POST]]
+            [noir.session :as session]
+            [interrogativ.util :as util])
+  (:use [noir.response :only [redirect]]))
 
-(pre-route "/upload" {}
-  (if-not (session/get :user)
-    (redirect "/login")))
-
-(defpage [:post "/upload"] data
+(defn upload [data]
+  (log/info "Uploading data" (or (:file data) (:text data)))
   (cond (:file data)
         (let [file (:file data)]
           (when-let [filename (not-empty (:filename file))]
@@ -28,3 +27,7 @@
 
         :else
         (redirect "/data")))
+
+(defroutes upload-routes
+  (wrap-multipart-params
+   (POST "/upload" [page file text] (upload {:page page :file file :text text}))))

@@ -2,30 +2,30 @@
   (:require [clojure.string :only [replace lower-case] :as str]
             [interrogativ.views.common :as common])
   (:use [hiccup.core :only [html]]
-        [hiccup.page :only [include-js include-css]]
-        [noir.core :only [defpartial]])
-  (:refer-clojure :exclude [name id]))
+        [hiccup.page :only [include-js include-css]])
+  (:refer-clojure :exclude [name]))
 
-(defpartial body [& content]
+(defn body [& content]
   (common/body content))
 
-(defpartial layout [{:keys [title body]}]
-  [:head
-   [:title title]
-   [:meta {:name "viewport"
-           :content "width=device-width, initial-scale=1"}]
-   (include-css
-    (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.css"))
-   (include-js
-    (str common/jquery "jquery-1.8.2.min.js"))
-   (include-js
-    (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
-   (include-js "/cljs/mobile.js")
-   (include-css "/css/mobile.css")]
-  body)
+(defn layout [{:keys [title body]}]
+  (html
+   [:head
+    [:title title]
+    [:meta {:name "viewport"
+            :content "width=device-width, initial-scale=1"}]
+    (include-css
+     (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.css"))
+    (include-js
+     (str common/jquery "jquery-1.8.2.min.js"))
+    (include-js
+     (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.js"))
+    (include-js "/cljs/mobile.js")
+    (include-css "/css/mobile.css")]
+   body))
 
-(defpartial left-button [{:keys [id link label inline]
-                          :or {label "Tilbake" inline "false" id nil}}]
+(defn left-button [{:keys [id link label inline]
+                    :or {label "Tilbake" inline "false" id nil}}]
   [:a {:href link
        :id id
        :data-role "button"
@@ -33,8 +33,8 @@
        :data-inline inline}
    label])
 
-(defpartial right-button [{:keys [id link label inline]
-                           :or {label "Neste" inline "false" id nil}}]
+(defn right-button [{:keys [id link label inline]
+                     :or {label "Neste" inline "false" id nil}}]
   [:a {:href link
        :data-role "button"
        :id id
@@ -43,7 +43,7 @@
        :data-inline inline}
    label])
 
-(defpartial submit-button []
+(defn submit-button []
   [:input {:data-icon "arrow-r"
            :data-iconpos "right"
            :data-inline "false"
@@ -51,7 +51,7 @@
            :name "submitter"
            :value "Levér"}])
 
-(defpartial menu-button [{:keys [label]}]
+(defn menu-button [{:keys [label]}]
   [:a {:class "ui-btn-right"
        :href "#meny"
        :data-icon "gear"
@@ -65,43 +65,41 @@
      :or [block-a "" block-b ""]}]
      (grid-a block-a block-b))
   ([block-a block-b & blocks]
-     (html
-      [:fieldset {:class "ui-grid-a"}
-       [:div {:class "ui-block-a"} block-a]
-       [:div {:class "ui-block-b"} block-b]
-       (for [[block-a block-b] (partition 2 blocks)]
-         [:div {:class "ui-block-a"} block-a]
-         [:div {:class "ui-block-b"} block-b])])))
+     [:fieldset {:class "ui-grid-a"}
+      [:div {:class "ui-block-a"} block-a]
+      [:div {:class "ui-block-b"} block-b]
+      (for [[block-a block-b] (partition 2 blocks)]
+        (list [:div {:class "ui-block-a"} block-a]
+              [:div {:class "ui-block-b"} block-b]))]))
 
 (defn grid-b
   ([{:keys [block-a block-b block-c]
      :or {block-a "" block-b "" block-c ""}}]
      (grid-b block-a block-b block-c))
   ([block-a block-b block-c & blocks]
-     (html
-      [:fieldset {:class "ui-grid-b"}
-       [:div {:class "ui-block-a"} block-a]
-       [:div {:class "ui-block-b"} block-b]
-       [:div {:class "ui-block-c"} block-c]
-       (for [[block-a block-b block-c] (partition 3 blocks)]
-         [:div {:class "ui-block-a"} block-a]
-         [:div {:class "ui-block-b"} block-b]
-         [:div {:class "ui-block-c"} block-c])])))
+     [:fieldset {:class "ui-grid-b"}
+      [:div {:class "ui-block-a"} block-a]
+      [:div {:class "ui-block-b"} block-b]
+      [:div {:class "ui-block-c"} block-c]
+      (for [[block-a block-b block-c] (partition 3 blocks)]
+        (list [:div {:class "ui-block-a"} block-a]
+              [:div {:class "ui-block-b"} block-b]
+           [:div {:class "ui-block-c"} block-c]))]))
 
-(defpartial header [{:keys [data-position content data-theme]
+(defn header [{:keys [data-position content data-theme]
                      :or {data-position nil data-theme "a"}}]
   [:div {:data-role "header"
          :data-position data-position
          :data-theme data-theme}
    content])
 
-(defpartial footer [{:keys [data-position content id]
-                     :or {data-position nil id nil}}]
+(defn footer [{:keys [data-position content id]
+               :or {data-position nil id nil}}]
   [:div {:id id :data-role "footer" :data-position data-position}
    content])
 
-(defpartial page [{:keys [id header content footer data-title data-theme]
-                   :or {id nil header nil footer nil data-title nil data-theme nil}}]
+(defn page [{:keys [id header content footer data-title data-theme]
+             :or {id nil header nil footer nil data-title nil data-theme nil}}]
   [:div {:data-role "page"
          :id id
          :data-title data-title
@@ -110,7 +108,7 @@
    content
    footer])
 
-(defpartial content [& content]
+(defn content [& content]
   [:div {:data-role "content"} content
    [:br] [:br]])
 
@@ -120,8 +118,8 @@
        (re-find #"\d+\.\s*(.*)")
        second))
 
-(defpartial radio-group [{:keys [name label groups type]
-                          :or {type nil id name}}]
+(defn radio-group [{:keys [name label groups type]
+                    :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:legend label]
    (map-indexed (fn [idx group]
@@ -136,8 +134,8 @@
 
 ;; For some reason it wants to evaluate name in this instance if
 ;; put in the :or part of the input.
-(defpartial slider [{:keys [name label id value min max]
-                     :or {min 0 max 100}}]
+(defn slider [{:keys [name label id value min max]
+               :or {min 0 max 100}}]
   [:label {:for (if id id name)} label]
   [:input {:type "range"
            :name name
@@ -146,19 +144,19 @@
            :min min
            :max max}])
 
-(defpartial select [{:keys [id name label values] :or {id name}}]
+(defn select [{:keys [id name label values] :or {id name}}]
   [:label {:for name :class "select"} label]
   [:select {:name name :id id}
    (map-indexed (fn [idx value]
                   [:option {:value idx} value])
                 values)])
 
-(defpartial textarea [{:keys [id name label value]
-                       :or {id name value ""}}]
+(defn textarea [{:keys [id name label value]
+                 :or {id name value ""}}]
   [:label {:for name} label]
   [:textarea {:name name :id id} value])
 
-(defpartial radio-list [{:keys [name label values]}]
+(defn radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
@@ -170,7 +168,7 @@
                           [:label {:for id} value])))
                 values)])
 
-(defpartial checkbox-list [{:keys [name label values]}]
+(defn checkbox-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
@@ -184,7 +182,7 @@
                           [:label {:for id} value])))
                 values)])
 
-(defpartial table [{:keys [name type label columns rows values]}]
+(defn table [{:keys [name type label columns rows values]}]
   [:div {:data-role "fieldcontain"}
    [:fieldset {:data-role "controlgroup"
                :data-type "horizontal"}
@@ -211,7 +209,7 @@
             values)]))
       rows)]]])
 
-(defpartial checkbox-table [{:keys [name label columns rows values]}]
+(defn checkbox-table [{:keys [name label columns rows values]}]
   (table
    {:name name
     :type "checkbox"
@@ -220,7 +218,7 @@
     :rows rows
     :values values}))
 
-(defpartial radio-table [{:keys [name label columns rows values]}]
+(defn radio-table [{:keys [name label columns rows values]}]
   (table
    {:name name
     :type "radio"

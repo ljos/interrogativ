@@ -1,13 +1,33 @@
 (ns interrogativ.server
-  (:require [clojure.java.io :as io]
-            [interrogativ.models.spm :as spm]
-            [noir.server :as server])
-  (:gen-class))
+  (:require [compojure.core :refer [defroutes routes ANY]]
+            [compojure.handler :refer [api]]
+            [compojure.route :refer [not-found resources]]
+            [interrogativ.views.data :refer [data-routes]]
+            [interrogativ.views.download :refer [download-routes]]
+            [interrogativ.views.edit :refer [edit-routes]]
+            [interrogativ.views.login :refer [login-routes]]
+            [interrogativ.views.main :refer [main-routes]]
+            [interrogativ.views.new :refer [new-routes]]
+            [interrogativ.views.qs :refer [qs-routes]]
+            [interrogativ.views.upload :refer [upload-routes]]
+            [noir.cookies :refer [wrap-noir-cookies]]
+            [noir.session :refer [wrap-noir-session]]
+            [noir.util.middleware :refer [wrap-strip-trailing-slash]]))
 
-(server/load-views-ns 'interrogativ.views)
+(def site-routes
+  (-> (routes data-routes
+              download-routes
+              edit-routes
+              login-routes
+              main-routes
+              new-routes
+              qs-routes
+              upload-routes)
+      (api)
+      (wrap-noir-cookies)
+      (wrap-noir-session)
+      (wrap-strip-trailing-slash)))
 
-(defn -main [& m]
-  (let [mode (keyword (or (first m) :dev))
-        port (Integer. (get (System/getenv) "PORT" "8080"))]
-    (server/start port {:mode mode
-                        :ns 'interrogativ})))
+(defroutes handler
+  (ANY "*" [] site-routes)
+  (resources "/"))
