@@ -1,7 +1,7 @@
 (defproject interrogativ "0.6.1-SNAPSHOT"
-  :description "Spørreskjema til 'Forskningsdagene UNG'"
   :dependencies [[jayq "2.0.0"]
                  [noir "1.3.0"]
+  :description "Survey generator for the University of Bergen.'"
                  [prismatic/dommy "0.0.2-SNAPSHOT"]
                  [korma "0.3.0-RC2"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
