@@ -1,6 +1,6 @@
 (ns interrogativ.views.upload
   (:require [clojure.string :as str]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [interrogativ.models.data :as data]
             [interrogativ.models.spm :as spm]
             [ring.middleware.multipart-params :refer [wrap-multipart-params]]

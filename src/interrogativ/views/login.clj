@@ -1,7 +1,7 @@
 (ns interrogativ.views.login
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [interrogativ.models.data :as data]
             [interrogativ.views.common :as common]
             [noir.session :as session]

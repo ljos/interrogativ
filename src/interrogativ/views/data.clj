@@ -1,7 +1,7 @@
 (ns interrogativ.views.data
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [compojure.core :refer [defroutes GET POST]]
             [interrogativ.models.data :as data]
             [interrogativ.views.common :as common]

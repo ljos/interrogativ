@@ -1,5 +1,5 @@
 (ns interrogativ.models.spm
-  (:require [clojure.tools.logging :as log]
+  (:require [taoensso.timbre :as log]
             [interrogativ.models.parse :as parse]
             [noir.session :as session]
             [interrogativ.views.mobile :as mobile])

@@ -9,7 +9,7 @@
                  [ring/ring-jetty-adapter "1.1.8"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/clojure "1.4.0"]
-                 [org.clojure/tools.logging "0.2.3"]]
+                 [com.taoensso/timbre "1.3.0"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
   :plugins [[lein-cljsbuild "0.3.0"]
             [lein-midje "2.0.1"]

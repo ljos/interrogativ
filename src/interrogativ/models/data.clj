@@ -1,7 +1,7 @@
 (ns interrogativ.models.data
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [noir.util.crypt :as crypt]
             [noir.session :as session]
             [interrogativ.models.spm :as spm])

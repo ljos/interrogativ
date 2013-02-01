@@ -1,5 +1,5 @@
 (ns interrogativ.views.qs
-  (:require [clojure.tools.logging :as log]
+  (:require [taoensso.timbre :as log]
             [noir.cookies :as cookies]
             [interrogativ.models.data :as data]
             [compojure.core :refer [defroutes GET POST]])

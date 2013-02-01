@@ -1,5 +1,5 @@
 (ns interrogativ.views.edit
-  (:require [clojure.tools.logging :as log]
+  (:require [taoensso.timbre :as log]
             [interrogativ.views.common :as common]
             [noir.session :as session]
             [interrogativ.models.data :as data]

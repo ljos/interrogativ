@@ -3,7 +3,7 @@
             [noir.session :as session]
             [clojure.string :as str]
             [compojure.core :refer [defroutes GET]]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [interrogativ.util :as util]
             [noir.response :refer [redirect content-type]])
   (:import [java.io FileNotFoundException]))

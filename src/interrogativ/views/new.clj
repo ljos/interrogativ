@@ -1,7 +1,7 @@
 (ns interrogativ.views.new
   (:require [clojure.string :as str]
             [noir.session :as session]
-            [clojure.tools.logging :as log]
+            [taoensso.timbre :as log]
             [interrogativ.models.spm :as spm]
             [interrogativ.models.data :as data]
             [interrogativ.views.common :as common]
