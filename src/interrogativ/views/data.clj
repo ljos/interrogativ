@@ -93,8 +93,13 @@
                    "download"]]]
                 [:div {:class "links"}
                  [:hr {:style "margin-top:-1em;"}]
-                 [:a {:href (str "/download/" page ".csv")}
-                  "Download CSV file"]
+                 (for [date (data/dates page)
+                       :let [file (-> page
+                                      (str/replace #"_" "-")
+                                      (str "_" date ".csv"))]]
+                   (list [:a {:href (str "/download/" file)}
+                          file]
+                         [:br]))
                  [:br]])})
        (redirect "/data"))))
 

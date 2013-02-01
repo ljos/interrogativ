@@ -11,11 +11,12 @@
 (defn download [file]
   (let [user (session/get :user)]
     (cond (re-find #".csv" file)
-          (do
+          (let [[page date] (-> file
+                                (str/replace #".csv" "")
+                                (str/split #"_"))]
             (log/info  user "downloading CSV file:" file)
             (content-type "text/csv;charset=utf-8"
-                          (data/create-csv
-                           (str/replace file #".csv" ""))))
+                          (data/create-csv page date)))
           
           (re-find #".spm" file)
           (do

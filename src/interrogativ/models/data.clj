@@ -87,15 +87,16 @@
                :owner user})))))
 
 (defn submissions
-  "retrieve all submissions for the given page"
-  [page]
+  "retrieve all submissions for the given page on the date"
+  [page date]
   (let [user (session/get :user)]
     (map #(merge {"informant" (Long/toString (+ 100000 (:id %)) 16)}
                  (read-string (:answer %)))
          (select answers
-           (where {:survey page})
+           (where {:survey page
+                   (sqlfn date :answered) date})
            (join surveys (= :answers.survey :surveys.url))
-           (where {:surveys.owner [= user]})))))
+           (where {:surveys.owner user})))))
 
 (defn insert-answer
   "insert new answers to database."
@@ -119,12 +120,24 @@
   []
   (let [user (session/get :user)]
     (map :url (select surveys
-                (where {:owner [= user]})))))
+                (where {:owner user})))))
+
+(defn dates
+  "get the dates for the page that have answers"
+  [page]
+  (let [user (session/get :user)]
+    (map :date
+         (select answers
+           (modifier "distinct")
+           (fields  [(sqlfn date :answered) :date])
+           (where {:survey page})
+           (join surveys (= :answers.survey :surveys.url))
+           (where {:surveys.owner user})))))
 
 (defn create-csv
-  "creates a csv for the answers given to survey on page"
-  [page]
-  (let [submissions (submissions page)
+  "creates a csv for the answers given to survey on page on date"
+  [page date]
+  (let [submissions (submissions page date)
         keys (into (sorted-set) (mapcat keys submissions))]
     (log/info "Create csv for page: " page)
     (with-out-str 
