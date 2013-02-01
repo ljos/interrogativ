@@ -1,4 +1,4 @@
-(defproject interrogativ "0.9.0-SNAPSHOT"
+(defproject interrogativ "0.9.5-SNAPSHOT"
   :description "Survey generator for the University of Bergen.'"
   :dependencies [[compojure "1.1.5"]
                  [jayq "2.0.0"]
