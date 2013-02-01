@@ -119,8 +119,9 @@
   "get all pages from database that belongs to the current user."
   []
   (let [user (session/get :user)]
-    (map :url (select surveys
-                (where {:owner user})))))
+    (into (sorted-set)
+          (map :url (select surveys
+                            (where {:owner user}))))))
 
 (defn dates
   "get the dates for the page that have answers"
