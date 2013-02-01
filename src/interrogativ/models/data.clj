@@ -119,9 +119,12 @@
   "get all pages from database that belongs to the current user."
   []
   (let [user (session/get :user)]
-    (into (sorted-set)
-          (map :url (select surveys
-                            (where {:owner user}))))))
+    (apply sorted-set-by
+           (fn [f s] (let [f (if (keyword f) (name f) f)
+                          s (if (keyword s) (name s) s)]
+                      (< 0 (compare f s))))
+           (map :url (select surveys
+                       (where {:owner user}))))))
 
 (defn dates
   "get the dates for the page that have answers"
@@ -139,7 +142,11 @@
   "creates a csv for the answers given to survey on page on date"
   [page date]
   (let [submissions (submissions page date)
-        keys (into (sorted-set) (mapcat keys submissions))]
+        keys (apply sorted-set-by
+           (fn [f s] (let [f (if (keyword f) (name f) f)
+                          s (if (keyword s) (name s) s)]
+                      (< 0 (compare f s))))
+           (mapcat keys submissions))]
     (log/info "Create csv for page: " page)
     (with-out-str 
       (println (str/join "," keys))
