@@ -123,7 +123,7 @@
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:legend label]
    (map-indexed (fn [idx group]
-                  (let [id (format "%sC%02d" name idx)]
+                  (let [id (format "%sC%02d" name (inc idx))]
                     (html
                      [:input {:type "radio"
                               :name name
@@ -148,7 +148,7 @@
   [:label {:for name :class "select"} label]
   [:select {:name name :id id}
    (map-indexed (fn [idx value]
-                  [:option {:value idx} value])
+                  [:option {:value (inc idx)} value])
                 values)])
 
 (defn textarea [{:keys [id name label value]
@@ -160,7 +160,7 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%sC%02d" name idx)]
+                  (let [id (format "%sC%02d" name (inc idx))]
                     (list [:input {:type "radio"
                                    :name name
                                    :id id
@@ -172,13 +172,13 @@
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
    (map-indexed (fn [idx value]
-                  (let [id (format "%sC%02d" name idx)
-                        name (-> (format "%sC%02d" name idx)
+                  (let [id (format "%sC%02d" name (inc idx))
+                        name (-> (format "%sC%02d" name (inc idx))
                                  (str/replace #"\s+" "-"))]
                     (list [:input {:type "checkbox"
                                    :name name
                                    :id id
-                                   :value idx}]
+                                   :value 1}]
                           [:label {:for id} value])))
                 values)])
 
@@ -194,17 +194,17 @@
         [:th column])]
      (map-indexed
       (fn [idx row]
-        (let [name (format "%sR%02d" name idx)]
+        (let [name (format "%sR%02d" name (inc idx))]
           [:tr
            [:td row]
            (map-indexed
-            (fn [value label]
-              (let [id (format "%sC%02d" name value)]
+            (fn [idx label]
+              (let [id (format "%sC%02d" name (inc idx))]
                 [:td
                  [:input {:type type
                           :name (if (= type "checkbox") id name)
                           :id id
-                          :value value}]
+                          :value (if (= "checkbox" type) 1 (inc idx))}]
                  [:label {:for id} label]]))
             values)]))
       rows)]]])
