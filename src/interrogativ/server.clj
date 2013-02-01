@@ -12,7 +12,9 @@
             [interrogativ.views.upload :refer [upload-routes]]
             [noir.cookies :refer [wrap-noir-cookies]]
             [noir.session :refer [wrap-noir-session]]
-            [noir.util.middleware :refer [wrap-strip-trailing-slash]]))
+            [noir.util.middleware :refer [wrap-strip-trailing-slash]]
+            [ring.adapter.jetty :refer [run-jetty]])
+  (:gen-class))
 
 (def site-routes
   (-> (routes data-routes
@@ -31,3 +33,6 @@
 (defroutes handler
   (ANY "*" [] site-routes)
   (resources "/"))
+
+(defn -main []
+  (run-jetty handler {:port 8080}))

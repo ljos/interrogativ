@@ -5,7 +5,8 @@
                  [lib-noir "0.3.5"]
                  [prismatic/dommy "0.0.2-SNAPSHOT"]
                  [korma "0.3.0-RC2"]
-                 [ring/ring-core "1.1.7"]
+                 [ring/ring-core "1.1.8"]
+                 [ring/ring-jetty-adapter "1.1.8"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/clojure "1.4.0"]
                  [org.clojure/tools.logging "0.2.3"]]
@@ -34,4 +35,4 @@
               :pretty-print true
               :externs ["externs/jquery-1.8.js"]}}]}
   :ring {:handler interrogativ.server/handler}
-)
+  :main interrogativ.server)
