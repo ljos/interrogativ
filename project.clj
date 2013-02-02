@@ -10,7 +10,8 @@
                  [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/clojure "1.4.0"]
                  [com.taoensso/timbre "1.3.0"]]
-  :profiles {:dev {:dependencies [[midje "1.4.0"]]}}
+  :profiles {:dev {:dependencies [[midje "1.4.0"]
+                                  [clj-webdriver "0.6.0-beta2"]]}}
   :plugins [[lein-cljsbuild "0.3.0"]
             [lein-midje "2.0.1"]
             [lein-ring "0.8.2"]]
