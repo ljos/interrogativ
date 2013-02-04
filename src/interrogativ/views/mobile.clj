@@ -136,25 +136,26 @@
 ;; put in the :or part of the input.
 (defn slider [{:keys [name label id value min max]
                :or {min 0 max 100}}]
-  [:label {:for (if id id name)} label]
-  [:input {:type "range"
-           :name name
-           :id (if id id name)
-           :value value
-           :min min
-           :max max}])
+  (list [:label {:for (if id id name)} label]
+        [:input {:type "range"
+                 :name name
+                 :id (if id id name)
+                 :value value
+                 :min min
+                 :max max}]))
 
 (defn select [{:keys [id name label values] :or {id name}}]
-  [:label {:for name :class "select"} label]
-  [:select {:name name :id id}
-   (map-indexed (fn [idx value]
-                  [:option {:value (inc idx)} value])
-                values)])
+  (list [:label {:for name :class "select"} label]
+        [:select {:name name :id id}
+         (map-indexed (fn [idx value]
+                        [:option {:value (inc idx)} value])
+                      values)]))
+
 
 (defn textarea [{:keys [id name label value]
                  :or {id name value ""}}]
-  [:label {:for name} label]
-  [:textarea {:name name :id id} value])
+  (list [:label {:for name} label]
+        [:textarea {:name name :id id} value]))
 
 (defn radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
