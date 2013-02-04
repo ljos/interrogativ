@@ -165,5 +165,5 @@ skulle det være?")]) 1])
                nil))
 
 (fact "Should parse links in paragraphs."
-  (parse-paragraph "Lenke til [BT](http://bt.no ).")
+  (parse-paragraph "Lenke til [BT](http://bt.no).")
   => (->Paragraph (list "Lenke til " (->Link "http://bt.no" nil "BT") ".")))
