@@ -2,9 +2,9 @@ html {
     background-color: #333;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 800px) {
     .ui-page {
-        width: 600px !important;
+        width: 800px !important;
         margin: 0 auto !important;
         position: relative !important;
     
