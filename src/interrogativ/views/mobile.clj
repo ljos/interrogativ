@@ -13,7 +13,9 @@
    [:head
     [:title title]
     [:meta {:name "viewport"
-            :content "width=device-width, initial-scale=1"}]
+            :content "width=device-width, initial-scale=1, maximum-scale=1"}]
+    [:meta {:name "apple-mobile-web-app-capable"
+            :content "yes"}]
     (include-css
      (str common/jquery "mobile/1.2.0/jquery.mobile-1.2.0.min.css"))
     (include-js
