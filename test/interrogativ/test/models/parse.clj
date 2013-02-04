@@ -163,3 +163,7 @@ skulle det være?")]) 1])
                "11. Søke i NRK-arkivet dersom deler var tilgjengelig på nettsiden?"
                '("Ja" "Nei")
                nil))
+
+(fact "Should parse links in paragraphs."
+  (parse-paragraph "Lenke til [BT](http://bt.no ).")
+  => (->Paragraph (list "Lenke til " (->Link "http://bt.no" nil "BT") ".")))

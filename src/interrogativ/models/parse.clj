@@ -19,11 +19,19 @@
 (defprotocol Hiccup
   (hiccup [this]))
 
+(defrecord Link [link title content]
+  Hiccup
+  (hiccup [this]
+    [:a {:href link
+         :title title}
+     content]))
+
 (extend-protocol Hiccup
   nil
   (hiccup [_] nil)
   String
-  (hiccup [this] this))
+  (hiccup [this]
+    this))
 
 (defrecord Heading [size value]
   Hiccup
@@ -217,11 +225,26 @@
                 choices)
            options))))
 
+(defn parse-links [s]
+  (loop [s s
+         vals []]
+    (if-let [link (re-find #"\[.+?\]\(\s*\S+\s*?\"?\w*?\"?\s*\)" s)]
+      (let [content (re-find #"(?<=\[)\w+(?=\])" link)
+            href (re-find #"(?<=\()\S+(?=\s|\")" link)
+            title (re-find #"(?<=\").*+(?=\")" link)
+            [pre post] (str/split (str/replace-first s link "===LINK===") #"===LINK===" 2)] 
+        (recur post
+               (conj vals
+                     (when-not (str/blank? pre) pre)
+                     (->Link href title content))))
+      (seq (conj vals (when-not (str/blank? s) s))))))
+
 (defn parse-paragraph [paragraph]
   (->Paragraph
-   (interpose (->Breakline)
-              (map #(str/replace % #"\n" " ")
-                   (str/split paragraph #"\n\n")))))
+   (apply concat
+          (interpose (list (->Breakline))
+                     (map #(parse-links (str/replace % #"\n" " "))
+                          (str/split paragraph #"\n\n"))))))
 
 (defn parse-page [page-id question-id page-text]
   (loop [content (remove-line page-text)
