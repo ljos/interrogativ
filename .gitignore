@@ -17,3 +17,5 @@ passwd
 *.clj#
 
 resources/public/cljs/*
+
+deploy
