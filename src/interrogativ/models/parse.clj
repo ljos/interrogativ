@@ -229,7 +229,7 @@
   (loop [s s
          vals []]
     (if-let [link (re-find #"\[.+?\]\(\s*\S+\s*?\"?\w*?\"?\s*\)" s)]
-      (let [content (re-find #"(?<=\[)\w+(?=\])" link)
+      (let [content (re-find #"(?<=\[).+(?=\])" link)
             href (re-find #"(?<=\()\S+(?=\s|\"|\))" link)
             title (re-find #"(?<=\").+(?=\")" link)
             [pre post] (str/split (str/replace-first s link "===LINK===") #"===LINK===" 2)] 
