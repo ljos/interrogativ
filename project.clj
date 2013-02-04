@@ -1,8 +1,8 @@
 (defproject interrogativ "0.9.6-SNAPSHOT"
   :description "Survey generator for the University of Bergen.'"
-  :dependencies [[compojure "1.1.5"]
+  :dependencies [[compojure "1.1.5" :exclusions [org.clojure/tools.macro]]
                  [jayq "2.0.0"]
-                 [lib-noir "0.3.5"]
+                 [lib-noir "0.3.5" :exclusions [ring]]
                  [prismatic/dommy "0.0.2-SNAPSHOT"]
                  [korma "0.3.0-RC2"]
                  [ring/ring-core "1.1.8"]
@@ -11,10 +11,14 @@
                  [org.clojure/clojure "1.4.0"]
                  [com.taoensso/timbre "1.3.0"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]
-                                  [clj-webdriver "0.6.0-beta2"]]}}
+                                  [clj-webdriver "0.6.0-beta2" :exclusions [[slingshot]
+                                                                            cheshire]]
+                                  [org.clojure/clojurescript "0.0-1576"]]}}
   :plugins [[lein-cljsbuild "0.3.0"]
             [lein-midje "2.0.1"]
-            [lein-ring "0.8.2"]]
+            [lein-ring "0.8.2" :exclusions [[slingshot]
+                                            [cheshire]
+                                            org.clojure/clojure]]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild
   {:builds [{:source-paths ["cljs-src/editor"]
