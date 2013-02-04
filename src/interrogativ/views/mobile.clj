@@ -116,15 +116,15 @@
                     :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
    [:legend label]
-   (map-indexed (fn [idx group]
-                  (let [id (format "%sC%02d" name (inc idx))]
-                    (html
-                     [:input {:type "radio"
-                              :name name
-                              :id id
-                              :value idx}]
-                     [:label {:for id} group])))
-                groups)])
+   (apply concat
+          (map-indexed (fn [idx group]
+                         (let [id (format "%sC%02d" name (inc idx))]
+                           (list [:input {:type "radio"
+                                          :name name
+                                          :id id
+                                          :value idx}]
+                                 [:label {:for id} group])))
+                       groups))])
 
 ;; For some reason it wants to evaluate name in this instance if
 ;; put in the :or part of the input.
