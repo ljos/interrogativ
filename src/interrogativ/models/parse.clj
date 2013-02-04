@@ -105,7 +105,6 @@
       :rows rows
       :values values})))
 
-
 (defrecord Header [value options])
 (defrecord Page [id header content])
 (defrecord Document [title survey thankyou])
@@ -142,6 +141,7 @@
                                (str/replace #"\s+" " ")
                                str/trim))
         options (re-seq #":\w+" question)
+        question-block (str/replace-first question-block question "")
         choices (map first (re-seq choice question-block))]
     (cond (empty? choices)
           (->SelectQuestion

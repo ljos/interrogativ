@@ -154,3 +154,12 @@ skulle det være?")]) 1])
                       "Header"
                       '(":submit"))
                      nil)) => true)
+
+(fact "Should not interpret `-` inside a question as a choice"
+  (parse-question 11 "?: Søke i NRK-arkivet dersom deler var tilgjengelig på nettsiden?
+   - Ja
+   - Nei") => (->RadioGroupQuestion
+               "Q11"
+               "11. Søke i NRK-arkivet dersom deler var tilgjengelig på nettsiden?"
+               '("Ja" "Nei")
+               nil))
