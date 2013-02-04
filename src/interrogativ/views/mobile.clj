@@ -112,12 +112,6 @@
   [:div {:data-role "content"} content
    [:br] [:br]])
 
-(defn title [label]
-  (->> label
-       second
-       (re-find #"\d+\.\s*(.*)")
-       second))
-
 (defn radio-group [{:keys [name label groups type]
                     :or {type nil id name}}]
   [:fieldset {:data-role "controlgroup" :data-type type}
