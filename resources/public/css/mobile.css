@@ -6,9 +6,11 @@ html {
     .ui-page {
         width: 600px !important;
         margin: 0 auto !important;
-        postition: relative !important;
-        border-right: 5px #666 outset !important;
-        border-left: 5px #666 outset !important;
+        position: relative !important;
+    
+    }
+    form {
+        background: none !important;
     }
 }
 
