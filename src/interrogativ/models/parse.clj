@@ -235,9 +235,9 @@
             [pre post] (str/split (str/replace-first s link "===LINK===") #"===LINK===" 2)] 
         (recur post
                (conj vals
-                     (when-not (str/blank? pre) pre)
+                     (if-not (str/blank? pre) pre)
                      (->Link href title content))))
-      (seq (conj vals (when-not (str/blank? s) s))))))
+      (remove nil? (seq (conj vals (if-not (str/blank? s) s)))))))
 
 (defn parse-paragraph [paragraph]
   (->Paragraph
