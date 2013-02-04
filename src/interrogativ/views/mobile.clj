@@ -154,28 +154,28 @@
 (defn radio-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
-   (map-indexed (fn [idx value]
-                  (let [id (format "%sC%02d" name (inc idx))]
-                    (list [:input {:type "radio"
-                                   :name name
-                                   :id id
-                                   :value idx}]
-                          [:label {:for id} value])))
-                values)])
+   (apply concat
+          (map-indexed (fn [idx value]
+                         (let [id (format "%sC%02d" name (inc idx))]
+                           (list [:input {:type "radio"
+                                          :name name
+                                          :id id
+                                          :value idx}]
+                                 [:label {:for id} value])))
+                       values))])
 
 (defn checkbox-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
-   (map-indexed (fn [idx value]
-                  (let [id (format "%sC%02d" name (inc idx))
-                        name (-> (format "%sC%02d" name (inc idx))
-                                 (str/replace #"\s+" "-"))]
-                    (list [:input {:type "checkbox"
-                                   :name name
-                                   :id id
-                                   :value 1}]
-                          [:label {:for id} value])))
-                values)])
+   (apply concat
+          (map-indexed (fn [idx value]
+                         (let [name (format "%sC%02d" name (inc idx))]
+                           (list [:input {:type "checkbox"
+                                          :name name
+                                          :id name
+                                          :value 1}]
+                                 [:label {:for name} value])))
+                       values))])
 
 (defn table [{:keys [name type label columns rows values]}]
   [:div {:data-role "fieldcontain"}
