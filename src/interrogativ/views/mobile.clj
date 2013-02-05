@@ -206,20 +206,56 @@
             values)]))
       rows)]]])
 
+(defn table-no-header [{:keys [name type label rows values]}]
+  [:p label]
+  [:div {:data-role "fieldcontain"}
+   (for [row rows]
+     [:div {:class "ui-grid-a"}
+      [:div {:class "ui-block-a" :style "width:40%"}
+       [:div {:style "position:relative;top:6px"} row]]
+      [:div {:class "ui-block-b" :style "width:60%"}
+       [:fieldset {:data-role "controlgroup"
+                   :data-type "horizontal"}
+        (let [name (format "%sS%s" name row)]
+          (map-indexed
+           (fn [idx label]
+             (let [id (format "%sC%s" name (inc idx))]
+               (list [:input {:type type
+                              :name (if (= type "checkbox") id name)
+                              :id id
+                              :value (if (= type "checkbox") 1 (inc idx))}]
+                     [:label {:for id} label])))
+           values))]]])])
+
 (defn checkbox-table [{:keys [name label columns rows values]}]
-  (table
-   {:name name
-    :type "checkbox"
-    :label label
-    :columns columns
-    :rows rows
-    :values values}))
+  (if (seq columns)
+    (table
+     {:name name
+      :type "checkbox"
+      :label label
+      :columns columns
+      :rows rows
+      :values values})
+    (table-no-header
+     {:name name
+      :type "checkbox"
+      :label label
+      :rows rows
+      :values values})))
 
 (defn radio-table [{:keys [name label columns rows values]}]
-  (table
-   {:name name
-    :type "radio"
-    :label label
-    :columns columns
-    :rows rows
-    :values values}))
+  (println "columns" columns)
+  (if (seq columns)
+    (table
+     {:name name
+      :type "radio"
+      :label label
+      :columns columns
+      :rows rows
+      :values values})
+    (table-no-header
+     {:name name
+      :type "radio"
+      :label label
+      :rows rows
+      :values values})))
