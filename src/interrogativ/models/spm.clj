@@ -88,7 +88,7 @@
 (defn create-survey [page-name document]
   (let [document (parse/parse document)
         survey (:survey document)
-        thankyou   (:thankyou document)]
+        thankyou (:thankyou document)]
     (->Survey
      (if (parse/submit-page? (last survey))
        (mobile/layout
