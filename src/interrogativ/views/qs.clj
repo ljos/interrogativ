@@ -8,15 +8,16 @@
 (defn view-qs [page]
   (log/info "Serving page" page)
   (log/info "getting cookie: " (cookies/get :tracker))
-  ;; (if (cookies/get :tracker)
-  ;;   (redirect (str page "/takk"))
-  (data/survey page)
-  ;; )
-  )
+  ;; This is ugly, we need to do this automatically later
+  (if (and (= (clojure.string/lower-case page) "spent")
+           (cookies/get :tracker))
+    (redirect (str page "/takk"))
+  (data/survey page)))
 
-(defn post-data [page data] 
+(defn post-data [page data]
+  (data/store-answer page (dissoc data "submitter"))
   (cookies/put! :tracker
-    {:value (data/store-answer page (dissoc data "submitter"))
+    {:value "blocked"
      :path page
      :max-age 86400})
   (redirect (str page "/takk")))
