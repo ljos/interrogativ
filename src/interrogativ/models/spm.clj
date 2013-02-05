@@ -96,7 +96,7 @@
          :body (mobile/body
                 (create-mobile-survey page-name survey))})
        (do (log/info "Missing submit-page for page:" page-name)
-           (html [:h1 "Missing submit-page"])))
+           [:h1 "Missing submit-page"]))
      (mobile/layout
       {:title (:title document)
        :body  (mobile/body
