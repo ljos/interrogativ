@@ -10,7 +10,7 @@
 (defn create-header [page-id pages header]
   (mobile/header
    {:content (list [:h1 (:value header)]
-                   (if-let [page-nb (re-find #"\d+" page-id)]
+                   (if-let [page-nb (re-find #"(?<=page-)\d+" page-id)]
                      (mobile/menu-button
                       {:label (format " %s / %s " page-nb pages)})))}))
 

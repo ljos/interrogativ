@@ -252,7 +252,7 @@
          page []]
     (if (str/blank? content)
       [(->Page
-        (str "page-" page-id)
+        page-id
         (parse-header (first-line page-text))
         page)
        question-id]
@@ -293,9 +293,15 @@
       (if (str/blank? document)
         [survey post]
         (if page-text
-          (let [[page question-id]  (parse-page page-id
-                                                question-id
-                                                page-text)]
+          (let [[page question-id]
+                (parse-page
+                 (str (if submit?
+                        "takk"
+                        "page")
+                      "-"
+                      page-id)
+                 question-id
+                 page-text)]
             (recur (str/replace-first document page-text "")
                    (if (submit-page? page) 1 (inc page-id))
                    question-id
@@ -313,10 +319,10 @@
   (let [title (re-find title document)
         [survey thankyou]
         (parse-document
-         (str/replace-first
-          document
-          (if (nil? title) "" (first title))
-          ""))]
+         (str/replace-first document
+                            (if (nil? title)
+                              "" (first title))
+                            ""))]
     (->Document
      (second title)
      survey
