@@ -122,7 +122,7 @@
     (apply sorted-set-by
            (fn [f s] (let [f (if (keyword f) (name f) f)
                           s (if (keyword s) (name s) s)]
-                      (< 0 (compare f s))))
+                      (> 0 (compare f s))))
            (map :url (select surveys
                        (where {:owner user}))))))
 
@@ -143,13 +143,13 @@
   [page date]
   (let [submissions (submissions page date)
         keys (apply sorted-set-by
-           (fn [f s] (let [f (if (keyword f) (name f) f)
-                          s (if (keyword s) (name s) s)]
-                      (< 0 (compare f s))))
+                    (fn [f s] (let [f (if (keyword f) (name f) f)
+                                   s (if (keyword s) (name s) s)]
+                               (> 0 (compare f s))))
            (mapcat keys submissions))]
     (log/info "Create csv for page: " page)
     (with-out-str 
-      (println (str/join "," keys))
+      (println (str/join "," (map name keys)))
       (doseq [submission submissions]
         (println (str/join ","
                            (map (partial format "\"%s\"")
