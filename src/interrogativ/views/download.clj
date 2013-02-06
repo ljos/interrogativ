@@ -10,7 +10,7 @@
 
 (defn download [file]
   (let [user (session/get :user)]
-    (cond (re-find #".csv" file)
+    (cond (re-find #".csv$" file)
           (let [[page date] (-> file
                                 (str/replace #".csv" "")
                                 (str/split #"_"))]
@@ -18,7 +18,7 @@
             (content-type "text/csv;charset=utf-8"
                           (data/csv page date)))
           
-          (re-find #".spm" file)
+          (re-find #".spm$" file)
           (do
             (log/info user "downloading spm file:" file)
             (content-type "text/plain;charset=utf-8"
