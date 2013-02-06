@@ -4,7 +4,8 @@
             [taoensso.timbre :as log]
             [noir.util.crypt :as crypt]
             [noir.session :as session]
-            [interrogativ.models.spm :as spm])
+            [interrogativ.models.spm :as spm]
+            [interrogativ.models.parse :as parse])
   (:use [korma db core]))
 
 (defdb db (sqlite3 {:db "data.sqlite"}))
@@ -156,6 +157,14 @@
                            (map (partial format "\"%s\"")
                                 (for [key keys]
                                   (get submission key -1)))))))))
+
+(defn overview 
+  "Creates an overview of the meaning of the different question codes"
+  [page]
+  (let [md (markdown page)]
+    (if (str/blank? md)
+      ""
+      (parse/overview (parse/parse md)))))
 
 (defn upload-file
   "takes a map with filename and a io.File to insert into database"

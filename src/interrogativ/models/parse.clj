@@ -43,6 +43,9 @@
   (hiccup [this]
     [:br]))
 
+(defprotocol Overview
+  (overview [this]))
+
 (defrecord Paragraph [content]
   Hiccup
   (hiccup [this]
@@ -54,7 +57,10 @@
     (mobile/textarea
      {:name name
       :label [:h4 label]
-      :value textarea})))
+      :value textarea}))
+  Overview
+  (overview [this]
+    (format "Textarea:\n%s : %s \n\n" name label)))
 
 (defrecord SelectQuestion [name label values options]
   Hiccup
@@ -62,7 +68,15 @@
     (mobile/select
      {:name name
       :label [:h4 label]
-      :values values})))
+      :values values}))
+  Overview
+  (overview [this]
+    (with-out-str
+      (println  "Select:")
+      (println name ":" label)
+      (doseq [idx (range (count values))]
+        (println "  value:" (inc idx) "choice:" (nth values idx)))
+      (println))))
 
 (defrecord SliderQuestion [name label min max value options]
   Hiccup
@@ -72,7 +86,10 @@
       :label [:h4 label]
       :max max
       :min min
-      :value value})))
+      :value value}))
+  Overview
+  (overview [this]
+    (str "Slider:\n" name " : " label "\n  range: " min "-" max "\n\n")))
 
 (defrecord CheckboxListQuestion [name label values options]
   Hiccup
@@ -80,7 +97,15 @@
     (mobile/checkbox-list
      {:name name
       :label [:h4 label]
-      :values values})))
+      :values values}))
+  Overview
+  (overview [this]
+    (with-out-str
+      (println "Checkbox list:")
+      (println name ":" label)
+      (doseq [idx (range (count values))]
+        (println (format "  %sC%02d : %s" name (inc idx) (nth values idx))))
+      (println))))
 
 (defrecord CheckboxTableQuestion [name label columns rows values options]
   Hiccup
@@ -90,7 +115,21 @@
       :label [:h4 label]
       :columns columns
       :rows rows
-      :values values})))
+      :values values}))
+  Overview
+  (overview [this]
+    (with-out-str
+      (println "Checkbox table:")
+      (println name ":" label)
+      (doseq [ridx (range (count rows))
+              vidx (range (count values))]
+        (println (format "  %sR%02d%C02d" name (inc ridx) (inc vidx))
+                 ": row" (nth rows ridx)
+                 (if (seq columns)
+                   (str "column " (nth columns vidx))
+                   "")
+                 "value" (nth values vidx))
+        (println)))))
 
 
 (defrecord RadioGroupQuestion [name label groups options]
@@ -101,7 +140,15 @@
       :label [:h4 label]
       :groups groups
       :type (if (some (partial = ":horizontal") options)
-              "horizontal")})))
+              "horizontal")}))
+  Overview
+  (overview [this]
+    (with-out-str
+      (println "Radio group:")
+      (println name ":" label)
+      (doseq [idx (range (count groups))]
+        (println "  value:" idx "label:" (nth groups idx)))
+      (println))))
 
 (defrecord RadioTableQuestion [name label columns rows values options]
   Hiccup
@@ -111,11 +158,32 @@
       :label [:h4 label]
       :columns columns
       :rows rows
-      :values values})))
+      :values values}))
+  Overview
+  (overview [this]
+    (with-out-str
+      (println "Radio table:")
+      (println name ":" label)
+      (doseq [ridx (range (count rows))]
+        (println (format "  %sR%02d : %s" name (inc ridx) (nth rows ridx)))
+        (doseq [vidx (range (count values))]
+          (println "    value: " (inc vidx) "label:" (nth values vidx))))
+      (println))))
 
 (defrecord Header [value options])
-(defrecord Page [id header content])
-(defrecord Document [title survey thankyou])
+
+(defrecord Page [id header content]
+  Overview
+  (overview [this]
+    (apply str
+           (map #(if (satisfies? Overview %) (overview %) "")
+                content))))
+
+(defrecord Document [title survey thankyou]
+  Overview
+  (overview [this]
+    (apply str
+           (map overview survey))))
 
 (defn remove-line [string]
   (str/replace-first string #".*(\n|\z)" ""))

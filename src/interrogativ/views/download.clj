@@ -24,7 +24,14 @@
             (content-type "text/plain;charset=utf-8"
                           (data/markdown
                            (str/replace file #".spm" ""))))
-          
+
+          (re-find #".txt$" file)
+          (let [page (-> file
+                         (str/replace #".txt" "")
+                         (str/replace #"overview_" ""))]
+            (log/info user "downloading overview: " page)
+            (content-type "text/plain;charset=utf-8"
+                          (data/overview page)))
           :else
           (redirect "/data"))))
 

@@ -89,6 +89,11 @@
                   [:a {:href (str "/edit/" page)}
                    "edit"]]
                  [:li
+                  [:a {:href (str "/download/overview_"
+                                  (str/replace page #"_" "-")
+                                  ".txt")}
+                   "overview"]]
+                 [:li
                   [:a {:href (str "/download/" page ".spm" )}
                    "download"]]]
                 [:div {:class "links"}
