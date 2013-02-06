@@ -153,19 +153,6 @@
   (list [:label {:for name} label]
         [:textarea {:name name :id id} value]))
 
-(defn radio-list [{:keys [name label values]}]
-  [:fieldset {:data-role "controlgroup"}
-   [:legend label]
-   (apply concat
-          (map-indexed (fn [idx value]
-                         (let [id (format "%sC%02d" name (inc idx))]
-                           (list [:input {:type "radio"
-                                          :name name
-                                          :id id
-                                          :value idx}]
-                                 [:label {:for id} value])))
-                       values))])
-
 (defn checkbox-list [{:keys [name label values]}]
   [:fieldset {:data-role "controlgroup"}
    [:legend label]
