@@ -83,6 +83,7 @@
   (let [user (session/get :user)]
     ((comp :markdown first)
      (select surveys
+       (fields [:markdown])
        (where {:url survey
                :owner user})))))
 
