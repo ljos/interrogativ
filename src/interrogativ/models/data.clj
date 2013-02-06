@@ -138,7 +138,7 @@
            (join surveys (= :answers.survey :surveys.url))
            (where {:surveys.owner user})))))
 
-(defn create-csv
+(defn csv
   "creates a csv for the answers given to survey on page on date"
   [page date]
   (let [submissions (submissions page date)

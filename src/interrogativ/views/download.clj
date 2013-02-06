@@ -16,7 +16,7 @@
                                 (str/split #"_"))]
             (log/info  user "downloading CSV file:" file)
             (content-type "text/csv;charset=utf-8"
-                          (data/create-csv page date)))
+                          (data/csv page date)))
           
           (re-find #".spm" file)
           (do
