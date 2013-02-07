@@ -234,7 +234,6 @@
       :values values})))
 
 (defn radio-table [{:keys [name label columns rows values]}]
-  (println "columns" columns)
   (if (seq columns)
     (table
      {:name name
