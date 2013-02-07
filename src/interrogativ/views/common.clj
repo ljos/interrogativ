@@ -1,6 +1,5 @@
 (ns interrogativ.views.common
-  (:require [hiccup.page :refer [include-js include-css]]
-            [hiccup.core :refer [html]]))
+  (:require [hiccup.page :refer [include-js include-css html5]]))
 
 (def jquery "http://code.jquery.com/")
 
@@ -8,7 +7,7 @@
   [:body content])
 
 (defn layout [{:keys [title body]}]
-  (html
+  (html5
    [:head
     [:title title]
     [:meta
