@@ -50,13 +50,14 @@
   "insert new survey to database."
   [page text]
   (let [user (session/get :user)
-        survey (spm/create-survey (str "/qs/" page) text)]
+        {survey :survey thankyou :thankyou}
+        (spm/create-survey (str "/qs/" page) text)]
     (insert surveys
       (values {:owner user
                :url page
                :markdown text
-               :survey (:survey survey)
-               :thankyou (:thankyou survey)}))))
+               :survey survey
+               :thankyou thankyou}))))
 
 (defn update-survey
   "update the markdown adn html for the survey."
