@@ -195,7 +195,7 @@
       rows)]]])
 
 (defn table-no-header [{:keys [name type label rows values]}]
-  (list [:p label]
+  (list [:h4 label]
         [:div {:data-role "fieldcontain"}
          (map-indexed
           (fn [idx row]

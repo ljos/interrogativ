@@ -2,6 +2,10 @@ html {
     background-color: #333;
 }
 
+label {
+    font-weight: bold !important;
+}
+
 @media only screen and (min-width: 800px) {
     .ui-page {
         width: 800px !important;
@@ -12,6 +16,10 @@ html {
     form {
         background: none !important;
     }
+}
+
+.ui-controlgroup-label {
+    font-weight: bold;
 }
 
 .ui-header .ui-title, .ui-footer .ui-title {

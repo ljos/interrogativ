@@ -8,7 +8,7 @@
 (def header #"^#[^#]\s*.*")
 (def heading #"(?m)^##+.*")
 (def paragraph #"(?s).*?(?=\n\n\n|\n#|\n\s*\?:|\z)")
-(def text #"^\s*[^#?+*<-].*")
+(def text #"^\s*[^#?+*<-].+")
 (def question-block #"(?sm)^\?:.*?(?=\n*?\?:|\n+?#|\n\n|\z)")
 (def question-start #"\s*\?:\s*.*")
 (def question #"(?s)\s*\?:\s*(.*?)(?=\n\s*[\[&+*<-]|\z)")
@@ -56,7 +56,7 @@
   (hiccup [this]
     (mobile/textarea
      {:name name
-      :label [:h4 label]
+      :label label
       :value textarea}))
   Overview
   (overview [this]
@@ -67,7 +67,7 @@
   (hiccup [this]
     (mobile/select
      {:name name
-      :label [:h4 label]
+      :label  label
       :values values}))
   Overview
   (overview [this]
@@ -83,7 +83,7 @@
   (hiccup [this]
     (mobile/slider
      {:name name
-      :label [:h4 label]
+      :label label
       :max max
       :min min
       :value value}))
@@ -96,7 +96,7 @@
   (hiccup [this]
     (mobile/checkbox-list
      {:name name
-      :label [:h4 label]
+      :label label
       :values values}))
   Overview
   (overview [this]
@@ -112,7 +112,7 @@
   (hiccup [this]
     (mobile/checkbox-table
      {:name name
-      :label [:h4 label]
+      :label label
       :columns columns
       :rows rows
       :values values}))
@@ -137,7 +137,7 @@
   (hiccup [this]
     (mobile/radio-group
      {:name name
-      :label [:h4 label]
+      :label label
       :groups groups
       :type (if (some (partial = ":horizontal") options)
               "horizontal")}))
@@ -155,7 +155,7 @@
   (hiccup [this]
     (mobile/radio-table
      {:name name
-      :label [:h4 label]
+      :label label
       :columns columns
       :rows rows
       :values values}))
