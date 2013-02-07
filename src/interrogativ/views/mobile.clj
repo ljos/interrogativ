@@ -1,17 +1,18 @@
 (ns interrogativ.views.mobile
   (:require [clojure.string :only [replace lower-case] :as str]
             [interrogativ.views.common :as common])
-  (:use [hiccup.core :only [html]]
-        [hiccup.page :only [include-js include-css]])
+  (:use  [hiccup.page :only [include-js include-css html5]])
   (:refer-clojure :exclude [name]))
 
 (defn body [& content]
   (common/body content))
 
 (defn layout [{:keys [title body]}]
-  (html
+  (html5
    [:head
     [:title title]
+    [:meta {:http-equiv "Content-type"
+            :content "text/html;charset=UTF-8"}]
     [:meta {:name "viewport"
             :content "width=device-width, initial-scale=1, maximum-scale=1"}]
     [:meta {:name "apple-mobile-web-app-capable"
@@ -124,7 +125,7 @@
                            (list [:input {:type "radio"
                                           :name name
                                           :id id
-                                          :value idx}]
+                                          :value  (inc idx)}]
                                  [:label {:for id} group])))
                        groups))])
 
