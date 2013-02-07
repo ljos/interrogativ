@@ -12,7 +12,10 @@
   (if (and (= (clojure.string/lower-case page) "spent")
            (cookies/get :tracker))
     (redirect (str page "/takk"))
-  (data/survey page)))
+    (let [site (data/survey page)]
+      (if (.startsWith site "<!DOCTYPE html>")
+        site
+        (str "<!DOCTYPE html>\n" site)))))
 
 (defn post-data [page data]
   (data/store-answer page (dissoc data "submitter"))
@@ -23,7 +26,10 @@
   (redirect (str page "/takk")))
 
 (defn thanks [page]
-  (data/thankyou page))
+  (let [site (data/thankyou page)]
+    (if (.startsWith site "<!DOCTYPE html>")
+      site
+      (str "<!DOCTYPE html>\n" site))))
 
 
 (defroutes qs-routes
