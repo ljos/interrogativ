@@ -1,4 +1,4 @@
-(defproject interrogativ "0.10.0-SNAPSHOT"
+(defproject interrogativ "0.10.1-SNAPSHOT"
   :description "Survey generator for the University of Bergen.'"
   :dependencies [[compojure "1.1.5" :exclusions [org.clojure/tools.macro]]
                  [jayq "2.0.0"]

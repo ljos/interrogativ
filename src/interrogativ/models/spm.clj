@@ -5,7 +5,7 @@
             [interrogativ.views.mobile :as mobile])
   (:use [hiccup.core :only [html]]))
 
-(def default-takk (first (parse/parse-page 1 0 "# Takk\n##Takk!")))
+(def default-takk (first (parse/parse-page "takk-1" 0 "# Takk\n##Takk!")))
 
 (defn create-header [page-id pages header]
   (mobile/header
