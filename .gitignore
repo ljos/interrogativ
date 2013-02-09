@@ -19,3 +19,7 @@ passwd
 resources/public/cljs/*
 
 deploy
+
+chromedriver.log
+
+data.sqlite
