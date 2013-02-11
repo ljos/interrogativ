@@ -123,7 +123,7 @@
       (println name ":" label)
       (doseq [ridx (range (count rows))
               vidx (range (count values))]
-        (println (format "  %sR%02d%C02d" name (inc ridx) (inc vidx))
+        (println (format "%sR%02dC%02d" name (inc ridx) (inc vidx))
                  ": row" (nth rows ridx)
                  (if (seq columns)
                    (str "column " (nth columns vidx))
