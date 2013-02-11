@@ -60,7 +60,7 @@
       :value textarea}))
   Overview
   (overview [this]
-    (format "Textarea:\n%s : %s \n\n" name label)))
+    (format "Textarea:\n%s : %s\n\n" name label)))
 
 (defrecord SelectQuestion [name label values options]
   Hiccup
@@ -89,7 +89,7 @@
       :value value}))
   Overview
   (overview [this]
-    (str "Slider:\n" name " : " label "\n  range: " min "-" max "\n\n")))
+    (str "Slider:\n" name " : " label "\n  range: " min " - " max "\n\n")))
 
 (defrecord CheckboxListQuestion [name label values options]
   Hiccup
@@ -123,13 +123,13 @@
       (println name ":" label)
       (doseq [ridx (range (count rows))
               vidx (range (count values))]
-        (println (format "%sR%02dC%02d" name (inc ridx) (inc vidx))
-                 ": row" (nth rows ridx)
-                 (if (seq columns)
-                   (str "column " (nth columns vidx))
-                   "")
-                 "value" (nth values vidx))
-        (println)))))
+        (println (format "  %sR%02dC%02d" name (inc ridx) (inc vidx))
+                 (str ": row " (nth rows ridx)
+                      (if (seq columns)
+                    (str "column " (nth columns vidx))
+                    "")
+                  " value " (nth values vidx))))
+      (println))))
 
 
 (defrecord RadioGroupQuestion [name label groups options]
@@ -147,7 +147,7 @@
       (println "Radio group:")
       (println name ":" label)
       (doseq [idx (range (count groups))]
-        (println "  value:" idx "label:" (nth groups idx)))
+        (println "  value:" (inc idx) "label:" (nth groups idx)))
       (println))))
 
 (defrecord RadioTableQuestion [name label columns rows values options]
@@ -167,7 +167,7 @@
       (doseq [ridx (range (count rows))]
         (println (format "  %sR%02d : %s" name (inc ridx) (nth rows ridx)))
         (doseq [vidx (range (count values))]
-          (println "    value: " (inc vidx) "label:" (nth values vidx))))
+          (println "    value:" (inc vidx) "label:" (nth values vidx))))
       (println))))
 
 (defrecord Header [value options])
@@ -225,7 +225,7 @@
            label
            ["missing values"]
            options)
-          
+
           (not-empty (filter (partial re-matches #"^\*.*") choices))
           (->RadioTableQuestion
            name
@@ -300,7 +300,7 @@
       (let [content (re-find #"(?<=\[).+(?=\])" link)
             href (re-find #"(?<=\()\S+(?=\s|\"|\))" link)
             title (re-find #"(?<=\").+(?=\")" link)
-            [pre post] (str/split (str/replace-first s link "===LINK===") #"===LINK===" 2)] 
+            [pre post] (str/split (str/replace-first s link "===LINK===") #"===LINK===" 2)]
         (recur post
                (conj vals
                      (if-not (str/blank? pre) pre)
@@ -329,7 +329,7 @@
               (recur (remove-line content)
                      question-id
                      (conj page (parse-heading line)))
-              
+
               (re-matches question-start line)
               (let [question-block (re-find question-block content)]
                 (recur (str/replace-first content question-block "")
