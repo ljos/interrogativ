@@ -3,7 +3,7 @@
   :dependencies [[compojure "1.1.5" :exclusions [org.clojure/tools.macro]]
                  [jayq "2.0.0"]
                  [lib-noir "0.3.5" :exclusions [ring]]
-                 [prismatic/dommy "0.0.2-SNAPSHOT"]
+                 [prismatic/dommy "0.0.3-SNAPSHOT"]
                  [korma "0.3.0-RC2"]
                  [ring/ring-core "1.1.8"]
                  [ring/ring-jetty-adapter "1.1.8"]
