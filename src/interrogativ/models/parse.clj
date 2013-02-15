@@ -46,6 +46,9 @@
 (defprotocol Overview
   (overview [this]))
 
+(defprotocol Keys
+  (allkeys [this]))
+
 (defrecord Paragraph [content]
   Hiccup
   (hiccup [this]
@@ -60,7 +63,9 @@
       :value textarea}))
   Overview
   (overview [this]
-    (format "Textarea:\n%s : %s\n\n" name label)))
+    (format "Textarea:\n%s : %s\n\n" name label))
+  Keys
+  (allkeys [this] #{name}))
 
 (defrecord SelectQuestion [name label values options]
   Hiccup
@@ -76,7 +81,10 @@
       (println name ":" label)
       (doseq [idx (range (count values))]
         (println "  value:" (inc idx) "choice:" (nth values idx)))
-      (println))))
+      (println)))
+  Keys
+  (allkeys [this]
+    #{name}))
 
 (defrecord SliderQuestion [name label min max value options]
   Hiccup
@@ -89,7 +97,10 @@
       :value value}))
   Overview
   (overview [this]
-    (str "Slider:\n" name " : " label "\n  range: " min " - " max "\n\n")))
+    (str "Slider:\n" name " : " label "\n  range: " min " - " max "\n\n"))
+  Keys
+  (allkeys [this]
+    #{name}))
 
 (defrecord CheckboxListQuestion [name label values options]
   Hiccup
@@ -105,7 +116,11 @@
       (println name ":" label)
       (doseq [idx (range (count values))]
         (println (format "  %sC%02d : %s" name (inc idx) (nth values idx))))
-      (println))))
+      (println)))
+  Keys
+  (allkeys [this]
+    (into #{} (map (partial format "%sC%02d" name)
+                   (range 1 (inc (count values)))))))
 
 (defrecord CheckboxTableQuestion [name label columns rows values options]
   Hiccup
@@ -129,7 +144,13 @@
                     (str "column " (nth columns vidx))
                     "")
                   " value " (nth values vidx))))
-      (println))))
+      (println)))
+  Keys
+  (allkeys [this]
+    (into #{}
+          (for [ridx (range 1 (inc (count rows)))
+                vidx (range 1 (inc (count values)))]
+            (format "%sR%02dC%02d" name ridx vidx)))))
 
 
 (defrecord RadioGroupQuestion [name label groups options]
@@ -148,7 +169,10 @@
       (println name ":" label)
       (doseq [idx (range (count groups))]
         (println "  value:" (inc idx) "label:" (nth groups idx)))
-      (println))))
+      (println)))
+  Keys
+  (allkeys [this]
+    #{name}))
 
 (defrecord RadioTableQuestion [name label columns rows values options]
   Hiccup
@@ -168,7 +192,12 @@
         (println (format "  %sR%02d : %s" name (inc ridx) (nth rows ridx)))
         (doseq [vidx (range (count values))]
           (println "    value:" (inc vidx) "label:" (nth values vidx))))
-      (println))))
+      (println)))
+  Keys
+  (allkeys [this]
+    (into #{}
+          (for [ridx (range 1 (inc (count rows)))]
+            (format "%sR%02d" name ridx)))))
 
 (defrecord Header [value options])
 
@@ -177,13 +206,21 @@
   (overview [this]
     (apply str
            (map #(if (satisfies? Overview %) (overview %) "")
-                content))))
+                content)))
+  Keys
+  (allkeys [this]
+    (into #{} (mapcat #(if (satisfies? Keys %) (allkeys %) #{})
+                      content))))
 
 (defrecord Document [title survey thankyou]
   Overview
   (overview [this]
     (apply str
-           (map overview survey))))
+           (map overview survey)))
+  Keys
+  (allkeys [this]
+    (into (sorted-set)
+          (mapcat allkeys survey))))
 
 (defn remove-line [string]
   (str/replace-first string #".*(\n|\z)" ""))
