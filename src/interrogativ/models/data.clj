@@ -15,7 +15,7 @@
 (defentity answers)
 
 (defn insert-user 
-  "insert user to database"
+  "insert user to database."
   [user password]
   (insert users
     (values {:username user
@@ -80,7 +80,7 @@
       (where {:url survey})))))
 
 (defn markdown
-  "get the markdown for the survey"
+  "get the markdown for the survey."
   [survey]
   (let [user (session/get :user)]
     ((comp :markdown first)
@@ -90,7 +90,7 @@
                :owner user})))))
 
 (defn submissions
-  "retrieve all submissions for the given page on the date"
+  "retrieve all submissions for the given page on the date."
   [page date]
   (let [user (session/get :user)]
     (map #(merge {"informant" (Long/toString (+ 100000 (:id %)) 16)}
@@ -110,7 +110,7 @@
 
 
 (defn store-answer
-  "store the answer given to the survey"
+  "store the answer given to the survey."
   [page answer]
   (-> (insert-answer page answer)
        vals
@@ -130,7 +130,7 @@
                        (where {:owner user}))))))
 
 (defn dates
-  "get the dates for the page that have answers"
+  "get the dates for the page that have answers."
   [page]
   (let [user (session/get :user)]
     (map :date
@@ -142,7 +142,7 @@
            (where {:surveys.owner user})))))
 
 (defn csv
-  "creates a csv for the answers given to survey on page on date"
+  "creates a csv for the answers given to survey on page on date."
   [page date]
   (let [submissions (submissions page date)
         keys (apply sorted-set-by
@@ -160,7 +160,7 @@
                                   (get submission key -1)))))))))
 
 (defn overview 
-  "Creates an overview of the meaning of the different question codes"
+  "Creates an overview of the meaning of the different question codes."
   [page]
   (let [md (markdown page)]
     (if (str/blank? md)
@@ -168,7 +168,7 @@
       (parse/overview (parse/parse md)))))
 
 (defn upload-file
-  "takes a map with filename and a io.File to insert into database"
+  "takes a map with filename and a io.File to insert into database."
   [{:keys [filename tempfile]}]
   (log/info (format "Storing file qs/%s" filename))
   (insert-survey (str/replace filename #"\..*$" "")
