@@ -232,7 +232,7 @@
   (re-find #".*" string))
 
 (defn parse-header [header]
-  (->Header
+  (Header.
    (->> header
         (re-find #"#\s*(.*?)(?=\s*:\w+|\s*$)")
         second
@@ -240,7 +240,7 @@
    (re-seq #":\w+" header)))
 
 (defn parse-heading [heading]
-  (->Heading
+  (Heading.
    (->> heading
         str/trimr
         (re-find #"#+")
@@ -260,14 +260,14 @@
         question-block (str/replace-first question-block question "")
         choices (map first (re-seq choice question-block))]
     (cond (empty? choices)
-          (->SelectQuestion
+          (SelectQuestion.
            name
            label
            ["missing values"]
            options)
 
           (not-empty (filter (partial re-matches #"^\*.*") choices))
-          (->RadioTableQuestion
+          (RadioTableQuestion.
            name
            label
            (map (comp second (partial re-find choice))
@@ -280,7 +280,7 @@
 
           (and (not-empty (filter (partial re-matches #"^-.*") choices))
                (not-empty (filter (partial re-matches #"^&.*") choices)))
-          (->CheckboxTableQuestion
+          (CheckboxTableQuestion.
            name
            label
            (map (comp second (partial re-find choice))
@@ -293,7 +293,7 @@
 
           (re-matches slider (first choices))
           (let [slider (re-find slider (first choices))]
-            (->SliderQuestion
+            (SliderQuestion.
              name
              label
              (nth slider 1)
@@ -303,14 +303,14 @@
 
           (re-matches textarea (first choices))
           (let [textarea (second (re-find textarea (first choices)))]
-            (->TextareaQuestion
+            (TextareaQuestion.
              name
              label
              textarea
              options))
 
           (empty? (remove (partial re-matches #"^\+.*") choices))
-          (->SelectQuestion
+          (SelectQuestion.
            name
            label
            (map (comp second (partial re-find choice))
@@ -318,7 +318,7 @@
            options)
 
           (not-empty (filter (partial re-matches #"^-.*") choices))
-          (->RadioGroupQuestion
+          (RadioGroupQuestion.
            name
            label
            (map (comp second (partial re-find choice))
@@ -326,7 +326,7 @@
            options)
 
           (not-empty (filter (partial re-matches #"^&.*") choices))
-          (->CheckboxListQuestion
+          (CheckboxListQuestion.
            name
            label
            (map (comp second (partial re-find choice))
@@ -344,13 +344,13 @@
         (recur post
                (conj vals
                      (if-not (str/blank? pre) pre)
-                     (->Link href title content))))
+                     (Link. href title content))))
       (remove nil? (seq (conj vals (if-not (str/blank? s) s)))))))
 
 (defn parse-paragraph [paragraph]
-  (->Paragraph
+  (Paragraph.
    (apply concat
-          (interpose (list (->Breakline))
+          (interpose (list (Breakline.))
                      (map #(parse-links (str/replace % #"\n" " "))
                           (str/split paragraph #"\n\n"))))))
 
@@ -359,7 +359,7 @@
          question-id question-id
          page []]
     (if (str/blank? content)
-      [(->Page
+      [(Page.
         page-id
         (parse-header (first-line page-text))
         page)
@@ -431,7 +431,7 @@
                             (if (nil? title)
                               "" (first title))
                             ""))]
-    (->Document
+    (Document.
      (second title)
      survey
      thankyou)))
