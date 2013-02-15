@@ -80,7 +80,7 @@
       (println  "Select:")
       (println name ":" label)
       (doseq [idx (range (count values))]
-        (println "  value:" (inc idx) "choice:" (nth values idx)))
+        (println "  VAL:" (inc idx) "\tCHOICE:" (nth values idx)))
       (println)))
   Keys
   (allkeys [this]
@@ -115,7 +115,7 @@
       (println "Checkbox list:")
       (println name ":" label)
       (doseq [idx (range (count values))]
-        (println (format "  %sC%02d : %s" name (inc idx) (nth values idx))))
+        (println (format "  %sC%02d => %s" name (inc idx) (nth values idx))))
       (println)))
   Keys
   (allkeys [this]
@@ -139,11 +139,11 @@
       (doseq [ridx (range (count rows))
               vidx (range (count values))]
         (println (format "  %sR%02dC%02d" name (inc ridx) (inc vidx))
-                 (str ": row " (nth rows ridx)
+                 (str "=> VAL: " (nth values vidx)
                       (if (seq columns)
-                    (str "column " (nth columns vidx))
+                    (str "\tCOL: " (nth columns vidx))
                     "")
-                  " value " (nth values vidx))))
+                      "    \tROW: " (nth rows ridx))))
       (println)))
   Keys
   (allkeys [this]
@@ -168,7 +168,7 @@
       (println "Radio group:")
       (println name ":" label)
       (doseq [idx (range (count groups))]
-        (println "  value:" (inc idx) "label:" (nth groups idx)))
+        (println "  VAL:" (inc idx) "\tLABEL:" (nth groups idx)))
       (println)))
   Keys
   (allkeys [this]
@@ -188,10 +188,13 @@
     (with-out-str
       (println "Radio table:")
       (println name ":" label)
+      (doseq [cidx (range (count columns))]
+        (print (format "%s=%d  " (nth columns cidx) (inc cidx))))
+      (if (seq columns) (println))
       (doseq [ridx (range (count rows))]
-        (println (format "  %sR%02d : %s" name (inc ridx) (nth rows ridx)))
+        (println (format "  %sR%02d => %s" name (inc ridx) (nth rows ridx)))
         (doseq [vidx (range (count values))]
-          (println "    value:" (inc vidx) "label:" (nth values vidx))))
+          (println "    VAL:" (inc vidx) "\tLABEL:" (nth values vidx))))
       (println)))
   Keys
   (allkeys [this]

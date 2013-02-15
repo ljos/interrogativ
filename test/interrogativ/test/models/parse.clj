@@ -34,8 +34,8 @@
   (overview q01-radiogroup)
   => "Radio group:
 Q01 : 1. Er du gutt eller jente?
-  value: 1 label: Gutt
-  value: 2 label: Jente
+  VAL: 1 \tLABEL: Gutt
+  VAL: 2 \tLABEL: Jente
 
 ")
 
@@ -89,8 +89,8 @@ Q02 : 2. Hvor gammel er du?
   (overview q04-select)
   => "Select:
 Q04 : 4. Hva slags mobiltelefon har du?
-  value: 1 choice: iPhone
-  value: 2 choice: Samsung
+  VAL: 1 \tCHOICE: iPhone
+  VAL: 2 \tCHOICE: Samsung
 
 ")
 
@@ -118,18 +118,18 @@ Q04 : 4. Hva slags mobiltelefon har du?
   (overview q05-radiotable)
   => "Radio table:
 Q05 : 5. Hvordan vil du helst skrive?
-  Q05R01 : Tastatur
-    value: 1 label: +
-    value: 2 label: •
-    value: 3 label: −
-  Q05R02 : Touchskjerm
-    value: 1 label: +
-    value: 2 label: •
-    value: 3 label: −
-  Q05R03 : Håndskrift
-    value: 1 label: +
-    value: 2 label: •
-    value: 3 label: −
+  Q05R01 => Tastatur
+    VAL: 1 \tLABEL: +
+    VAL: 2 \tLABEL: •
+    VAL: 3 \tLABEL: −
+  Q05R02 => Touchskjerm
+    VAL: 1 \tLABEL: +
+    VAL: 2 \tLABEL: •
+    VAL: 3 \tLABEL: −
+  Q05R03 => Håndskrift
+    VAL: 1 \tLABEL: +
+    VAL: 2 \tLABEL: •
+    VAL: 3 \tLABEL: −
 
 ")
 
@@ -173,10 +173,10 @@ Q06 : 6. Har du noe du vil si? Vi tar det på største alvor i våre analyser.
   (overview q07-checkboxlist)
   => "Checkbox list:
 Q07 : 7. Hvilke tekniske ting har du?
-  Q07C01 : Tablet/iPad
-  Q07C02 : Smarttelefon
-  Q07C03 : Mobil uten mulighet til nett
-  Q07C04 : Mobil med mulighet til nett
+  Q07C01 => Tablet/iPad
+  Q07C02 => Smarttelefon
+  Q07C03 => Mobil uten mulighet til nett
+  Q07C04 => Mobil med mulighet til nett
 
 ")
 
@@ -201,10 +201,10 @@ Q07 : 7. Hvilke tekniske ting har du?
   (overview q08-checkboxtable)
   => "Checkbox table:
 Q08 : 8. Hva av dette kunne du tenkt deg å gjøre med venner?
-  Q08R01C01 : row Shopping value ?
-  Q08R01C02 : row Shopping value ?
-  Q08R02C01 : row Pub value ?
-  Q08R02C02 : row Pub value ?
+  Q08R01C01 => VAL: ?    \tROW: Shopping
+  Q08R01C02 => VAL: ?    \tROW: Shopping
+  Q08R02C01 => VAL: ?    \tROW: Pub
+  Q08R02C02 => VAL: ?    \tROW: Pub
 
 ")
 
