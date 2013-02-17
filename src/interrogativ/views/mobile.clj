@@ -115,20 +115,6 @@
   [:div {:data-role "content"} content
    [:br] [:br]])
 
-(defn radio-group [{:keys [name label groups type]
-                    :or {type nil id name}}]
-  [:fieldset {:data-role "controlgroup" :data-type type}
-   [:legend label]
-   (apply concat
-          (map-indexed (fn [idx group]
-                         (let [id (format "%sC%02d" name (inc idx))]
-                           (list [:input {:type "radio"
-                                          :name name
-                                          :id id
-                                          :value  (inc idx)}]
-                                 [:label {:for id} group])))
-                       groups))])
-
 ;; For some reason it wants to evaluate name in this instance if
 ;; put in the :or part of the input.
 (defn slider [{:keys [name label id value min max]
@@ -154,18 +140,36 @@
   (list [:label {:for name} label]
         [:textarea {:name name :id id} value]))
 
-(defn checkbox-list [{:keys [name label values]}]
-  [:fieldset {:data-role "controlgroup"}
-   [:legend label]
-   (apply concat
-          (map-indexed (fn [idx value]
-                         (let [name (format "%sC%02d" name (inc idx))]
-                           (list [:input {:type "checkbox"
-                                          :name name
-                                          :id name
-                                          :value 1}]
-                                 [:label {:for name} value])))
-                       values))])
+(defn vlist [{:keys [name label values dir type]
+                    :or {type nil id name}}]
+  [:fieldset {:data-role "controlgroup" :data-type dir}
+   (cons [:legend label]
+         (apply concat
+                (map-indexed
+                 (fn [idx group]
+                   (let [checkbox? (= type "checkbox")
+                         id (format "%sC%02d" name (inc idx))
+                         name (if checkbox? id name)]
+                     (list [:input {:type type
+                                    :name name
+                                    :id id
+                                    :value (if checkbox? 1 (inc idx))}]
+                           [:label {:for id} group])))
+                 values)))])
+
+(defn radio-list [{:keys [name label values type]}]
+  (vlist {:name name
+          :label label
+          :values values
+          :dir type
+          :type "radio"}))
+
+(defn checkbox-list [{:keys [name label values type]}]
+  (vlist {:name name
+          :label label
+          :values values
+          :dir type
+          :type "checkbox"}))
 
 (defn table [{:keys [name type label columns rows values]}]
   [:div {:data-role "fieldcontain"}
@@ -195,27 +199,16 @@
       rows)]]])
 
 (defn table-no-header [{:keys [name type label rows values]}]
-  (list [:h4 label]
-        [:div {:data-role "fieldcontain"}
-         (map-indexed
-          (fn [idx row]
-             [:div {:class "ui-grid-a"}
-              [:div {:class "ui-block-a" :style "width:40%"}
-               [:div {:style "position:relative;top:6px"} row]]
-              [:div {:class "ui-block-b" :style "width:60%"}
-               [:fieldset {:data-role "controlgroup"
-                           :data-type "horizontal"}
-                (let [name (format "%sR%s" name idx)]
-                  (map-indexed
-                   (fn [idx label]
-                     (let [id (format "%sC%s" name (inc idx))]
-                       (list [:input {:type type
-                                      :name (if (= type "checkbox") id name)
-                                      :id id
-                                      :value (if (= type "checkbox") 1 (inc idx))}]
-                             [:label {:for id} label])))
-                   values))]]])
-             rows)]))
+  [:div {:data-role "fieldcontain"}
+   [:h4 label]
+   (map-indexed
+    (fn [idx row]
+      (vlist {:name (format "%sR%02d" name (inc idx))
+              :label row
+              :dir "horizontal"
+              :type type
+              :values values}))
+    rows)])
 
 (defn checkbox-table [{:keys [name label columns rows values]}]
   (if (seq columns)

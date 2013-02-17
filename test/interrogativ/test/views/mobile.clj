@@ -72,11 +72,11 @@
       [:br]
       [:br]])
 
-(fact "Check hiccup of radio-group"
-  (radio-group {:name "Q01" :label "1. Question?" :groups '("a" "b" "c")})
+(fact "Check hiccup of radio-list"
+  (radio-list {:name "Q01" :label "1. Question?" :values '("a" "b" "c")})
   => [:fieldset {:data-role "controlgroup" :data-type nil}
-      [:legend "1. Question?"]
-      (list [:input {:type "radio"
+      (list [:legend "1. Question?"]
+            [:input {:type "radio"
                      :name "Q01"
                      :id "Q01C01"
                      :value 1}]
@@ -117,9 +117,9 @@
 
 (fact "Check hiccup of checkbox-list"
   (checkbox-list {:name "Q06" :label "6. Question?" :values '("a" "b" "c")})
-  => [:fieldset {:data-role "controlgroup"}
-      [:legend "6. Question?"]
-      (list [:input {:type "checkbox"
+  => [:fieldset {:data-role "controlgroup" :data-type nil}
+      (list [:legend "6. Question?"]
+            [:input {:type "checkbox"
                      :name "Q06C01"
                      :id "Q06C01"
                      :value 1}]

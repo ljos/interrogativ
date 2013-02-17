@@ -156,10 +156,10 @@
 (defrecord RadioGroupQuestion [name label groups options]
   Hiccup
   (hiccup [this]
-    (mobile/radio-group
+    (mobile/radio-list
      {:name name
       :label label
-      :groups groups
+      :values groups
       :type (if (some (partial = ":horizontal") options)
               "horizontal")}))
   Overview

@@ -11,15 +11,19 @@ label {
         width: 800px !important;
         margin: 0 auto !important;
         position: relative !important;
-    
+
     }
     form {
         background: none !important;
     }
 }
 
-.ui-controlgroup-label {
+.ui-field-contain .ui-controlgroup-label {
     font-weight: bold;
+    display: block;
+    float: left;
+    width: 5em !important;
+    padding-top: 6px;
 }
 
 .ui-header .ui-title, .ui-footer .ui-title {
