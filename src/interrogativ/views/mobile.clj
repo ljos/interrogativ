@@ -119,13 +119,14 @@
 ;; put in the :or part of the input.
 (defn slider [{:keys [name label id value min max]
                :or {min 0 max 100}}]
-  (list [:label {:for (if id id name)} label]
-        [:input {:type "range"
-                 :name name
-                 :id (if id id name)
-                 :value value
-                 :min min
-                 :max max}]))
+  [:fieldset {:data-role "controlgroup"}
+   [:label {:for (if id id name)} label]
+   [:input {:type "range"
+            :name name
+            :id (if id id name)
+            :value value
+            :min min
+            :max max}]])
 
 (defn select [{:keys [id name label values] :or {id name}}]
   (list [:label {:for name :class "select"} label]
@@ -137,8 +138,9 @@
 
 (defn textarea [{:keys [id name label value]
                  :or {id name value ""}}]
-  (list [:label {:for name} label]
-        [:textarea {:name name :id id} value]))
+  [:fieldset {:data-role "controlgroup"}
+   [:label {:for name} label]
+   [:textarea {:name name :id id} value]])
 
 (defn vlist [{:keys [name label values dir type]
                     :or {type nil id name}}]

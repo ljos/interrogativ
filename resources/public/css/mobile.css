@@ -18,8 +18,15 @@ label {
     }
 }
 
-.ui-field-contain .ui-controlgroup-label {
+.ui-controlgroup, .ui-select .ui-btn{
+    margin: 0 0 2.2em 0 !important;
+}
+
+.ui-controlgroup-label {
     font-weight: bold;
+}
+
+.ui-field-contain .ui-controlgroup-label {
     display: block;
     float: left;
     width: 5em !important;
