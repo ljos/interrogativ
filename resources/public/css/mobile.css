@@ -22,7 +22,7 @@ legend {
     }
 }
 
-.ui-controlgroup, .ui-select .ui-btn{
+.ui-field-contain, .ui-controlgroup-vertical, .ui-select .ui-btn, textarea {
     margin: 0 0 2.2em 0 !important;
 }
 
