@@ -94,13 +94,14 @@
 
 (fact "Check hiccup of slider"
   (slider {:name "Q02" :label "2. Question?" :value 2 :min 1 :max 3})
-  => (list [:label {:for "Q02"} "2. Question?"]
-           [:input {:type "range"
-                    :name "Q02"
-                    :id "Q02"
-                    :value 2
-                    :min 1
-                    :max 3}]))
+  => [:fieldset {:data-role "controlgroup"}
+      [:label {:for "Q02"} "2. Question?"]
+      [:input {:type "range"
+               :name "Q02"
+               :id "Q02"
+               :value 2
+               :min 1
+               :max 3}]])
 
 (fact "Check hiccup of select"
   (select {:name "Q03" :label "3. Question?" :values '("a" "b" "c")})
@@ -112,8 +113,9 @@
 
 (fact "Check hiccup of textarea"
   (textarea {:name "Q04" :label "4. Question?" :value "??"})
-  => (list [:label {:for "Q04"} "4. Question?"]
-           [:textarea {:name "Q04" :id "Q04"} "??"]))
+  => [:fieldset {:data-role "controlgroup"}
+      [:label {:for "Q04"} "4. Question?"]
+      [:textarea {:name "Q04" :id "Q04"} "??"]])
 
 (fact "Check hiccup of checkbox-list"
   (checkbox-list {:name "Q06" :label "6. Question?" :values '("a" "b" "c")})
@@ -134,3 +136,44 @@
                      :id "Q06C03"
                      :value 1}]
             [:label {:for "Q06C03"} "c"])])
+
+(fact "check hiccup of checkbox-table with header"
+  (checkbox-table
+   {:name "Q07"
+    :label "7. Question?"
+    :columns '("1" "2" "3")
+    :rows '("a")
+    :values '("-" "." "+")})
+  => [:div {:data-role "fieldcontain"}
+      [:fieldset {:data-role "controlgroup"
+                  :data-type "horizontal"}
+       [:p [:legend "7. Question?"]]
+       [:table
+        [:tr
+         [:th ""]
+         (list [:th "1"]
+               [:th "2"]
+               [:th "3"])]
+        (list
+         [:tr [:td "a"]
+          (list [:td
+                 [:input {:type "checkbox"
+                          :name "Q07R01C01"
+                          :id "Q07R01C01"
+                          :value 1}]
+                 [:label {:for "Q07R01C01"}
+                  "-"]]
+                [:td
+                 [:input {:type "checkbox"
+                          :name "Q07R01C02"
+                          :id "Q07R01C02"
+                          :value 1}]
+                 [:label {:for "Q07R01C02"}
+                  "."]]
+                [:td
+                 [:input {:type "checkbox"
+                          :name "Q07R01C03"
+                          :id "Q07R01C03"
+                          :value 1}]
+                 [:label {:for "Q07R01C03"}
+                  "+"]])])]]])
