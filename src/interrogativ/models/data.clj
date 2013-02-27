@@ -158,7 +158,9 @@
         (println (str/join ","
                            (map (partial format "\"%s\"")
                                 (for [key keys]
-                                  (get submission key -1)))))))))
+                                  (-> (get submission key -1)
+                                      (str/replace "\"" "'")
+                                      (str/replace #"\s+" " "))))))))))
 
 (defn overview 
   "Creates an overview of the meaning of the different question codes."
