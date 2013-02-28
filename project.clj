@@ -8,7 +8,7 @@
                  [ring/ring-core "1.1.8"]
                  [ring/ring-jetty-adapter "1.1.8"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
-                 [org.clojure/clojure "1.4.0"]
+                 [org.clojure/clojure "1.5.0-RC17"]
                  [com.taoensso/timbre "1.3.0"]]
   :profiles {:dev {:dependencies [[midje "1.4.0"]
                                   [clj-webdriver "0.6.0-beta2" :exclusions [[slingshot]
@@ -40,4 +40,6 @@
               :pretty-print true
               :externs ["externs/jquery-1.8.js"]}}]}
   :ring {:handler interrogativ.server/handler}
+  :aot [interrogativ.parser.types
+        interrogativ.models.parse]
   :main interrogativ.server)

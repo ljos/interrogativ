@@ -14,14 +14,14 @@
 (defentity surveys)
 (defentity answers)
 
-(defn insert-user 
+(defn insert-user
   "insert user to database."
   [user password]
   (insert users
     (values {:username user
              :password (crypt/encrypt password)})))
 
-(defn remove-user 
+(defn remove-user
   "removes a user from the database."
   [user]
   (delete users
@@ -46,7 +46,7 @@
     (select surveys
       (where {:url page})))))
 
-(defn insert-survey 
+(defn insert-survey
   "insert new survey to database."
   [page text]
   (let [user (session/get :user)
@@ -155,14 +155,15 @@
     (with-out-str
       (println (str/join "," (map name keys)))
       (doseq [submission submissions]
-        (println (str/join ","
-                           (map (partial format "\"%s\"")
-                                (for [key keys]
-                                  (-> (get submission key -1)
-                                      (str/replace "\"" "'")
-                                      (str/replace #"\s+" " "))))))))))
+        (->> (map (partial format "\"%s\"")
+                  (for [key keys]
+                    (-> (get submission key -1)
+                        (str/replace "\"" "'")
+                        (str/replace #"\s+" " "))))
+             (str/join ",")
+             (println))))))
 
-(defn overview 
+(defn overview
   "Creates an overview of the meaning of the different question codes."
   [page]
   (let [md (markdown page)]
@@ -177,7 +178,7 @@
   (insert-survey (str/replace filename #"\..*$" "")
                  (slurp tempfile)))
 
-(defn owner? 
+(defn owner?
   "Checks if the current session is the owner of the page."
   [page]
   (let [user (session/get :user)]
