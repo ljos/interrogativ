@@ -41,5 +41,6 @@
               :externs ["externs/jquery-1.8.js"]}}]}
   :ring {:handler interrogativ.server/handler}
   :aot [interrogativ.parser.types
-        interrogativ.models.parse]
+        interrogativ.models.parse
+        interrogativ.parser.tokenize]
   :main interrogativ.server)

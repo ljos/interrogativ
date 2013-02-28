@@ -39,6 +39,13 @@
   (hiccup [this]
     [:p (map hiccup content)]))
 
+(defrecord Choice+ [value])
+(defrecord Choice& [value])
+(defrecord Choice* [value])
+(defrecord Choice< [value])
+(defrecord Choice- [value])
+(defrecord Choicet [value])
+
 (defrecord TextareaQuestion [name label textarea options]
   Hiccup
   (hiccup [this]
